@@ -1,8 +1,10 @@
-package com.universe.war;
+package com.universe.war.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.universe.war.R;
 
 public class MainActivity extends AppCompatActivity {
 
