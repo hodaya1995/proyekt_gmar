@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     bool toRot=false;
     bool flip=false;
     bool facingRight;
+    bool invokeTouch=false;
    
     
     void Start(){
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Flip(float horizontal){
         //if(!(horizontal>0&&!facingRight||horizontal<0&&facingRight)){
-            if((horizontal<0||facingRight)&&(horizontal>0||!facingRight)){
+        if((horizontal<0||facingRight)&&(horizontal>0||!facingRight)){
             facingRight=!facingRight;
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
@@ -43,29 +44,23 @@ public class PlayerMovement : MonoBehaviour
     {
        
      
-
+     
      if(isMoving){
          currDistanceToTouchPos=(touchPosition-transform.position).magnitude;
          animator.SetFloat("horizontal",whereToMove.x);
          animator.SetFloat("vertical",whereToMove.y);
          animator.SetFloat("speed",whereToMove.sqrMagnitude);
-         animator.SetBool("toAttack",false);
-             
-
-             
-     }else{
+         //animator.SetBool("toAttack",false);      
+     }
+     else{
             animator.SetFloat("speed",0);
-            animator.SetBool("toAttack",true);
-            
-        
-             
+            //animator.SetBool("toAttack",true);    
      }
 
    
      
            
-         if (Input.touchCount > 0)
-        {
+         if (invokeTouch &&Input.touchCount > 0){
 
             touch = Input.GetTouch(0);
             
@@ -74,10 +69,10 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetFloat("horizontal",whereToMove.x);
                 animator.SetFloat("vertical",whereToMove.y);
                 animator.SetFloat("speed",whereToMove.sqrMagnitude);
-                animator.SetBool("toAttack",false);
+                //animator.SetBool("toAttack",false);
                 prevoiusDistanceToTouchPos=0;
                 currDistanceToTouchPos=0;
-                 isMoving=true;
+                isMoving=true;
                 touchPosition=Camera.main.ScreenToWorldPoint(touch.position);
                 touchPosition.z=0;
                 prevMovement=whereToMove;
@@ -104,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if(currDistanceToTouchPos>prevoiusDistanceToTouchPos){
-            animator.SetBool("toAttack",true);
+            //animator.SetBool("toAttack",true);
             isMoving=false;
             rb.velocity=Vector2.zero;
         }

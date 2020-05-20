@@ -36,6 +36,8 @@ public class PlayerMovementEnemy : MonoBehaviour
             transform.localScale = theScale;
         }
     }
+
+
     void Update()
     {
        
@@ -46,16 +48,13 @@ public class PlayerMovementEnemy : MonoBehaviour
          //animator.SetFloat("horizontal",whereToMove.x);
          //animator.SetFloat("vertical",whereToMove.y);
          animator.SetFloat("speed",rb.velocity.sqrMagnitude);
-         animator.SetBool("toAttack",false);
+         //animator.SetBool("toAttack",false);
              
 
              
      }else{
             animator.SetFloat("speed",0);
-            animator.SetBool("toAttack",true);
-            
-        
-             
+            //animator.SetBool("toAttack",true);        
      }
 
    
@@ -67,7 +66,7 @@ public class PlayerMovementEnemy : MonoBehaviour
                 //animator.SetFloat("horizontal",whereToMove.x);
                 //animator.SetFloat("vertical",whereToMove.y);
                 animator.SetFloat("speed",rb.velocity.sqrMagnitude);
-                animator.SetBool("toAttack",false);
+                //animator.SetBool("toAttack",false);
                 //prevoiusDistanceToTouchPos=0;
                 //currDistanceToTouchPos=0;
                  isMoving=true;
@@ -88,8 +87,8 @@ public class PlayerMovementEnemy : MonoBehaviour
 
         }
 
-        if(rb.velocity.x<0.5&&rb.velocity.y<0.5){
-            animator.SetBool("toAttack",true);
+        if(rb.velocity.x<0.3&&rb.velocity.y<0.3){
+            //animator.SetBool("toAttack",true);
             isMoving=false;
             //rb.velocity=Vector2.zero;
         }

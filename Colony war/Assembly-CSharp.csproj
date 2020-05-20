@@ -45,8 +45,10 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\scripts\Attackable.cs" />
      <Compile Include="Assets\scripts\EnemyAI.cs" />
      <Compile Include="Assets\scripts\EnemyGFX.cs" />
+     <Compile Include="Assets\scripts\HealthBar.cs" />
      <Compile Include="Assets\scripts\PlayerMovement.cs" />
      <Compile Include="Assets\scripts\PlayerMovementEnemy.cs" />
      <Compile Include="Assets\scripts\Shooting.cs" />
@@ -228,7 +230,7 @@
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.5f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
  </Reference>
  <Reference Include="Pathfinding.Ionic.Zip.Reduced">
- <HintPath>C:/Users/Hodaya/Desktop/Colony war/Assets/AstarPathfindingProject/Plugins/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+ <HintPath>C:/Users/Hodaya/Documents/GitHub/proyekt_gamr/Colony war/Assets/AstarPathfindingProject/Plugins/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.5f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
