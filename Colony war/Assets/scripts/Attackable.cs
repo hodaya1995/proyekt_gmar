@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class Attackable : MonoBehaviour
@@ -11,42 +12,65 @@ public class Attackable : MonoBehaviour
     public HealthBar healthBar;
     GameObject attacker;
 
-    int callDieFunc=5;
+    int callDieFunc=0;
     Color fade;
     public static float velocityX;
     public static float velocityY;
-   
+    Rigidbody2D rb;
+    Boolean collided = false;
+    Animator attackerAnimator;
+
        void Start()
     {
         currentHealth = maxHealth;
-		healthBar.SetMaxHealth(maxHealth);
+        callDieFunc = maxHealth;
+
+        healthBar.SetMaxHealth(maxHealth);
+       
+        rb = this.GetComponent<Rigidbody2D>();
     }
 
      void OnCollisionEnter2D(Collision2D collision)//the attacked soldier near the attacker
     {
         if(collision.collider.tag=="enemy"||collision.collider.tag=="colony"){
+            collided = true;
             InvokeRepeating("DecreaseLife",0f,0.5f);
             attacker=collision.gameObject;
-            Animator attackerAnimator=attacker.GetComponent<Animator>();
-            velocityX=collision.relativeVelocity.x;
-            velocityY=collision.relativeVelocity.y;
-            if(Mathf.Abs(velocityX)>Mathf.Abs(velocityY) ){
-                attackerAnimator.SetFloat("horizontal",velocityX);
-                attackerAnimator.SetFloat("vertical",0);
-            }else{
-                attackerAnimator.SetFloat("horizontal",0);
-                attackerAnimator.SetFloat("vertical",velocityY);
+            animator.SetBool("toAttack", true);
+
+            attackerAnimator = attacker.GetComponent<Animator>();
+            velocityX = collision.relativeVelocity.x;
+            velocityY = collision.relativeVelocity.y;
+
+            if (Mathf.Abs(velocityX) > Mathf.Abs(velocityY))
+            {
+                attackerAnimator.SetFloat("horizontal", velocityX);
+                attackerAnimator.SetFloat("vertical", 0);
             }
-            
+            else
+            {
+                attackerAnimator.SetFloat("horizontal", 0);
+                attackerAnimator.SetFloat("vertical", velocityY);
+            }
+
 
 
         }
-        
-        
+
+
     }
 
     void Update(){
-        
+        if (collided)
+        {
+            rb.velocity = new Vector3(0, 0, 0);
+        }
+
+        if (attackerAnimator.GetBool("die"))//the attacker died
+        {
+            CancelInvoke(); //stop dying
+            animator.SetBool("toAttack", false);
+        }
     }
     void Die(){
        
@@ -61,7 +85,6 @@ public class Attackable : MonoBehaviour
                     for(int i=0;i<childs; i++){
                         Destroy(this.transform.GetChild(i).gameObject);
                     }
-                    Destroy (this.transform.parent.gameObject);
                     Destroy (this.gameObject);
                     died=false;
                     
@@ -70,19 +93,20 @@ public class Attackable : MonoBehaviour
             }
     }
     void DecreaseLife(){
+
         if(currentHealth-1>=0){
             currentHealth --;
             healthBar.SetHealth(currentHealth);
         }
-        else{
-            CancelInvoke();
-            died=true;
+        else if (currentHealth== 0){
+             CancelInvoke();
+             died=true;
              InvokeRepeating("Die",0f,0.5f);
-             Debug.Log("die ");
-            animator.SetTrigger("die");
+             animator.SetBool("die",true);
+             
 
             if(attacker!=null){
-               Animator animator= attacker.GetComponent<Animator>();
+               
                if(animator!=null){
                    animator.SetBool("toAttack",false);
                }
@@ -91,8 +115,12 @@ public class Attackable : MonoBehaviour
         }
     }
 
-    void OnCollisionExit2D(Collision2D collision){//the attacked soldier not near the attacker
+    void OnCollisionExit2D(Collision2D collision){//the attacked soldier is not near the attacker
+        collided = false;
         if(collision.collider.tag=="enemy"||collision.collider.tag=="colony"){
+            animator.SetBool("toAttack",false);
+            CancelInvoke();
+
         }
     }
 

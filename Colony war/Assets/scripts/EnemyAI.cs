@@ -109,7 +109,8 @@ public class EnemyAI : MonoBehaviour
                 currentWaypoint++;
             }
 
-            Flip(direction.x);
+            //Flip(direction.x);
+
             // if(rb.velocity.x>=0.03f){
             //     enemy.localScale=new Vector3(-1f,1f,1f);
             // }
@@ -133,13 +134,13 @@ public class EnemyAI : MonoBehaviour
                 if(rb.velocity.x<0.01&&rb.velocity.y <0.01)reachedEndOfPath=true;
             }else{
                 animator.SetFloat("speed",0f);
-                animator.SetBool("toAttack",true);
+                //animator.SetBool("toAttack",true);
                 
                 targetIsChosen=false;    
             }
             
             if(reachedEndOfPath){
-                animator.SetBool("toAttack",true);
+                //animator.SetBool("toAttack",true);
                 isMoving=false;
                 targetIsChosen=false;
                

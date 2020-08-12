@@ -334,7 +334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.1, y: 0.51}
+  m_AnchoredPosition: {x: 0.1, y: 0.32}
   m_SizeDelta: {x: 59.612, y: 33.497}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114018357
@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 163391652}
   - component: {fileID: 163391651}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: horseE hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -619,6 +619,7 @@ GameObject:
   - component: {fileID: 173453321}
   - component: {fileID: 173453320}
   - component: {fileID: 173453319}
+  - component: {fileID: 173453324}
   m_Layer: 0
   m_Name: sword  enemy
   m_TagString: enemy
@@ -772,6 +773,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &173453324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173453317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 173453321}
+  maxHealth: 5
+  currentHealth: 0
+  healthBar: {fileID: 1197237717}
 --- !u!1 &206530880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,7 +1143,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0.0001373291, y: 0}
   m_SizeDelta: {x: 0.00027084, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1180,7 +1197,7 @@ GameObject:
   - component: {fileID: 262278263}
   - component: {fileID: 262278262}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: axeE hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2071,7 +2088,7 @@ GameObject:
   - component: {fileID: 386426362}
   - component: {fileID: 386426361}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: hand cannonnerE hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2610,7 +2627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &559506803
 Transform:
   m_ObjectHideFlags: 0
@@ -2619,8 +2636,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 559506802}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.85, y: 2.27, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.714, y: 1.429, z: 0}
+  m_LocalScale: {x: 1.9844712, y: 1.8582579, z: 1}
   m_Children:
   - {fileID: 206530884}
   m_Father: {fileID: 956983799}
@@ -2942,6 +2959,7 @@ GameObject:
   - component: {fileID: 626265980}
   - component: {fileID: 626265986}
   - component: {fileID: 626265985}
+  - component: {fileID: 626265987}
   m_Layer: 0
   m_Name: hand cannoneer enemy
   m_TagString: enemy
@@ -3125,6 +3143,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.42, y: 0.49}
   m_EdgeRadius: 0
+--- !u!114 &626265987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626265978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 626265980}
+  maxHealth: 5
+  currentHealth: 0
+  healthBar: {fileID: 386426361}
 --- !u!1 &657643145
 GameObject:
   m_ObjectHideFlags: 0
@@ -4064,6 +4098,7 @@ GameObject:
   - component: {fileID: 868457516}
   - component: {fileID: 868457515}
   - component: {fileID: 868457514}
+  - component: {fileID: 868457518}
   m_Layer: 0
   m_Name: axe enemy
   m_TagString: enemy
@@ -4160,6 +4195,22 @@ MonoBehaviour:
   weaponPrefab: {fileID: 7284556069404859778, guid: 104a77079656ec64186be4e84f4c779c,
     type: 3}
   animator: {fileID: 868457516}
+--- !u!114 &868457518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868457512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 868457516}
+  maxHealth: 10
+  currentHealth: 0
+  healthBar: {fileID: 262278262}
 --- !u!50 &868457519
 Rigidbody2D:
   serializedVersion: 4
@@ -4933,7 +4984,7 @@ GameObject:
   - component: {fileID: 1075844430}
   - component: {fileID: 1075844429}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: axeC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5313,7 +5364,7 @@ MonoBehaviour:
   animator: {fileID: 1132496932}
   maxHealth: 5
   currentHealth: 0
-  healthBar: {fileID: 1526309693}
+  healthBar: {fileID: 1289893804}
 --- !u!1 &1197237715
 GameObject:
   m_ObjectHideFlags: 0
@@ -5326,7 +5377,7 @@ GameObject:
   - component: {fileID: 1197237718}
   - component: {fileID: 1197237717}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: swordE hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5462,6 +5513,7 @@ GameObject:
   - component: {fileID: 1262115124}
   - component: {fileID: 1262115129}
   - component: {fileID: 1262115128}
+  - component: {fileID: 1262115130}
   m_Layer: 0
   m_Name: horse enemy
   m_TagString: enemy
@@ -5630,6 +5682,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.81, y: 0.91}
   m_EdgeRadius: 0
+--- !u!114 &1262115130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262115122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1262115124}
+  maxHealth: 5
+  currentHealth: 0
+  healthBar: {fileID: 163391651}
 --- !u!1 &1289788780
 GameObject:
   m_ObjectHideFlags: 0
@@ -5717,7 +5785,7 @@ GameObject:
   - component: {fileID: 1289893805}
   - component: {fileID: 1289893804}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: cannoneerC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5850,7 +5918,7 @@ GameObject:
   - component: {fileID: 1307382721}
   - component: {fileID: 1307382720}
   m_Layer: 5
-  m_Name: Health bar (5)
+  m_Name: hand cannoneerC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6373,7 +6441,7 @@ GameObject:
   - component: {fileID: 1398829255}
   - component: {fileID: 1398829254}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: spearE hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6868,7 +6936,7 @@ MonoBehaviour:
   animator: {fileID: 1412055283}
   maxHealth: 5
   currentHealth: 0
-  healthBar: {fileID: 1526309693}
+  healthBar: {fileID: 1075844429}
 --- !u!1 &1441590708
 GameObject:
   m_ObjectHideFlags: 0
@@ -7034,6 +7102,7 @@ GameObject:
   - component: {fileID: 1515178724}
   - component: {fileID: 1515178723}
   - component: {fileID: 1515178722}
+  - component: {fileID: 1515178728}
   m_Layer: 0
   m_Name: archer enemy
   m_TagString: enemy
@@ -7203,6 +7272,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1515178728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515178720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1515178723}
+  maxHealth: 5
+  currentHealth: 0
+  healthBar: {fileID: 2021337699}
 --- !u!1 &1516246306
 GameObject:
   m_ObjectHideFlags: 0
@@ -7400,7 +7485,7 @@ GameObject:
   - component: {fileID: 1526309694}
   - component: {fileID: 1526309693}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: archerC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7981,6 +8066,7 @@ GameObject:
   - component: {fileID: 1603851489}
   - component: {fileID: 1603851495}
   - component: {fileID: 1603851494}
+  - component: {fileID: 1603851496}
   m_Layer: 0
   m_Name: cannoeer enemy
   m_TagString: enemy
@@ -8164,6 +8250,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.57, y: 0.53}
   m_EdgeRadius: 0
+--- !u!114 &1603851496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603851487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1603851489}
+  maxHealth: 5
+  currentHealth: 0
+  healthBar: {fileID: 1813278194}
 --- !u!1 &1608526319
 GameObject:
   m_ObjectHideFlags: 0
@@ -8179,6 +8281,7 @@ GameObject:
   - component: {fileID: 1608526323}
   - component: {fileID: 1608526322}
   - component: {fileID: 1608526321}
+  - component: {fileID: 1608526327}
   m_Layer: 0
   m_Name: spear enemy
   m_TagString: enemy
@@ -8347,6 +8450,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1608526327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608526319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1608526323}
+  maxHealth: 5
+  currentHealth: 0
+  healthBar: {fileID: 1398829254}
 --- !u!1 &1632748781
 GameObject:
   m_ObjectHideFlags: 0
@@ -34370,7 +34489,7 @@ GameObject:
   - component: {fileID: 1736065232}
   - component: {fileID: 1736065233}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: spearC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34503,7 +34622,7 @@ GameObject:
   - component: {fileID: 1780006347}
   - component: {fileID: 1780006346}
   m_Layer: 5
-  m_Name: Health bar (7)
+  m_Name: swordC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34834,7 +34953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0, y: 0.41}
+  m_AnchoredPosition: {x: 0.05, y: 0.32}
   m_SizeDelta: {x: 59.612, y: 33.497}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1801288656
@@ -34909,7 +35028,7 @@ GameObject:
   - component: {fileID: 1813278195}
   - component: {fileID: 1813278194}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: cennoneerE hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35040,9 +35159,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1866823272}
   - component: {fileID: 1866823271}
-  - component: {fileID: 1866823270}
+  - component: {fileID: 1866823275}
   - component: {fileID: 1866823274}
   - component: {fileID: 1866823273}
+  - component: {fileID: 1866823270}
   m_Layer: 0
   m_Name: soldier with sword
   m_TagString: colony
@@ -35050,25 +35170,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &1866823270
-Animator:
-  serializedVersion: 3
+--- !u!50 &1866823270
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866823269}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4d003d2d95f18c2449c13dec419e87d2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!212 &1866823271
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -35147,7 +35269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1866823270}
+  animator: {fileID: 1866823275}
   maxHealth: 5
   currentHealth: 0
   healthBar: {fileID: 1780006346}
@@ -35177,6 +35299,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.48, y: 0.59}
   m_EdgeRadius: 0
+--- !u!95 &1866823275
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866823269}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4d003d2d95f18c2449c13dec419e87d2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1898309716
 GameObject:
   m_ObjectHideFlags: 0
@@ -35189,7 +35330,7 @@ GameObject:
   - component: {fileID: 1898309719}
   - component: {fileID: 1898309718}
   m_Layer: 5
-  m_Name: Health bar (4)
+  m_Name: horseC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35622,7 +35763,7 @@ GameObject:
   - component: {fileID: 2021337700}
   - component: {fileID: 2021337699}
   m_Layer: 5
-  m_Name: Health bar
+  m_Name: archerE hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
