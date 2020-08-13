@@ -15,7 +15,6 @@ public class EnemyAI : MonoBehaviour
     Seeker seeker;
     Rigidbody2D rb;
     Transform enemy;
-    bool targetIsChosen;
 
     Vector3 touchPosWorld;
     TouchPhase touchPhase = TouchPhase.Began;
@@ -28,7 +27,8 @@ public class EnemyAI : MonoBehaviour
     bool flip=false;
     bool facingRight=true;
     float moveSpeed=2f;
-
+    bool targetChosen;
+    bool soldierChosen;
     void Flip(float horizontal){
         if((horizontal<0||facingRight)&&(horizontal>0||!facingRight)){
             facingRight=!facingRight;
@@ -45,44 +45,99 @@ public class EnemyAI : MonoBehaviour
     void BuildPathToTarget(){
        seeker=GetComponent<Seeker>();
        InvokeRepeating("UpdatePath",0f,0.5f);
-       Debug.LogError("target: "+target.localPosition);
     }
 
     void UpdatePath(){
-        if(seeker.IsDone()&&!reachedEndOfPath)seeker.StartPath(rb.position,target.position,onPathComplete); 
+        Debug.Log("UpdatePath");
+        if(seeker.IsDone()&&!reachedEndOfPath)seeker.StartPath(enemy.position,target.position,onPathComplete); 
     }
     void onPathComplete(Path p){
         if(!p.error){
             path=p;
             currentWaypoint=0;
-            targetIsChosen=true;
+            targetChosen=true;
             isMoving=true;
         }
     }
 
+   
+
+
+
+
+
     void FixedUpdate()
     { 
-        if(targetIsChosen){
+        if(targetChosen)
+        {
             MoveToPath();
         } 
         else{
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == touchPhase) {
-                touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);
-                RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
-                if (hitInformation.collider != null) {       
-                    if(hitInformation.collider.tag == "colony"){
-                        target=hitInformation.collider.transform;
-                        BuildPathToTarget();
-                        
-                    }else if(hitInformation.collider.tag =="enemy"){
-                        enemy=hitInformation.collider.transform;
-                        rb=hitInformation.collider.GetComponent<Rigidbody2D>();
-                        
-                        animator=hitInformation.collider.GetComponent<Animator>();
+            //bool detectedTouch = Input.touchCount == 1 && Input.GetTouch(0).phase == touchPhase;
+            bool detectedTouch = Input.GetMouseButtonDown(0);
+
+     
+            if (detectedTouch) {
+      
+
+
+                //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+                //Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);
+                //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+
+
+
+                if (hitInformation.collider != null)
+                {
+                  
+                    if (hitInformation.collider.tag == "colony")
+                    {
+                        Debug.Log("colony");
+                        target = hitInformation.collider.transform;
+                        rb = hitInformation.collider.GetComponent<Rigidbody2D>();
+                        animator = hitInformation.collider.GetComponent<Animator>();
+                        soldierChosen = true;
+
+                    }
+                    else if (soldierChosen)
+                    {
+                        if (hitInformation.collider.tag == "enemy")
+                        {
+                            Debug.Log("enemy");
+                            enemy = hitInformation.collider.transform;
+                            BuildPathToTarget();
+                            soldierChosen = false;
+                            targetChosen = true;
+                            reachedEndOfPath = false;
+                        }
+
+                    }
+
+
+                }
+                else
+                {
+                    if (soldierChosen)
+                    {
+                        Debug.Log("cancel");
+                        soldierChosen = false;
+                        targetChosen = false;
                     }
                 }
-          }
+
+                
+
+
+
+
+            }
+
+
+
+            
+
         }   
     }
 
@@ -126,24 +181,29 @@ public class EnemyAI : MonoBehaviour
     {
        
      
-        if(targetIsChosen){
+        if(targetChosen){
 
             if(isMoving){
                 animator.SetFloat("speed",rb.velocity.sqrMagnitude);
 
-                if(rb.velocity.x<0.01&&rb.velocity.y <0.01)reachedEndOfPath=true;
-            }else{
+                if (rb.velocity.x < 0.01 && rb.velocity.y < 0.01)
+                {
+                    reachedEndOfPath = true;
+                }
+            }
+            else{
                 animator.SetFloat("speed",0f);
-                //animator.SetBool("toAttack",true);
-                
-                targetIsChosen=false;    
+                targetChosen = false;
+                soldierChosen = false;
+                CancelInvoke();
             }
             
             if(reachedEndOfPath){
-                //animator.SetBool("toAttack",true);
                 isMoving=false;
-                targetIsChosen=false;
-               
+                soldierChosen = false;
+                targetChosen = false;
+                CancelInvoke();
+
             }
         }
         
