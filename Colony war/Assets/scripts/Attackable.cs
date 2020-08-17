@@ -17,10 +17,20 @@ public class Attackable : MonoBehaviour
     public static float velocityX;
     public static float velocityY;
     Rigidbody2D rb;
-    Boolean collided = false;
     Animator attackerAnimator;
+    bool dying = false;
+    Collider2D col;
+    bool moved;
+   
 
-       void Start()
+
+   
+
+
+ 
+
+
+    void Start()
     {
         currentHealth = maxHealth;
         callDieFunc = maxHealth;
@@ -28,12 +38,19 @@ public class Attackable : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
        
         rb = this.GetComponent<Rigidbody2D>();
-    }
+
+        
+       
+     }
 
      void OnCollisionEnter2D(Collision2D collision)//the attacked soldier near the attacker
     {
-        if(collision.collider.tag=="enemy"||collision.collider.tag=="colony"){
-            collided = true;
+        Debug.Log("tag:" + this.tag);
+        Debug.Log("enemy tag:" + collision.collider.tag);
+
+        if ((collision.collider.tag=="enemy"&&this.tag =="colony") || (collision.collider.tag == "colony"&& this.tag=="enemy" )){
+            moved = false;
+            attacked = true;
             InvokeRepeating("DecreaseLife",0f,0.5f);
             attacker=collision.gameObject;
             animator.SetBool("toAttack", true);
@@ -56,22 +73,33 @@ public class Attackable : MonoBehaviour
 
 
         }
+        if ((collision.collider.tag == "enemy" && this.tag == "enemy") || (collision.collider.tag == "colony" && this.tag == "colony"))
+        {
+            moved = true;
+        }
 
 
-    }
+        }
 
     void Update(){
-        if (collided)
+        if (attacked)//||moved)
         {
             rb.velocity = new Vector3(0, 0, 0);
         }
-
-        if (attackerAnimator.GetBool("die"))//the attacker died
+        
+        if (attackerAnimator!=null)//the attacker died
         {
-            CancelInvoke(); //stop dying
-            animator.SetBool("toAttack", false);
+            if (attackerAnimator.GetBool("die"))
+            {
+                dying = true;
+                CancelInvoke("DecreaseLife"); //stop dying
+                animator.SetBool("toAttack", false);
+            }
+               
         }
     }
+
+
     void Die(){
        
             callDieFunc--;
@@ -86,7 +114,6 @@ public class Attackable : MonoBehaviour
                         Destroy(this.transform.GetChild(i).gameObject);
                     }
                     Destroy (this.gameObject);
-                    died=false;
                     
                 }
                     
@@ -99,8 +126,9 @@ public class Attackable : MonoBehaviour
             healthBar.SetHealth(currentHealth);
         }
         else if (currentHealth== 0){
-             CancelInvoke();
-             died=true;
+            attacked = false;
+             CancelInvoke("DecreaseLife");
+             dying =true;
              InvokeRepeating("Die",0f,0.5f);
              animator.SetBool("die",true);
              
@@ -116,10 +144,10 @@ public class Attackable : MonoBehaviour
     }
 
     void OnCollisionExit2D(Collision2D collision){//the attacked soldier is not near the attacker
-        collided = false;
-        if(collision.collider.tag=="enemy"||collision.collider.tag=="colony"){
+        if((collision.collider.tag=="enemy" && this.tag == "colony" )|| (collision.collider.tag=="colony" && this.tag == "enemy"))
+        {
             animator.SetBool("toAttack",false);
-            CancelInvoke();
+            CancelInvoke("DecreaseLife");
 
         }
     }

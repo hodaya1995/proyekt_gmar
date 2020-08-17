@@ -29,6 +29,41 @@ public class EnemyAI : MonoBehaviour
     float moveSpeed=2f;
     bool targetChosen;
     bool soldierChosen;
+    GameObject enemyToAttack;
+
+    GameObject FindClosestEnemy()
+    {
+        GameObject[] targets;
+        targets = GameObject.FindGameObjectsWithTag("colony");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject target in targets)
+        {
+            Vector3 diff = target.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = target;
+                distance = curDistance;
+
+            }
+        }
+        return closest;
+    }
+
+
+    void MoveForwardTo(GameObject soldier)
+    {
+        target = this.GetComponent<Transform>();
+        rb = this.GetComponent<Rigidbody2D>();
+        animator = this.GetComponent<Animator>();
+        enemy = soldier.GetComponent<Transform>();
+        BuildPathToTarget();
+        reachedEndOfPath = false;
+        targetChosen = true;
+
+    }
     void Flip(float horizontal){
         if((horizontal<0||facingRight)&&(horizontal>0||!facingRight)){
             facingRight=!facingRight;
@@ -40,16 +75,25 @@ public class EnemyAI : MonoBehaviour
 
     void Start(){
        facingRight=true;
+        if (this.tag == "enemy")
+        {
+            enemyToAttack = FindClosestEnemy();
+            MoveForwardTo(enemyToAttack);
+        }
     }
 
     void BuildPathToTarget(){
+
        seeker=GetComponent<Seeker>();
+   
        InvokeRepeating("UpdatePath",0f,0.5f);
     }
 
     void UpdatePath(){
-        Debug.Log("UpdatePath");
-        if(seeker.IsDone()&&!reachedEndOfPath)seeker.StartPath(enemy.position,target.position,onPathComplete); 
+       if (seeker.IsDone() && !reachedEndOfPath)
+        {
+            seeker.StartPath(enemy.position, target.position, onPathComplete);
+        }
     }
     void onPathComplete(Path p){
         if(!p.error){
@@ -94,7 +138,6 @@ public class EnemyAI : MonoBehaviour
                   
                     if (hitInformation.collider.tag == "colony")
                     {
-                        Debug.Log("colony");
                         target = hitInformation.collider.transform;
                         rb = hitInformation.collider.GetComponent<Rigidbody2D>();
                         animator = hitInformation.collider.GetComponent<Animator>();
@@ -105,7 +148,6 @@ public class EnemyAI : MonoBehaviour
                     {
                         if (hitInformation.collider.tag == "enemy")
                         {
-                            Debug.Log("enemy");
                             enemy = hitInformation.collider.transform;
                             BuildPathToTarget();
                             soldierChosen = false;
@@ -121,11 +163,17 @@ public class EnemyAI : MonoBehaviour
                 {
                     if (soldierChosen)
                     {
-                        Debug.Log("cancel");
                         soldierChosen = false;
                         targetChosen = false;
                     }
                 }
+
+
+
+      
+
+
+
 
                 
 
@@ -140,6 +188,7 @@ public class EnemyAI : MonoBehaviour
 
         }   
     }
+
 
     void MoveToPath(){
         if(!reachedEndOfPath){   
@@ -164,15 +213,6 @@ public class EnemyAI : MonoBehaviour
                 currentWaypoint++;
             }
 
-            //Flip(direction.x);
-
-            // if(rb.velocity.x>=0.03f){
-            //     enemy.localScale=new Vector3(-1f,1f,1f);
-            // }
-            // else if(rb.velocity.x<=-0.03f){
-            //     enemy.localScale=new Vector3(1f,1f,1f);
-                
-            // }
 
         }
     }
