@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 173453324}
   m_Layer: 0
   m_Name: sword  enemy
-  m_TagString: enemy
+  m_TagString: enemy soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -785,10 +785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 173453321}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1197237717}
 --- !u!1 &206530880
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +899,7 @@ GameObject:
   - component: {fileID: 207222444}
   m_Layer: 0
   m_Name: archer soldier
-  m_TagString: colony
+  m_TagString: colony soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1005,10 +1001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 207222439}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1526309693}
 --- !u!61 &207222445
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1331,8 +1323,8 @@ GameObject:
   - component: {fileID: 269592619}
   - component: {fileID: 269592618}
   m_Layer: 0
-  m_Name: Gold Mine001
-  m_TagString: gold
+  m_Name: gold
+  m_TagString: wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2826,6 +2818,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &521337688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 521337689}
+  m_Layer: 0
+  m_Name: wood cutter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &521337689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521337688}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1378968783}
+  - {fileID: 1002909508}
+  m_Father: {fileID: 860575823}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &546847120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2919,7 +2943,7 @@ GameObject:
   - component: {fileID: 559506810}
   m_Layer: 0
   m_Name: soldier with spear
-  m_TagString: colony
+  m_TagString: colony soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2996,10 +3020,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 559506805}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1736065233}
 --- !u!212 &559506807
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3306,7 +3326,7 @@ GameObject:
   - component: {fileID: 626265987}
   m_Layer: 0
   m_Name: hand cannoneer enemy
-  m_TagString: enemy
+  m_TagString: enemy soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3484,10 +3504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 626265980}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 386426361}
 --- !u!1 &657643145
 GameObject:
   m_ObjectHideFlags: 0
@@ -4153,7 +4169,7 @@ GameObject:
   - component: {fileID: 844247011}
   m_Layer: 0
   m_Name: hand cannoneer
-  m_TagString: colony
+  m_TagString: colony soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4291,10 +4307,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 844247010}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1307382720}
 --- !u!61 &844247012
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4425,10 +4437,8 @@ Transform:
   m_Children:
   - {fileID: 1832427169}
   - {fileID: 1741319425}
-  - {fileID: 1989914781}
-  - {fileID: 1378968783}
-  - {fileID: 1002909508}
   - {fileID: 1816854662}
+  - {fileID: 521337689}
   m_Father: {fileID: 1480582459}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4449,9 +4459,10 @@ GameObject:
   - component: {fileID: 868457514}
   - component: {fileID: 868457518}
   - component: {fileID: 868457521}
+  - component: {fileID: 868457522}
   m_Layer: 0
   m_Name: axe enemy
-  m_TagString: enemy
+  m_TagString: enemy soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4557,10 +4568,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 868457516}
-  maxHealth: 10
-  currentHealth: 0
-  healthBar: {fileID: 262278262}
 --- !u!50 &868457519
 Rigidbody2D:
   serializedVersion: 4
@@ -4661,6 +4668,20 @@ MonoBehaviour:
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
+--- !u!114 &868457522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868457512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2658b35c38ac143946cf646794fda8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  healthBar: {fileID: 262278262}
 --- !u!1 &900389589
 GameObject:
   m_ObjectHideFlags: 0
@@ -4672,7 +4693,7 @@ GameObject:
   - component: {fileID: 900389590}
   m_Layer: 0
   m_Name: enemy soldiers
-  m_TagString: enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5037,9 +5058,13 @@ GameObject:
   - component: {fileID: 1002909508}
   - component: {fileID: 1002909509}
   - component: {fileID: 1002909510}
+  - component: {fileID: 1002909514}
+  - component: {fileID: 1002909513}
+  - component: {fileID: 1002909512}
+  - component: {fileID: 1002909511}
   m_Layer: 0
   m_Name: wood cutter male
-  m_TagString: Untagged
+  m_TagString: wood miner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5052,11 +5077,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002909507}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.4554, y: 0.0152, z: 46.773026}
+  m_LocalPosition: {x: 0.4554, y: 0.0151999, z: 46.773026}
   m_LocalScale: {x: 1.9103823, y: 1.8636963, z: 1}
   m_Children: []
-  m_Father: {fileID: 860575823}
-  m_RootOrder: 4
+  m_Father: {fileID: 521337689}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1002909509
 SpriteRenderer:
@@ -5128,6 +5153,85 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1002909511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002909507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94531a13d93f6649870afcd9c0a9b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 200
+  nextWaypointDistance: 3
+--- !u!50 &1002909512
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002909507}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &1002909513
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002909507}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.000000059604645, y: -0.00000011920929}
+  serializedVersion: 2
+  m_Radius: 0.255
+--- !u!114 &1002909514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002909507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
 --- !u!1 &1012306863
 GameObject:
   m_ObjectHideFlags: 0
@@ -5677,7 +5781,7 @@ GameObject:
   - component: {fileID: 1132496934}
   m_Layer: 0
   m_Name: cannoeer
-  m_TagString: colony
+  m_TagString: colony soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5841,10 +5945,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1132496932}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1289893804}
 --- !u!1 &1197237715
 GameObject:
   m_ObjectHideFlags: 0
@@ -5995,7 +6095,7 @@ GameObject:
   - component: {fileID: 1262115130}
   m_Layer: 0
   m_Name: horse enemy
-  m_TagString: enemy
+  m_TagString: enemy soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6158,10 +6258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1262115124}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 163391651}
 --- !u!1 &1289788780
 GameObject:
   m_ObjectHideFlags: 0
@@ -6904,16 +7000,17 @@ GameObject:
   - component: {fileID: 1378968783}
   - component: {fileID: 1378968784}
   - component: {fileID: 1378968785}
-  - component: {fileID: 1378968786}
   - component: {fileID: 1378968788}
+  - component: {fileID: 1378968786}
   - component: {fileID: 1378968787}
+  - component: {fileID: 1378968789}
   m_Layer: 0
   m_Name: wood cutter female
   m_TagString: wood miner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1378968783
 Transform:
   m_ObjectHideFlags: 0
@@ -6922,11 +7019,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378968782}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.757, y: 1.555, z: 46.773026}
+  m_LocalPosition: {x: 0.75699997, y: 1.5549998, z: 46.773026}
   m_LocalScale: {x: 3.0347016, y: 2.5150454, z: 1}
   m_Children: []
-  m_Father: {fileID: 860575823}
-  m_RootOrder: 3
+  m_Father: {fileID: 521337689}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1378968784
 SpriteRenderer:
@@ -7059,6 +7156,34 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.31, y: 0.45}
   m_EdgeRadius: 0
+--- !u!114 &1378968789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378968782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
 --- !u!1 &1398829252
 GameObject:
   m_ObjectHideFlags: 0
@@ -7381,9 +7506,10 @@ GameObject:
   - component: {fileID: 1412055283}
   - component: {fileID: 1412055289}
   - component: {fileID: 1412055290}
+  - component: {fileID: 1412055287}
   m_Layer: 0
   m_Name: axe soldier
-  m_TagString: colony
+  m_TagString: colony soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7488,6 +7614,20 @@ MonoBehaviour:
   weaponPrefab: {fileID: 7284556069404859778, guid: 104a77079656ec64186be4e84f4c779c,
     type: 3}
   animator: {fileID: 1412055283}
+--- !u!114 &1412055287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412055282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2658b35c38ac143946cf646794fda8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  healthBar: {fileID: 1075844429}
 --- !u!50 &1412055288
 Rigidbody2D:
   serializedVersion: 4
@@ -7547,10 +7687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1412055283}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1075844429}
 --- !u!1 &1441590708
 GameObject:
   m_ObjectHideFlags: 0
@@ -7751,7 +7887,7 @@ GameObject:
   - component: {fileID: 1515178728}
   m_Layer: 0
   m_Name: archer enemy
-  m_TagString: enemy
+  m_TagString: enemy soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7915,10 +8051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1515178723}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 2021337699}
 --- !u!1 &1516246306
 GameObject:
   m_ObjectHideFlags: 0
@@ -7935,7 +8067,7 @@ GameObject:
   - component: {fileID: 1516246313}
   m_Layer: 0
   m_Name: horse soldier
-  m_TagString: colony
+  m_TagString: colony soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8084,10 +8216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1516246311}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1898309718}
 --- !u!1 &1526309691
 GameObject:
   m_ObjectHideFlags: 0
@@ -8683,7 +8811,7 @@ GameObject:
   - component: {fileID: 1603851496}
   m_Layer: 0
   m_Name: cannoeer enemy
-  m_TagString: enemy
+  m_TagString: enemy soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8861,10 +8989,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1603851489}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1813278194}
 --- !u!1 &1608526319
 GameObject:
   m_ObjectHideFlags: 0
@@ -8883,7 +9007,7 @@ GameObject:
   - component: {fileID: 1608526328}
   m_Layer: 0
   m_Name: spear enemy
-  m_TagString: enemy
+  m_TagString: enemy soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9046,10 +9170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1608526323}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1398829254}
 --- !u!114 &1608526328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34908,12 +35028,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1681110867}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: resource-test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1681110867
 Transform:
   m_ObjectHideFlags: 0
@@ -35892,7 +36012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1816854662
 Transform:
   m_ObjectHideFlags: 0
@@ -35905,8 +36025,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 430767055}
+  - {fileID: 1989914781}
   m_Father: {fileID: 860575823}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1832427168
 GameObject:
@@ -36028,7 +36149,7 @@ GameObject:
   - component: {fileID: 1866823276}
   m_Layer: 0
   m_Name: soldier with sword
-  m_TagString: colony
+  m_TagString: colony soldier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36132,10 +36253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bf63875bb18284cb0d9612b268ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1866823275}
-  maxHealth: 5
-  currentHealth: 0
-  healthBar: {fileID: 1780006346}
 --- !u!61 &1866823274
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36667,6 +36784,10 @@ GameObject:
   - component: {fileID: 1989914781}
   - component: {fileID: 1989914782}
   - component: {fileID: 1989914783}
+  - component: {fileID: 1989914787}
+  - component: {fileID: 1989914786}
+  - component: {fileID: 1989914785}
+  - component: {fileID: 1989914784}
   m_Layer: 0
   m_Name: miner male
   m_TagString: gold miner
@@ -36682,11 +36803,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989914780}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3501, y: -0.3869, z: 46.773026}
+  m_LocalPosition: {x: -1.3501, y: -0.38689995, z: 46.773026}
   m_LocalScale: {x: 2.0110583, y: 1.9725828, z: 1}
   m_Children: []
-  m_Father: {fileID: 860575823}
-  m_RootOrder: 2
+  m_Father: {fileID: 1816854662}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1989914782
 SpriteRenderer:
@@ -36758,6 +36879,85 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1989914784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989914780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &1989914785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989914780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94531a13d93f6649870afcd9c0a9b20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 200
+  nextWaypointDistance: 3
+--- !u!50 &1989914786
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989914780}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!58 &1989914787
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989914780}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.000000029802322, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.21499999
 --- !u!1 &2021337697
 GameObject:
   m_ObjectHideFlags: 0
@@ -36922,12 +37122,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAAAQIezHgfAncQIAACAFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMty4jAQ/BVK54WyAZuwt10gJIc8KmRrL77I8hirkCWXJAdIin9fjWxjL+GCme7p6XmYL8KlqYBZpbeaZ08qA/JzRB6NKsFqzjBIfox61gOc6F7JHf+Ejrzm1JFBI4962hu1XDloipmd1C+5F8iP5pPFLIpDh9WS50qXm2wPK2WscWhOhQEHaWVRRLrQ14ic3Nd4Gbj4GWUX+PTpnpbB6OIeGUisf6V2xI7WsGrJBC0ryNB8Tw6DSdTyw+kkWuJn7hOka7DlhpMASUwJwU1ri9hz5QewqwrQgO1n3SicSa9aAN8Xth3FNfslzw3Y1qCm5zXXbmqNLPmtbIFaJTWHxuUHFTUWmkax99WIPn3Dx6GHc63Kh65uGGANW3B2eKNnRo0dDHkYXvfWm9UcqTjQVMDfAuSz2mpVy8yBVteYWhuYrvuf19ZWBbBDH2+s3gTr6vuqppPZ3Ty8i2fxZhws2r1hQxc/itNK8DJF/mTeBHZC+en7qwDtVvXo3PubMa2ui6KlPwbe6X54XC1wz7WxDmpblug1VbVGKtn4AWJrtV0pLcGH2w4qkFTY86uTsbf7vMEGZW+Qe4ovVFu8xbqX5CbFh3t+ENxAr+p43Zwp1PEJTPFSW8El9KYReHZzWikpm3MbzqRL29U6p2yQtq959v+dkSjNojRdZozF8QJgNg7zOI1idkfDfB5MISD+ELl0fVLx2hhtx+O2Jntx6Y4OFfF/ZrTVtPKnn2l63PLPUg1GzmWudkwDyJdG4WoctCviXtNsk3E3oB1Yy6XfN/lKiFDsAFlyFUp8p5uT1TTpVRJS8Q9lMZKQlf87SciFXP4BUEsDBBQAAAgIAAAQIez96I5tcwAAAIQAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM01VFQSi9KLMgoBooYgTilmSkgdrSSaVKKaVKSZUpyspmZeWqqsa5hmlmSqVmyRaJhmomBUaqBko5CXmlOTixQV0llQapfYm4qRGdAYklGWmZeSmZeup57UWaKO8gCmOpaAFBLAQItABQAAAgIAAAQIezHgfAncQIAACAFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAQIez96I5tcwAAAIQAAAAJACQAAAAAAAAAAAAAAL4CAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAfAMAAAAA
+    dataString: UEsDBBQAAAgIAAAQIezHgfAncQIAACAFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMty4jAQ/BVK54WyAZuwt10gJIc8KmRrL77I8hirkCWXJAdIin9fjWxjL+GCme7p6XmYL8KlqYBZpbeaZ08qA/JzRB6NKsFqzjBIfox61gOc6F7JHf+Ejrzm1JFBI4962hu1XDloipmd1C+5F8iP5pPFLIpDh9WS50qXm2wPK2WscWhOhQEHaWVRRLrQ14ic3Nd4Gbj4GWUX+PTpnpbB6OIeGUisf6V2xI7WsGrJBC0ryNB8Tw6DSdTyw+kkWuJn7hOka7DlhpMASUwJwU1ri9hz5QewqwrQgO1n3SicSa9aAN8Xth3FNfslzw3Y1qCm5zXXbmqNLPmtbIFaJTWHxuUHFTUWmkax99WIPn3Dx6GHc63Kh65uGGANW3B2eKNnRo0dDHkYXvfWm9UcqTjQVMDfAuSz2mpVy8yBVteYWhuYrvuf19ZWBbBDH2+s3gTr6vuqppPZ3Ty8i2fxZhws2r1hQxc/itNK8DJF/mTeBHZC+en7qwDtVvXo3PubMa2ui6KlPwbe6X54XC1wz7WxDmpblug1VbVGKtn4AWJrtV0pLcGH2w4qkFTY86uTsbf7vMEGZW+Qe4ovVFu8xbqX5CbFh3t+ENxAr+p43Zwp1PEJTPFSW8El9KYReHZzWikpm3MbzqRL29U6p2yQtq959v+dkSjNojRdZozF8QJgNg7zOI1idkfDfB5MISD+ELl0fVLx2hhtx+O2Jntx6Y4OFfF/ZrTVtPKnn2l63PLPUg1GzmWudkwDyJdG4WoctCviXtNsk3E3oB1Yy6XfN/lKiFDsAFlyFUp8p5uT1TTpVRJS8Q9lMZKQlf87SciFXP4BUEsDBBQAAAgIAAAQIeziXPCzbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM01VFQSi9KLMgoBooYgjilmSkgdrSSaVKKaVKSZUpyspmZeWqqsa5hmlmSqVmyRaJhmomBUaqBUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAAAQIezHgfAncQIAACAFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAQIeziXPCzbQAAAHgAAAAJACQAAAAAAAAAAAAAAL4CAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAdgMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
     cacheStartup: 0
-  showNavGraphs: 0
+  showNavGraphs: 1
   showUnwalkableNodes: 1
   debugMode: 0
   debugFloor: 0
