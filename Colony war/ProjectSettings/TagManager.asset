@@ -4,14 +4,14 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - enemy
-  - colony
   - gold miner
   - stone miner
-  - wood miner
   - gold
   - stone
+  - colony soldier
+  - enemy soldier
   - wood
+  - wood miner
   layers:
   - Default
   - TransparentFX
