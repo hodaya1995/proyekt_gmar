@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Pathfinding;
-using UnityEditorInternal;
-
 public class MineResources : MonoBehaviour
 {
-    string [] resources = { "gold", "stone", "wood" };
     Transform target;
     public float speed = 200f;
     public float nextWaypointDistance = 3f;
@@ -15,15 +10,13 @@ public class MineResources : MonoBehaviour
     bool reachedEndOfPath = false;
     Seeker seeker;
     Rigidbody2D rb;
-    Transform enemy;
+    Transform resource;
 
     bool isMoving = false;
     Animator animator;
     bool targetChosen;
-    bool soldierChosen;
     string res;
-    bool begining;
-
+ 
     void FixedUpdate()
     {
         if (targetChosen)
@@ -35,7 +28,6 @@ public class MineResources : MonoBehaviour
             if (rb.velocity.magnitude < 0.1)
             {
                 isMoving = false;
-                soldierChosen = false;
                 targetChosen = false;
                 CancelInvoke();
                 reachedEndOfPath = false;
@@ -47,11 +39,10 @@ public class MineResources : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.collider.tag + " " + res);
         if (collision.collider.tag == res)
         {
+            Debug.Log("collided");
             isMoving = false;
-            soldierChosen = false;
             targetChosen = false;
             CancelInvoke();
             reachedEndOfPath = false;
@@ -61,47 +52,8 @@ public class MineResources : MonoBehaviour
         }
     }
 
-    void OnReachedEndOfPath()
-    {
-        
-    }
-
-    void Update()
-    {
-      
-        //if (targetChosen)
-        //{
-
-        //    Debug.Log("velocity " + rb.velocity);
-        //    if (isMoving)
-        //    {
-        //        animator.SetFloat("speed", rb.velocity.sqrMagnitude);
-
-        //        if (rb.velocity.sqrMagnitude < 0.01)
-        //        {
-        //            //if(!begining)
-        //            reachedEndOfPath = true;
-        //            //begining = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        animator.SetFloat("speed", 0f);
-        //        targetChosen = false;
-        //        soldierChosen = false;
-        //        CancelInvoke();
-        //    }
-
-        //    if (reachedEndOfPath)
-        //    {
-        //        isMoving = false;
-        //        soldierChosen = false;
-        //        targetChosen = false;
-        //        CancelInvoke();
-
-        //    }
-        //}
-    }
+ 
+  
 
     void BuildPathToTarget()
     {
@@ -115,7 +67,7 @@ public class MineResources : MonoBehaviour
     {
         if (seeker.IsDone() && !reachedEndOfPath)
         {
-            seeker.StartPath(enemy.position, target.position, onPathComplete);
+            seeker.StartPath(resource.position, target.position, onPathComplete);
         }
     }
     void onPathComplete(Path p)
@@ -126,7 +78,6 @@ public class MineResources : MonoBehaviour
             currentWaypoint = 0;
             targetChosen = true;
             isMoving = true;
-            begining = true;
             animator.SetFloat("speed",0.02f);
 
 
@@ -144,7 +95,6 @@ public class MineResources : MonoBehaviour
             if (currentWaypoint >= path.vectorPath.Count)
             {
                 reachedEndOfPath = true;
-                OnReachedEndOfPath();
                 return;
             }
 
@@ -174,7 +124,7 @@ public class MineResources : MonoBehaviour
         target = this.GetComponent<Transform>();
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
-        enemy = res.GetComponent<Transform>();
+        resource = res.GetComponent<Transform>();
         BuildPathToTarget();
         reachedEndOfPath = false;
         targetChosen = true;
@@ -182,7 +132,7 @@ public class MineResources : MonoBehaviour
 
     void LookForResorces(string res)
     {
-
+        Debug.Log("res" + res+"!");
         GameObject[] targets;
         targets = GameObject.FindGameObjectsWithTag(res);
         GameObject closest = null;
