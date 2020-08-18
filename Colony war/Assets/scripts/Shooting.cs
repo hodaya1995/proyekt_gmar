@@ -14,10 +14,10 @@ public class Shooting : MonoBehaviour
             // Debug.Log("vertical: "+animator.GetFloat("vertical"));
             // Debug.Log("speed: "+animator.GetFloat("speed"));
             Vector2 shootingDirection=new Vector2();
-            if(Mathf.Abs(Attackable.velocityX)>Mathf.Abs(Attackable.velocityY) ){
-              shootingDirection=new Vector2(Attackable.velocityX,0);
+            if(Mathf.Abs(Attack.velocityX)>Mathf.Abs(Attack.velocityY) ){
+              shootingDirection=new Vector2(Attack.velocityX,0);
             }else{
-              shootingDirection=new Vector2(0,Attackable.velocityY);
+              shootingDirection=new Vector2(0, Attack.velocityY);
             }
             GameObject weapon=Instantiate(weaponPrefab,transform.position,Quaternion.identity.normalized);
             weapon.GetComponent<Rigidbody2D>().velocity=shootingDirection*20.0f;
