@@ -1,44 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Pathfinding;
 
 public class Walk : MonoBehaviour
 {
 
-    Transform target;
-    public float speed=50f;
-    public float nextWaypointDistance=3f;
+    Transform mySoldier;
+    float speed=10f;
+    float nextWaypointDistance=0.14f;
     Path path;
     int currentWaypoint=0;
     bool reachedEndOfPath=false;
     Seeker seeker;
-    Rigidbody2D rb;
-    Transform enemy;
-
-    Vector3 touchPosWorld;
-    TouchPhase touchPhase = TouchPhase.Began;
-    
-
+    Rigidbody2D myRb;
+    Transform enemy;    
     bool isMoving=false;
-    Animator animator;
-    bool toDie=false;
-    bool toRot=false;
-    bool flip=false;
+    Animator myAnimator;
     bool facingRight=true;
-    float moveSpeed=2f;
     bool targetChosen;
     bool soldierChosen;
-    GameObject enemyToAttack;
+  
+  
 
-   
+
     void onPathComplete(Path p){
         if(!p.error){
             path=p;
-            currentWaypoint=0;
+            currentWaypoint= path.vectorPath.Count-1;
             targetChosen=true;
             isMoving=true;
-            animator.SetFloat("speed", 0.02f);
+            myAnimator.SetFloat("speed", 0.02f);
 
         }
     }
@@ -47,23 +37,22 @@ public class Walk : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (targetChosen)
+         if (targetChosen)
         {
-            
-            MoveToPath();
-            
-
-            if (isMoving)
+            if (enemy != null)
             {
-                
-                if (rb.velocity.x < 0.01 && rb.velocity.y < 0.01)
-                {
-                    reachedEndOfPath = true;
-                }
+                MoveToPath();
             }
             else
             {
-                animator.SetFloat("speed", 0f);
+                isMoving = false;
+
+            }
+            
+            
+            if (!isMoving)
+            {
+                myAnimator.SetFloat("speed", 0f);
                 targetChosen = false;
                 soldierChosen = false;
                 CancelInvoke();
@@ -108,17 +97,18 @@ public class Walk : MonoBehaviour
                 {
                  
 
-                    if (hitInformation.collider.tag == "colony soldier")
+                    if (this.tag== hitInformation.collider.tag)
                     {
-                        target = hitInformation.collider.transform;
-                        rb = hitInformation.collider.GetComponent<Rigidbody2D>();
-                        animator = hitInformation.collider.GetComponent<Animator>();
+                        mySoldier = hitInformation.collider.transform;
+                        myRb = hitInformation.collider.GetComponent<Rigidbody2D>();
+                        myRb.drag = 1.5f;
+                        myAnimator = hitInformation.collider.GetComponent<Animator>();
                         soldierChosen = true;
 
                     }
                     else if (soldierChosen)
                     {
-                        if (hitInformation.collider.tag == "enemy soldier")
+                        if (hitInformation.collider.tag.Contains("soldier")&& (hitInformation.collider.tag!=this.tag))
                         {
                             enemy = hitInformation.collider.transform;
                             BuildPathToTarget();
@@ -151,11 +141,13 @@ public class Walk : MonoBehaviour
 
 
     void MoveToPath(){
-        if(!reachedEndOfPath){   
+        
+        if (!reachedEndOfPath){   
             if(path==null){
                 return;
             } 
-            if(currentWaypoint>=path.vectorPath.Count){
+            if(currentWaypoint<=0){
+                
                 reachedEndOfPath = true;
                 return;
             } 
@@ -163,15 +155,22 @@ public class Walk : MonoBehaviour
             else{
                reachedEndOfPath=false;
             }
-
-            Vector2 direction=((Vector2)path.vectorPath[currentWaypoint]-rb.position).normalized;
+            Vector2 direction=((Vector2)path.vectorPath[currentWaypoint]- myRb.position).normalized;
             Vector2 force=direction*speed*Time.deltaTime;
-            
-            rb.AddForce(force);
 
-            float distance=Vector2.Distance(rb.position,path.vectorPath[currentWaypoint]);
-            if(distance<nextWaypointDistance){
-                currentWaypoint++;
+
+
+            myRb.AddForce(force);
+
+
+
+            float distance =Vector2.Distance(myRb.position, (Vector2) path.vectorPath[currentWaypoint]);
+            if (distance < nextWaypointDistance)
+            {
+                Debug.Log("" + currentWaypoint + "/" + path.vectorPath.Count);
+                currentWaypoint--;
+                return;
+
             }
 
 
@@ -202,9 +201,9 @@ public class Walk : MonoBehaviour
 
     void MoveForwardTo(GameObject soldier)
     {
-        target = this.GetComponent<Transform>();
-        rb = this.GetComponent<Rigidbody2D>();
-        animator = this.GetComponent<Animator>();
+        mySoldier = this.GetComponent<Transform>();
+        myRb = this.GetComponent<Rigidbody2D>();
+        myAnimator = this.GetComponent<Animator>();
         enemy = soldier.GetComponent<Transform>();
         BuildPathToTarget();
         reachedEndOfPath = false;
@@ -245,7 +244,7 @@ public class Walk : MonoBehaviour
     {
         if (seeker.IsDone() && !reachedEndOfPath)
         {
-            seeker.StartPath(enemy.position, target.position, onPathComplete);
+            seeker.StartPath(enemy.position, mySoldier.position, onPathComplete);
         }
     }
 }

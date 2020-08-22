@@ -41,7 +41,6 @@ public class MineResources : MonoBehaviour
     {
         if (collision.collider.tag == res)
         {
-            Debug.Log("collided");
             isMoving = false;
             targetChosen = false;
             CancelInvoke();
@@ -92,8 +91,9 @@ public class MineResources : MonoBehaviour
             {
                 return;
             }
-            if (currentWaypoint >= path.vectorPath.Count)
-            {
+            if (currentWaypoint >= path.vectorPath.Count) { 
+            
+
                 reachedEndOfPath = true;
                 return;
             }
@@ -110,10 +110,12 @@ public class MineResources : MonoBehaviour
            
 
             float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
+          
             if (distance < nextWaypointDistance)
             {
                 currentWaypoint++;
             }
+
 
 
         }
@@ -132,7 +134,6 @@ public class MineResources : MonoBehaviour
 
     void LookForResorces(string res)
     {
-        Debug.Log("res" + res+"!");
         GameObject[] targets;
         targets = GameObject.FindGameObjectsWithTag(res);
         GameObject closest = null;
@@ -150,13 +151,18 @@ public class MineResources : MonoBehaviour
             }
         }
 
-
-        MoveForwardTo(closest);
+        if (closest != null)
+        {
+            MoveForwardTo(closest);
+        }
+        else
+        {
+            Debug.LogAssertion("there is no resorces to find");
+        }
     }
     void Start()
     {       
         res = this.tag.Split(' ')[0];
-        Debug.Log("this tag " + this.tag + " tag " + res);
         LookForResorces(res);  
     }
 
