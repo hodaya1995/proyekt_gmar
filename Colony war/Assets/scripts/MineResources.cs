@@ -3,8 +3,8 @@ using Pathfinding;
 public class MineResources : MonoBehaviour
 {
     Transform target;
-    public float speed = 200f;
-    public float nextWaypointDistance = 3f;
+    float speed = 10f;
+    float nextWaypointDistance = 0.14f;
     Path path;
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
@@ -19,22 +19,49 @@ public class MineResources : MonoBehaviour
  
     void FixedUpdate()
     {
+
         if (targetChosen)
         {
-            MoveToPath();
-        }
-        if (isMoving&& reachedEndOfPath)
-        {
-            if (rb.velocity.magnitude < 0.1)
+
+            if (resource != null)
+            {
+                MoveToPath();
+            }
+            else
+            {
+                isMoving = false;
+
+            }
+
+
+            if (!isMoving)
+            {
+                animator.SetFloat("speed", 0f);
+                targetChosen = false;
+                CancelInvoke();
+            }
+
+            if (reachedEndOfPath)
             {
                 isMoving = false;
                 targetChosen = false;
                 CancelInvoke();
-                reachedEndOfPath = false;
-                animator.SetFloat("speed", 0f);
+
             }
-            
         }
+        //if (isMoving&& reachedEndOfPath)
+        //{
+        //    if (rb.velocity.magnitude < 0.1)
+        //    {
+        //        isMoving = false;
+        //        targetChosen = false;
+        //        CancelInvoke();
+        //        reachedEndOfPath = false;
+        //        animator.SetFloat("speed", 0f);
+        //    }
+
+        //}
+       
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -56,7 +83,7 @@ public class MineResources : MonoBehaviour
 
     void BuildPathToTarget()
     {
-
+   
         seeker = GetComponent<Seeker>();
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);
@@ -64,6 +91,7 @@ public class MineResources : MonoBehaviour
 
     void UpdatePath()
     {
+   
         if (seeker.IsDone() && !reachedEndOfPath)
         {
             seeker.StartPath(resource.position, target.position, onPathComplete);
@@ -71,11 +99,13 @@ public class MineResources : MonoBehaviour
     }
     void onPathComplete(Path p)
     {
+      
         if (!p.error)
         {
             path = p;
-            currentWaypoint = 0;
+            currentWaypoint = 0;//path.vectorPath.Count - 1;
             targetChosen = true;
+            reachedEndOfPath = false;
             isMoving = true;
             animator.SetFloat("speed",0.02f);
 
@@ -85,15 +115,16 @@ public class MineResources : MonoBehaviour
 
     void MoveToPath()
     {
+        Debug.Log("currentWaypoint "+ currentWaypoint);
         if (!reachedEndOfPath)
         {
             if (path == null)
             {
                 return;
             }
-            if (currentWaypoint >= path.vectorPath.Count) { 
-            
-
+            if (currentWaypoint >= path.vectorPath.Count)//<= 0)
+            {
+                Debug.Log("reachedEndOfPath");
                 reachedEndOfPath = true;
                 return;
             }
@@ -102,20 +133,23 @@ public class MineResources : MonoBehaviour
             {
                 reachedEndOfPath = false;
             }
-
             Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
             Vector2 force = direction * speed * Time.deltaTime;
 
-            rb.AddForce(force);
-           
 
-            float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-          
+
+            rb.AddForce(force);
+
+
+
+            float distance = Vector2.Distance(rb.position, (Vector2)path.vectorPath[currentWaypoint]);
+            Debug.Log("dis " + distance);
             if (distance < nextWaypointDistance)
             {
-                currentWaypoint++;
-            }
+                currentWaypoint++;//--;
+                return;
 
+            }
 
 
         }
@@ -125,11 +159,10 @@ public class MineResources : MonoBehaviour
     {
         target = this.GetComponent<Transform>();
         rb = this.GetComponent<Rigidbody2D>();
+        rb.drag = 1.5f;
         animator = this.GetComponent<Animator>();
         resource = res.GetComponent<Transform>();
         BuildPathToTarget();
-        reachedEndOfPath = false;
-        targetChosen = true;
     }
 
     void LookForResorces(string res)

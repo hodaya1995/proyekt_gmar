@@ -20,7 +20,8 @@ public class Attack : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)//the attacked soldier near the attacker
     {
        
-        if ((collision.collider.tag== "enemy soldier" && this.tag == "colony soldier") || (collision.collider.tag == "colony soldier" && this.tag== "enemy soldier")){
+        if ((collision.collider.tag!=this.tag) || collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("gold miner"))
+        {
             attacker = collision.gameObject;
             animator.SetBool("toAttack", true);
             attackerAnimator = attacker.GetComponent<Animator>();
@@ -49,7 +50,7 @@ public class Attack : MonoBehaviour
 
 
     void OnCollisionExit2D(Collision2D collision){//the attacked soldier is not near the attacker
-        if((collision.collider.tag== "enemy soldier" && this.tag == "colony soldier" )|| (collision.collider.tag== "colony soldier" && this.tag == "enemy soldier"))
+        if((collision.collider.tag != this.tag) || collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("gold miner"))
         {
             animator.SetBool("toAttack",false);
         

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Pathfinding;
+using System.Linq;
+using System.Collections;
 
 public class Walk : MonoBehaviour
 {
@@ -18,18 +20,25 @@ public class Walk : MonoBehaviour
     bool facingRight=true;
     bool targetChosen;
     bool soldierChosen;
-  
-  
+    GameObject enemyToAttack;
+
+
 
 
     void onPathComplete(Path p){
-        if(!p.error){
+     
+        if (!p.error){
             path=p;
             currentWaypoint= path.vectorPath.Count-1;
             targetChosen=true;
             isMoving=true;
+            reachedEndOfPath = false;
             myAnimator.SetFloat("speed", 0.02f);
 
+        }
+        else
+        {
+            Debug.LogError("path from " + mySoldier + " to " + enemy + " is not possible. error.");
         }
     }
 
@@ -37,7 +46,8 @@ public class Walk : MonoBehaviour
 
     void FixedUpdate()
     {
-         if (targetChosen)
+       
+        if (targetChosen)
         {
             if (enemy != null)
             {
@@ -167,7 +177,6 @@ public class Walk : MonoBehaviour
             float distance =Vector2.Distance(myRb.position, (Vector2) path.vectorPath[currentWaypoint]);
             if (distance < nextWaypointDistance)
             {
-                Debug.Log("" + currentWaypoint + "/" + path.vectorPath.Count);
                 currentWaypoint--;
                 return;
 
@@ -179,23 +188,48 @@ public class Walk : MonoBehaviour
 
     GameObject FindClosestEnemy()
     {
-        GameObject[] targets;
-        targets = GameObject.FindGameObjectsWithTag("colony soldier");
-        GameObject closest = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = transform.position;
-        foreach (GameObject target in targets)
-        {
-            Vector3 diff = target.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
-            {
-                closest = target;
-                distance = curDistance;
 
+        GameObject[] targets;
+        string[] tagsToSearch= new string[] { "colony soldier" ,"gold miner","stone miner"};
+
+        //if(this.tag=="colony soldier")
+        //{
+        //    tagToSearch = "enemy soldier";
+        //}
+        //else if(this.tag == "enemy soldier")
+        //{
+        //    tagToSearch = "colony soldier";
+        //}
+        //else
+        //{
+
+        //  Debug.LogError("script Walk.cs is compatible only to soldiers.");
+
+        //}
+        GameObject closest = null;
+        foreach (string t in tagsToSearch)
+        {
+            
+            targets = GameObject.FindGameObjectsWithTag(t);
+            float distance = Mathf.Infinity;
+            Vector3 position = transform.position;
+            foreach (GameObject target in targets)
+            {
+                Vector3 diff = target.transform.position - position;
+                float curDistance = diff.sqrMagnitude;
+                if (curDistance < distance)
+                {
+                    closest = target;
+                    distance = curDistance;
+
+                }
             }
         }
+        
         return closest;
+        
+        
+        
     }
 
 
@@ -206,8 +240,6 @@ public class Walk : MonoBehaviour
         myAnimator = this.GetComponent<Animator>();
         enemy = soldier.GetComponent<Transform>();
         BuildPathToTarget();
-        reachedEndOfPath = false;
-        targetChosen = true;
 
     }
     void Flip(float horizontal)
@@ -224,17 +256,21 @@ public class Walk : MonoBehaviour
     void Start()
     {
         facingRight = true;
+        enemyToAttack = FindClosestEnemy();
+        if (enemyToAttack != null)
+        {
+            MoveForwardTo(enemyToAttack);
+        }
+        else
+        {
+            Debug.Log("there is no colony soldiers to attack ");
+        }
+       
 
-        //if (this.tag == "enemy soldier")
-        //{
-        //    enemyToAttack = FindClosestEnemy();
-        //    MoveForwardTo(enemyToAttack);
-        //}
     }
 
     void BuildPathToTarget()
     {
-
         seeker = GetComponent<Seeker>();
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);
@@ -244,7 +280,9 @@ public class Walk : MonoBehaviour
     {
         if (seeker.IsDone() && !reachedEndOfPath)
         {
+            
             seeker.StartPath(enemy.position, mySoldier.position, onPathComplete);
         }
+
     }
 }
