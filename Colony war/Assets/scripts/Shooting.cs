@@ -9,10 +9,6 @@ public class Shooting : MonoBehaviour
       
 
     void Shoot(){
-            //Vector2 shootingDirection=new Vector2(animator.GetFloat("horizontal"),animator.GetFloat("vertical"));
-            // Debug.Log("horizontal: "+animator.GetFloat("horizontal"));
-            // Debug.Log("vertical: "+animator.GetFloat("vertical"));
-            // Debug.Log("speed: "+animator.GetFloat("speed"));
             Vector2 shootingDirection=new Vector2();
             if(Mathf.Abs(Attack.velocityX)>Mathf.Abs(Attack.velocityY) ){
               shootingDirection=new Vector2(Attack.velocityX,0);

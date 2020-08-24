@@ -3,7 +3,7 @@ using Pathfinding;
 public class MineResources : MonoBehaviour
 {
     Transform target;
-    float speed = 10f;
+    float speed = 20f;
     float nextWaypointDistance = 0.14f;
     Path path;
     int currentWaypoint = 0;
@@ -16,7 +16,16 @@ public class MineResources : MonoBehaviour
     Animator animator;
     bool targetChosen;
     string res;
- 
+
+    bool facingRight = false;
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
     void FixedUpdate()
     {
 
@@ -25,6 +34,21 @@ public class MineResources : MonoBehaviour
 
             if (resource != null)
             {
+                float h = animator.GetFloat("horizontal");
+                if (h > 0 && !facingRight)
+                {
+                    Flip();
+                    
+                }
+                   
+                else if (h < 0 && facingRight)
+                {
+                    Flip();
+                    
+                }
+                   
+
+
                 MoveToPath();
             }
             else
@@ -36,7 +60,7 @@ public class MineResources : MonoBehaviour
 
             if (!isMoving)
             {
-                animator.SetFloat("speed", 0f);
+                animator.SetBool("move", false);
                 targetChosen = false;
                 CancelInvoke();
             }
@@ -49,18 +73,6 @@ public class MineResources : MonoBehaviour
 
             }
         }
-        //if (isMoving&& reachedEndOfPath)
-        //{
-        //    if (rb.velocity.magnitude < 0.1)
-        //    {
-        //        isMoving = false;
-        //        targetChosen = false;
-        //        CancelInvoke();
-        //        reachedEndOfPath = false;
-        //        animator.SetFloat("speed", 0f);
-        //    }
-
-        //}
        
     }
 
@@ -71,8 +83,8 @@ public class MineResources : MonoBehaviour
             isMoving = false;
             targetChosen = false;
             CancelInvoke();
-            reachedEndOfPath = false;
-            animator.SetFloat("speed", 0f);
+            reachedEndOfPath = true;
+            animator.SetBool("move", false);
             rb.AddForce(new Vector2(0,0));
             animator.SetBool("mine", true);
         }
@@ -83,7 +95,7 @@ public class MineResources : MonoBehaviour
 
     void BuildPathToTarget()
     {
-   
+        
         seeker = GetComponent<Seeker>();
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);
@@ -91,7 +103,7 @@ public class MineResources : MonoBehaviour
 
     void UpdatePath()
     {
-   
+      
         if (seeker.IsDone() && !reachedEndOfPath)
         {
             seeker.StartPath(resource.position, target.position, onPathComplete);
@@ -103,11 +115,11 @@ public class MineResources : MonoBehaviour
         if (!p.error)
         {
             path = p;
-            currentWaypoint = 0;//path.vectorPath.Count - 1;
+            currentWaypoint = 0;
             targetChosen = true;
             reachedEndOfPath = false;
             isMoving = true;
-            animator.SetFloat("speed",0.02f);
+            animator.SetBool("move",true);
 
 
         }
@@ -115,16 +127,16 @@ public class MineResources : MonoBehaviour
 
     void MoveToPath()
     {
-        Debug.Log("currentWaypoint "+ currentWaypoint);
+
         if (!reachedEndOfPath)
         {
             if (path == null)
             {
                 return;
             }
-            if (currentWaypoint >= path.vectorPath.Count)//<= 0)
+            if (currentWaypoint >= path.vectorPath.Count)
             {
-                Debug.Log("reachedEndOfPath");
+               
                 reachedEndOfPath = true;
                 return;
             }
@@ -137,16 +149,21 @@ public class MineResources : MonoBehaviour
             Vector2 force = direction * speed * Time.deltaTime;
 
 
+            float velocityX = rb.velocity.x;
+            float velocityY = rb.velocity.y;
 
+            animator.SetFloat("horizontal", velocityX);
+            animator.SetFloat("vertical", velocityY);
+         
             rb.AddForce(force);
 
 
 
             float distance = Vector2.Distance(rb.position, (Vector2)path.vectorPath[currentWaypoint]);
-            Debug.Log("dis " + distance);
+         
             if (distance < nextWaypointDistance)
             {
-                currentWaypoint++;//--;
+                currentWaypoint++;
                 return;
 
             }
@@ -154,6 +171,7 @@ public class MineResources : MonoBehaviour
 
         }
     }
+    
 
     void MoveForwardTo(GameObject res)
     {

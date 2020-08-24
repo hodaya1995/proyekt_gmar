@@ -7,7 +7,7 @@ public class Walk : MonoBehaviour
 {
 
     Transform mySoldier;
-    float speed=10f;
+    float speed=20f;
     float nextWaypointDistance=0.14f;
     Path path;
     int currentWaypoint=0;
@@ -17,11 +17,12 @@ public class Walk : MonoBehaviour
     Transform enemy;    
     bool isMoving=false;
     Animator myAnimator;
-    bool facingRight=true;
     bool targetChosen;
     bool soldierChosen;
     GameObject enemyToAttack;
 
+    bool facingRight = false;
+    SpriteRenderer spriteRenderer;
 
 
 
@@ -33,16 +34,47 @@ public class Walk : MonoBehaviour
             targetChosen=true;
             isMoving=true;
             reachedEndOfPath = false;
-            myAnimator.SetFloat("speed", 0.02f);
+            if(!myAnimator.GetBool("toAttack"))myAnimator.SetBool("move", true);
 
         }
         else
         {
             Debug.LogError("path from " + mySoldier + " to " + enemy + " is not possible. error.");
+         
         }
+    }
+    void OnCollisionEnter2D(Collision2D collision)//the attacked soldier near the attacker
+    {
+
+        if (((collision.collider.tag != this.tag) && collision.collider.tag.Contains("soldier")) || ((collision.collider.tag != this.tag) && collision.collider.tag.Contains("gold miner")))
+        {
+            isMoving = false;
+            myAnimator.SetBool("move", false);
+
+        }
+      
+
+
     }
 
 
+
+    private void Flip()//flip the animation
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+
+    private void FlipAnimation()
+    {
+        float h = myAnimator.GetFloat("horizontal");
+        if (h > 0 && !facingRight)
+            Flip();
+        else if (h < 0 && facingRight)
+            Flip();
+    }
 
     void FixedUpdate()
     {
@@ -51,6 +83,7 @@ public class Walk : MonoBehaviour
         {
             if (enemy != null)
             {
+                FlipAnimation();
                 MoveToPath();
             }
             else
@@ -62,7 +95,7 @@ public class Walk : MonoBehaviour
             
             if (!isMoving)
             {
-                myAnimator.SetFloat("speed", 0f);
+                myAnimator.SetBool("move", false);
                 targetChosen = false;
                 soldierChosen = false;
                 CancelInvoke();
@@ -169,12 +202,19 @@ public class Walk : MonoBehaviour
             Vector2 force=direction*speed*Time.deltaTime;
 
 
+            float velocityX = myRb.velocity.x;
+            float velocityY = myRb.velocity.y;
+
+            myAnimator.SetFloat("horizontal", velocityX);
+            myAnimator.SetFloat("vertical", velocityY);
+
 
             myRb.AddForce(force);
 
 
 
             float distance =Vector2.Distance(myRb.position, (Vector2) path.vectorPath[currentWaypoint]);
+            
             if (distance < nextWaypointDistance)
             {
                 currentWaypoint--;
@@ -190,22 +230,7 @@ public class Walk : MonoBehaviour
     {
 
         GameObject[] targets;
-        string[] tagsToSearch= new string[] { "colony soldier" ,"gold miner","stone miner"};
-
-        //if(this.tag=="colony soldier")
-        //{
-        //    tagToSearch = "enemy soldier";
-        //}
-        //else if(this.tag == "enemy soldier")
-        //{
-        //    tagToSearch = "colony soldier";
-        //}
-        //else
-        //{
-
-        //  Debug.LogError("script Walk.cs is compatible only to soldiers.");
-
-        //}
+        string[] tagsToSearch = new string[] { "colony soldier", "gold miner", "stone miner" };
         GameObject closest = null;
         foreach (string t in tagsToSearch)
         {
@@ -242,20 +267,11 @@ public class Walk : MonoBehaviour
         BuildPathToTarget();
 
     }
-    void Flip(float horizontal)
-    {
-        if ((horizontal < 0 || facingRight) && (horizontal > 0 || !facingRight))
-        {
-            facingRight = !facingRight;
-            Vector3 theScale = transform.localScale;
-            theScale.x *= -1;
-            transform.localScale = theScale;
-        }
-    }
+
 
     void Start()
     {
-        facingRight = true;
+        spriteRenderer = this.GetComponent<SpriteRenderer>();
         enemyToAttack = FindClosestEnemy();
         if (enemyToAttack != null)
         {
@@ -278,6 +294,7 @@ public class Walk : MonoBehaviour
 
     void UpdatePath()
     {
+   
         if (seeker.IsDone() && !reachedEndOfPath)
         {
             

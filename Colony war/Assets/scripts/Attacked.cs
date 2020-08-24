@@ -18,7 +18,7 @@ public class Attacked : MonoBehaviour
     Rigidbody2D rb;
     Animator attackerAnimator;
     bool dying = false;
-
+ 
 
 
 
@@ -31,48 +31,38 @@ public class Attacked : MonoBehaviour
         animator = this.GetComponent<Animator>();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)//the attacked soldier near the attacker
+    void OnCollisionEnter2D(Collision2D collision)
     {
 
+        //the attacked soldier near the attacker
         if (collision.collider.tag.Contains( "soldier" ))
         {
+
             attacked = true;
             InvokeRepeating("DecreaseLife", 0f, 0.5f);
             attacker = collision.gameObject;
      
             attackerAnimator = attacker.GetComponent<Animator>();
-            velocityX = collision.relativeVelocity.x;
-            velocityY = collision.relativeVelocity.y;
-
-            if (Mathf.Abs(velocityX) > Mathf.Abs(velocityY))
-            {
-                attackerAnimator.SetFloat("horizontal", velocityX);
-                attackerAnimator.SetFloat("vertical", 0);
-            }
-            else
-            {
-                attackerAnimator.SetFloat("horizontal", 0);
-                attackerAnimator.SetFloat("vertical", velocityY);
-            }
+         
 
 
 
         }
-        
+
 
 
     }
 
     void Update()
     {
-        if (attacked)
+        if (attacked)//dont move
         {
             rb.velocity = new Vector3(0, 0, 0);
         }
 
-        if (attackerAnimator != null)//the attacker died
+        if (attackerAnimator != null)
         {
-            if (attackerAnimator.GetBool("die"))
+            if (attackerAnimator.GetBool("die"))//the attacker died
             {
                 dying = true;
                 CancelInvoke("DecreaseLife"); //stop dying
@@ -84,7 +74,7 @@ public class Attacked : MonoBehaviour
 
     void Die()
     {
-
+        //fade gradually the object and finally destroy it 
         callDieFunc--;
         if (callDieFunc >= 0)
         {
@@ -108,12 +98,12 @@ public class Attacked : MonoBehaviour
     void DecreaseLife()
     {
 
-        if (currentHealth - 1 >= 0)
+        if (currentHealth - 1 >= 0)//not died yet- decrease life
         {
             currentHealth--;
             healthBar.SetHealth(currentHealth);
         }
-        else if (currentHealth == 0)
+        else if (currentHealth == 0)//this died
         {
             attacked = false;
             CancelInvoke("DecreaseLife");
@@ -126,9 +116,11 @@ public class Attacked : MonoBehaviour
     }
 
     void OnCollisionExit2D(Collision2D collision)
-    {//the attacked soldier is not near the attacker
+    {
+        //the attacked soldier is not near the attacker
         if (collision.collider.tag.Contains("soldier"))
         {
+        
            CancelInvoke("DecreaseLife");
         }
     }

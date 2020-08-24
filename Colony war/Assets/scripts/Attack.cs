@@ -17,15 +17,15 @@ public class Attack : MonoBehaviour
 
     }
 
-    void OnCollisionEnter2D(Collision2D collision)//the attacked soldier near the attacker
+    void OnCollisionEnter2D(Collision2D collision)
     {
-       
-        if ((collision.collider.tag!=this.tag) || collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("gold miner"))
+        //the attacked soldier near the attacker- attack only soldiers/workers that are not you
+        if ( ((collision.collider.tag != this.tag)&&collision.collider.tag.Contains("soldier") )|| ((collision.collider.tag != this.tag) && collision.collider.tag.Contains("gold miner")))
         {
+       
             attacker = collision.gameObject;
             animator.SetBool("toAttack", true);
             attackerAnimator = attacker.GetComponent<Animator>();
-
 
 
 
@@ -49,11 +49,14 @@ public class Attack : MonoBehaviour
 
 
 
-    void OnCollisionExit2D(Collision2D collision){//the attacked soldier is not near the attacker
-        if((collision.collider.tag != this.tag) || collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("gold miner"))
+    void OnCollisionExit2D(Collision2D collision){
+        //the attacked soldier is not near the attacker-dont attack
+        if (((collision.collider.tag != this.tag) && collision.collider.tag.Contains("soldier")) || ((collision.collider.tag != this.tag) && collision.collider.tag.Contains("gold miner")))
         {
+          
             animator.SetBool("toAttack",false);
-        
+           
+
         }
     }
 
