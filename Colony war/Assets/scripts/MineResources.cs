@@ -16,6 +16,7 @@ public class MineResources : MonoBehaviour
     Animator animator;
     bool targetChosen;
     string res;
+    public int speedMining;
 
     bool facingRight = false;
 
@@ -187,6 +188,7 @@ public class MineResources : MonoBehaviour
     {
         GameObject[] targets;
         targets = GameObject.FindGameObjectsWithTag(res);
+
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 position = this.transform.position;
@@ -194,16 +196,20 @@ public class MineResources : MonoBehaviour
         {
             Vector3 diff = target.transform.position - position;
             float curDistance = diff.sqrMagnitude;
+            
             if (curDistance < distance)
             {
+               
                 closest = target;
                 distance = curDistance;
 
             }
         }
+        
 
         if (closest != null)
         {
+            
             MoveForwardTo(closest);
         }
         else

@@ -61,8 +61,9 @@
     <Compile Include="Assets\scripts\Attack.cs" />
     <Compile Include="Assets\scripts\Walk.cs" />
     <Compile Include="Assets\scripts\HealthBar.cs" />
-    <Compile Include="Assets\scripts\Shooting.cs" />
     <Compile Include="Assets\MainThread.cs" />
+    <Compile Include="Assets\scripts\Shooting.cs" />
+    <Compile Include="Assets\scripts\CreateColony.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -620,6 +621,9 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
@@ -628,9 +632,6 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

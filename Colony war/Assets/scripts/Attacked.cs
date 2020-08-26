@@ -35,13 +35,27 @@ public class Attacked : MonoBehaviour
     {
 
         //the attacked soldier near the attacker
-        if (collision.collider.tag.Contains( "soldier" ))
+        if (collision.collider.tag.Contains( "soldier" )&& collision.collider.tag!=tag)
         {
 
             attacked = true;
+          
+
             InvokeRepeating("DecreaseLife", 0f, 0.5f);
             attacker = collision.gameObject;
-     
+            Vector2 velocity=attacker.GetComponent<Rigidbody2D>().velocity;
+            Vector2 shootingDirection = new Vector2();
+            if (Mathf.Abs(Attack.velocityX) > Mathf.Abs(velocity.y))
+            {
+                shootingDirection = new Vector2(velocity.y, 0);
+            }
+            else
+            {
+                shootingDirection = new Vector2(0, velocity.y);
+            }
+            animator.SetFloat("horizontal", -shootingDirection.x);
+            animator.SetFloat("vertical", -shootingDirection.y);
+
             attackerAnimator = attacker.GetComponent<Animator>();
          
 
@@ -57,6 +71,7 @@ public class Attacked : MonoBehaviour
     {
         if (attacked)//dont move
         {
+           
             rb.velocity = new Vector3(0, 0, 0);
         }
 
@@ -118,7 +133,7 @@ public class Attacked : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
         //the attacked soldier is not near the attacker
-        if (collision.collider.tag.Contains("soldier"))
+        if (collision.collider.tag.Contains("soldier") && collision.collider.tag != tag)
         {
         
            CancelInvoke("DecreaseLife");

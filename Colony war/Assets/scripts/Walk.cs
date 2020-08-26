@@ -7,7 +7,7 @@ public class Walk : MonoBehaviour
 {
 
     Transform mySoldier;
-    float speed=20f;
+    public float speed=20f;
     float nextWaypointDistance=0.14f;
     Path path;
     int currentWaypoint=0;
@@ -23,6 +23,7 @@ public class Walk : MonoBehaviour
 
     bool facingRight = false;
     SpriteRenderer spriteRenderer;
+    int numOfSoldiersToKill = 0;
 
 
 
@@ -81,6 +82,7 @@ public class Walk : MonoBehaviour
        
         if (targetChosen)
         {
+
             if (enemy != null)
             {
                 FlipAnimation();
@@ -110,6 +112,10 @@ public class Walk : MonoBehaviour
 
             }
         }
+        else
+        {
+            SearchAndAttack();
+        }
 
 
     }
@@ -117,9 +123,9 @@ public class Walk : MonoBehaviour
 
 
     void Update()
-    { 
-         
-        if(!targetChosen){
+    {
+        
+        if (!targetChosen){
             //bool detectedTouch = Input.touchCount == 1 && Input.GetTouch(0).phase == touchPhase;
             bool detectedTouch = Input.GetMouseButtonDown(0);
 
@@ -184,7 +190,7 @@ public class Walk : MonoBehaviour
 
 
     void MoveToPath(){
-        
+     
         if (!reachedEndOfPath){   
             if(path==null){
                 return;
@@ -200,6 +206,7 @@ public class Walk : MonoBehaviour
             }
             Vector2 direction=((Vector2)path.vectorPath[currentWaypoint]- myRb.position).normalized;
             Vector2 force=direction*speed*Time.deltaTime;
+            
 
 
             float velocityX = myRb.velocity.x;
@@ -208,11 +215,8 @@ public class Walk : MonoBehaviour
             myAnimator.SetFloat("horizontal", velocityX);
             myAnimator.SetFloat("vertical", velocityY);
 
-
-            myRb.AddForce(force);
-
-
-
+            myRb.velocity = force;
+        
             float distance =Vector2.Distance(myRb.position, (Vector2) path.vectorPath[currentWaypoint]);
             
             if (distance < nextWaypointDistance)
@@ -226,12 +230,14 @@ public class Walk : MonoBehaviour
         }
     }
 
+
     GameObject FindClosestEnemy()
     {
-
+        numOfSoldiersToKill = 0;
         GameObject[] targets;
         string[] tagsToSearch = new string[] { "colony soldier", "gold miner", "stone miner" };
         GameObject closest = null;
+
         foreach (string t in tagsToSearch)
         {
             
@@ -240,6 +246,7 @@ public class Walk : MonoBehaviour
             Vector3 position = transform.position;
             foreach (GameObject target in targets)
             {
+                numOfSoldiersToKill++;
                 Vector3 diff = target.transform.position - position;
                 float curDistance = diff.sqrMagnitude;
                 if (curDistance < distance)
@@ -268,27 +275,64 @@ public class Walk : MonoBehaviour
 
     }
 
-
-    void Start()
+    void SearchAndAttack()
     {
-        spriteRenderer = this.GetComponent<SpriteRenderer>();
         enemyToAttack = FindClosestEnemy();
-        if (enemyToAttack != null)
+        
+        if (enemyToAttack != null&& myRb!=null&& enemy!=null&& myAnimator!=null)
         {
-            MoveForwardTo(enemyToAttack);
+            bool attacking = myAnimator.GetBool("toAttack");
+      
+            if (!attacking)
+            {
+                float currDistance = Vector2.Distance(myRb.position, enemy.position);
+                float distance = Vector2.Distance(myRb.position, enemyToAttack.transform.position);
+               
+                if (seeker != null && currDistance > distance)
+                {
+
+                    seeker.CancelCurrentPathRequest();
+                    reachedEndOfPath = false;
+                    targetChosen = true;
+                    MoveForwardTo(enemyToAttack);
+
+                }else if(seeker != null && numOfSoldiersToKill == 1)
+                {
+                    reachedEndOfPath = false;
+                    targetChosen = true;
+                    MoveForwardTo(enemyToAttack);
+                }
+            }
+            
+            
         }
         else
         {
-            Debug.Log("there is no colony soldiers to attack ");
+            if (enemyToAttack == null)
+            {
+                Debug.Log("there is no colony soldiers to attack ");
+            }
+            else
+            {
+                MoveForwardTo(enemyToAttack);
+
+
+            }
         }
-       
+
+    }
+    void Start()
+    {
+        spriteRenderer = this.GetComponent<SpriteRenderer>();
+        SearchAndAttack();
+        
 
     }
 
     void BuildPathToTarget()
     {
         seeker = GetComponent<Seeker>();
-
+        
         InvokeRepeating("UpdatePath", 0f, 0.5f);
     }
 
