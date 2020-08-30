@@ -138,7 +138,7 @@ public class Walk : MonoBehaviour
         if (!targetChosen&&touchable){
             //bool detectedTouch = Input.touchCount == 1 && Input.GetTouch(0).phase == touchPhase;
             bool detectedTouch = Input.GetMouseButtonDown(0);
-
+            
      
             if (detectedTouch) {
       
