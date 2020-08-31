@@ -12,6 +12,15 @@ TagManager:
   - enemy soldier
   - wood
   - wood miner
+  - ground
+  - treelayer
+  - grid
+  - characters
+  - buildings
+  - workers
+  - enemy soldiers
+  - colony soldiers
+  - resource-test
   layers:
   - Default
   - TransparentFX

@@ -19,7 +19,5 @@ public  class Move_out_of_zone : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-
 
 }
