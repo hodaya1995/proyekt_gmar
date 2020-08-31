@@ -18,6 +18,15 @@ public  class Move_out_of_zone : MonoBehaviour
         }
     }
 
+    public static bool OnZone_Characters(float x, float y)
+    {
+        if((y<=((0.5*x)+11.57)) && (y<=((-0.5*x)+14.07)) && (y>=((-0.5*x)-15.10)) && (y >= ((0.5 * x) - 13.07)))
+        {
+            return true;
+        }
+        return false;
+    }
+
 
 
 }

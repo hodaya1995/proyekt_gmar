@@ -26,7 +26,7 @@ public class CameraZoom : MonoBehaviour
             
             touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             flag = Move_out_of_zone.OnZone_Camera(touchStart.x, touchStart.y);
-            Debug.Log(touchStart);
+            
             
         }
         //two touch on screen to zoom in or out
