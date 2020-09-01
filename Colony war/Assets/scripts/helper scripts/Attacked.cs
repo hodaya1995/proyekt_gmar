@@ -42,7 +42,7 @@ public class Attacked : MonoBehaviour
     {
 
         //the attacked soldier near the attacker
-        if (collision.collider.tag.Contains( "soldier" )&& collision.collider.tag!=tag)
+        if (collision.collider.tag.Contains("enemy" )&& collision.collider.tag!=tag)
         {
 
             attacked = true;

@@ -5,70 +5,96 @@ using Pathfinding;
 public class Walk : MonoBehaviour
 {
     Transform mySoldier;
-    public float speed =20f;
-    float nextWaypointDistance =0.14f;
+    public float speed = 20f;
+    float nextWaypointDistance = 0.14f;
     Path path;
-    int currentWaypoint =0;
-    bool reachedEndOfPath =false;
+    int currentWaypoint = 0;
+    bool reachedEndOfPath = false;
     Seeker seeker;
     Rigidbody2D myRb;
-    Transform enemy;
-    bool isMoving =false;
+    Vector3 targetPos;
+    Transform target;
+    bool isMoving = false;
     Animator myAnimator;
     public bool targetChosen;
     bool soldierChosen;
     bool facingRight = false;
     int numOfSoldiersToKill = 0;
     GameObject enemyToAttack;
-    bool toSearch = false;
-    bool touchable = false;
+    bool automaticWalk = false;
+    string res;
+    bool moveToRigidbody;
 
-    public void SetSearch(bool toSearch)
+    public void SetAutomaticWalking(bool automaticWalk)
     {
-        this.toSearch = toSearch;
+        this.automaticWalk = automaticWalk;
     }
-   
-    public void SetTouchable(bool touchable)
-    {
-        this.touchable = touchable;
-    }
+
+
     void Start()
     {
-        if(toSearch)SearchAndAttack();
+        seeker = this.gameObject.AddComponent<Seeker>();
     }
 
-    void onPathComplete(Path p){
-     
-        if (!p.error){
-            path=p;
-            currentWaypoint= path.vectorPath.Count-1;
-            targetChosen=true;
-            isMoving=true;
+    void LookForResorces(string res)
+    {
+        GameObject[] targets;
+        targets = GameObject.FindGameObjectsWithTag(res);
+
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = this.transform.position;
+        foreach (GameObject target in targets)
+        {
+            Vector3 diff = target.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+
+            if (curDistance < distance)
+            {
+
+                closest = target;
+                distance = curDistance;
+
+            }
+        }
+
+
+        if (closest != null)
+        {
+
+            MoveForwardTo(closest);
+        }
+        else
+        {
+            Debug.LogAssertion("there is no resorces to find");
+        }
+    }
+    void onPathComplete(Path p)
+    {
+
+        if (!p.error)
+        {
+            path = p;
+            currentWaypoint = path.vectorPath.Count - 1;
+            targetChosen = true;
+            isMoving = true;
             reachedEndOfPath = false;
-            if(!myAnimator.GetBool("toAttack"))myAnimator.SetBool("move", true);
+            if (!myAnimator.GetBool("toAttack")) myAnimator.SetBool("move", true);
 
         }
         else
         {
-            Debug.LogError("path from " + mySoldier + " to " + enemy + " is not possible. error.");
-         
+            Debug.LogError("path from " + mySoldier + " is not possible. error.");
+
         }
     }
-    void OnCollisionEnter2D(Collision2D collision)//the attacked soldier near the attacker
+
+    public void MoveToResorce()
     {
-
-        if (((collision.collider.tag != this.tag) && collision.collider.tag.Contains("soldier")) || ((collision.collider.tag != this.tag) && collision.collider.tag.Contains("gold miner")))
-        {
-            isMoving = false;
-            myAnimator.SetBool("move", false);
-
-        }
-      
-
-
+        res = this.tag.Split(' ')[0];
+        Debug.Log("res " + res);
+        LookForResorces(res);
     }
-
-
 
     private void Flip()//flip the animation
     {
@@ -89,59 +115,42 @@ public class Walk : MonoBehaviour
 
     void FixedUpdate()
     {
-       
+
         if (targetChosen)
         {
-
-            if (enemy != null)
-            {
-                FlipAnimation();
-                MoveToPath();
-            }
-            else
-            {
-                isMoving = false;
-
-            }
-            
-            
-            if (!isMoving)
-            {
-                myAnimator.SetBool("move", false);
-                targetChosen = false;
-                soldierChosen = false;
-                CancelInvoke();
-            }
-
-            if (reachedEndOfPath)
-            {
-                isMoving = false;
-                soldierChosen = false;
-                targetChosen = false;
-                CancelInvoke();
-
-            }
+            FlipAnimation();
+            MoveToPath();
         }
         else
         {
-            if(toSearch)SearchAndAttack();
+            if (automaticWalk) SearchAndAttack();
         }
 
 
     }
 
-
+    public void StopMovingToPath()
+    {
+        isMoving = false;
+        targetChosen = false;
+        CancelInvoke();
+        reachedEndOfPath = true;
+        myAnimator.SetBool("move", false);
+        myRb.AddForce(new Vector2(0, 0));
+    }
 
     void Update()
     {
-        
-        if (!targetChosen&&touchable){
+
+        if (!automaticWalk)
+        {
             //bool detectedTouch = Input.touchCount == 1 && Input.GetTouch(0).phase == touchPhase;
             bool detectedTouch = Input.GetMouseButtonDown(0);
-            
-     
-            if (detectedTouch) {
-      
+
+
+            if (detectedTouch)
+            {
+
 
 
                 //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -149,14 +158,15 @@ public class Walk : MonoBehaviour
                 //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+                Vector3 mousePos = Input.mousePosition;
+                mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
 
-
-                if (hitInformation.collider != null)
+                if (hitInformation.collider != null && !soldierChosen)
                 {
-                 
 
-                    if (this.tag== hitInformation.collider.tag)
+
+                    if (this.tag == hitInformation.collider.tag)
                     {
                         mySoldier = hitInformation.collider.transform;
                         myRb = hitInformation.collider.GetComponent<Rigidbody2D>();
@@ -165,18 +175,7 @@ public class Walk : MonoBehaviour
                         soldierChosen = true;
 
                     }
-                    else if (soldierChosen)
-                    {
-                        if (hitInformation.collider.tag.Contains("soldier")&& (hitInformation.collider.tag!=this.tag))
-                        {
-                            enemy = hitInformation.collider.transform;
-                            BuildPathToTarget();
-                            soldierChosen = false;
-                            targetChosen = true;
-                            reachedEndOfPath = false;
-                        }
 
-                    }
 
 
                 }
@@ -184,8 +183,22 @@ public class Walk : MonoBehaviour
                 {
                     if (soldierChosen)
                     {
+
+                        moveToRigidbody = hitInformation.collider != null;
+
+                        if (moveToRigidbody)
+                        {
+                            target = hitInformation.collider.transform;
+                        }
+                        else
+                        {
+                            targetPos = mousePos;
+                        }
+                        
+                        BuildPathToTarget();
                         soldierChosen = false;
-                        targetChosen = false;
+                        targetChosen = true;
+                        reachedEndOfPath = false;
                     }
                 }
 
@@ -193,30 +206,36 @@ public class Walk : MonoBehaviour
 
 
 
-            
 
-        }   
+
+        }
     }
 
 
-    void MoveToPath(){
-     
-        if (!reachedEndOfPath){   
-            if(path==null){
+    void MoveToPath()
+    {
+
+        if (!reachedEndOfPath)
+        {
+            if (path == null)
+            {
                 return;
-            } 
-            if(currentWaypoint<=0){
-                
-                reachedEndOfPath = true;
-                return;
-            } 
-            
-            else{
-               reachedEndOfPath=false;
             }
-            Vector2 direction=((Vector2)path.vectorPath[currentWaypoint]- myRb.position).normalized;
-            Vector2 force=direction*speed*Time.deltaTime;
-            
+            if (currentWaypoint <= 0)
+            {
+
+                reachedEndOfPath = true;
+                StopMovingToPath();
+                return;
+            }
+
+            else
+            {
+                reachedEndOfPath = false;
+            }
+            Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
+            Vector2 force = direction * speed * Time.deltaTime;
+
 
 
             float velocityX = myRb.velocity.x;
@@ -226,9 +245,9 @@ public class Walk : MonoBehaviour
             myAnimator.SetFloat("vertical", velocityY);
 
             myRb.velocity = force;
-        
-            float distance =Vector2.Distance(myRb.position, (Vector2) path.vectorPath[currentWaypoint]);
-            
+
+            float distance = Vector2.Distance(myRb.position, (Vector2)path.vectorPath[currentWaypoint]);
+
             if (distance < nextWaypointDistance)
             {
                 currentWaypoint--;
@@ -250,7 +269,7 @@ public class Walk : MonoBehaviour
 
         foreach (string t in tagsToSearch)
         {
-            
+
             targets = GameObject.FindGameObjectsWithTag(t);
             float distance = Mathf.Infinity;
             Vector3 position = transform.position;
@@ -267,11 +286,11 @@ public class Walk : MonoBehaviour
                 }
             }
         }
-        
+
         return closest;
-        
-        
-        
+
+
+
     }
 
 
@@ -280,12 +299,13 @@ public class Walk : MonoBehaviour
         mySoldier = this.GetComponent<Transform>();
         myRb = this.GetComponent<Rigidbody2D>();
         myAnimator = this.GetComponent<Animator>();
-        enemy = soldier.GetComponent<Transform>();
+        target = soldier.GetComponent<Transform>();
+        moveToRigidbody = true;
         BuildPathToTarget();
 
     }
 
-  
+
     public void BuildPathToTarget()
     {
         seeker = mySoldier.GetComponent<Seeker>();
@@ -294,11 +314,18 @@ public class Walk : MonoBehaviour
 
     void UpdatePath()
     {
-   
+        Debug.Log("MoveForwardTo");
         if (seeker.IsDone() && !reachedEndOfPath)
         {
+            if (moveToRigidbody)
+            {
+                seeker.StartPath(target.position, mySoldier.position, onPathComplete);
+            }
+            else
+            {
+                seeker.StartPath(targetPos, mySoldier.position, onPathComplete);
+            }
             
-            seeker.StartPath(enemy.position, mySoldier.position, onPathComplete);
         }
 
     }
@@ -308,13 +335,22 @@ public class Walk : MonoBehaviour
     {
         enemyToAttack = FindClosestEnemy();
 
-        if (enemyToAttack != null && myRb != null && enemy != null && myAnimator != null)
+        if (enemyToAttack != null && myRb != null && myAnimator != null)
         {
             bool attacking = myAnimator.GetBool("toAttack");
 
             if (!attacking)
             {
-                float currDistance = Vector2.Distance(myRb.position, enemy.position);
+                float currDistance;
+                if (moveToRigidbody)
+                {
+                    currDistance = Vector2.Distance(myRb.position, target.position);
+                }
+                else
+                {
+                    currDistance = Vector2.Distance(myRb.position, targetPos);
+                }
+              
                 float distance = Vector2.Distance(myRb.position, enemyToAttack.transform.position);
 
                 if (seeker != null && currDistance > distance)

@@ -1,41 +1,53 @@
 ﻿using Pathfinding;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Soldier : MonoBehaviour
 {
     public bool enemySoldier;
-    public int health=10;
+    public int health = 10;
     public float speed = 20f;
-    bool searchForSoldiers;//if true- it will allways search for soldiers to attack 
-    bool selectWithTouch;//if true - the player can tocuh it and select other soldier to attack
     Walk walk;
+    Animator animator;
 
     void Start()
     {
+        this.gameObject.AddComponent<Character>();
         this.gameObject.AddComponent<Attack>();
-        this.gameObject.AddComponent<Seeker>();
-        Attacked attacked=this.gameObject.AddComponent<Attacked>();
-        attacked.healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
 
-       
+        animator = this.gameObject.GetComponent<Animator>();
+        Attacked attacked = this.gameObject.AddComponent<Attacked>();
+        attacked.healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
+      
         if (enemySoldier)
         {
-            searchForSoldiers = true;
-            selectWithTouch = false;
+
             attacked.maxHealth = 20;
 
         }
         else
         {
-            searchForSoldiers = false;
-            selectWithTouch = true;
+
             attacked.maxHealth = health;
         }
         walk = this.gameObject.AddComponent<Walk>();
 
-        walk.SetSearch(searchForSoldiers);
-        walk.SetTouchable(selectWithTouch);
+        walk.SetAutomaticWalking(enemySoldier);
+
         walk.speed = speed;
+
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag != this.tag && (collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("miner")))
+        {
+
+            walk.StopMovingToPath();
+           
+        }
+
 
     }
 
@@ -43,7 +55,7 @@ public class Soldier : MonoBehaviour
 
 
 
- 
+
 
 
 

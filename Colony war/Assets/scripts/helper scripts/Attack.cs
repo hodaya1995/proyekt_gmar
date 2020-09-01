@@ -20,9 +20,10 @@ public class Attack : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         //the attacked soldier near the attacker- attack only soldiers/workers that are not you
-        if ( ((collision.collider.tag != this.tag)&&collision.collider.tag.Contains("soldier") )|| ((collision.collider.tag != this.tag) && collision.collider.tag.Contains("gold miner")))
+        if ( ((collision.collider.tag != this.tag)&&collision.collider.tag.Contains("soldier") )||
+            ((collision.collider.tag != this.tag) && collision.collider.tag.Contains("gold miner"))&&this.tag.Contains("enemy"))
         {
-       
+
             attacker = collision.gameObject;
             animator.SetBool("toAttack", true);
             attackerAnimator = attacker.GetComponent<Animator>();
