@@ -146,11 +146,16 @@ public class Walk : MonoBehaviour
         {
             //bool detectedTouch = Input.touchCount == 1 && Input.GetTouch(0).phase == touchPhase;
             bool detectedTouch = Input.GetMouseButtonDown(0);
+            Vector3 p =Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            bool detectedTouchInZone = Move_out_of_zone.OnZone_Characters(p.x, p.y);
 
-
-            if (detectedTouch)
+            if (!detectedTouchInZone)
             {
-
+                soldierChosen = false;
+            }
+            if (detectedTouch && detectedTouchInZone)
+            {
+                
 
 
                 //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -275,6 +280,7 @@ public class Walk : MonoBehaviour
             Vector3 position = transform.position;
             foreach (GameObject target in targets)
             {
+                
                 numOfSoldiersToKill++;
                 Vector3 diff = target.transform.position - position;
                 float curDistance = diff.sqrMagnitude;
