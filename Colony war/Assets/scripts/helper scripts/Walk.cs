@@ -320,7 +320,6 @@ public class Walk : MonoBehaviour
 
     void UpdatePath()
     {
-        Debug.Log("MoveForwardTo");
         if (seeker.IsDone() && !reachedEndOfPath)
         {
             if (moveToRigidbody)

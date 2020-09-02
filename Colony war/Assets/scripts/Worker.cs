@@ -6,7 +6,7 @@ using UnityEngine;
 public class Worker : MonoBehaviour
 {
     public int health = 7;
-    public int miningSpeed = 10;
+    public float miningSpeed = 100.0f/60.0f; //mine speed: amount/second
     Walk walk;
     Animator animator;
 
@@ -18,12 +18,13 @@ public class Worker : MonoBehaviour
         this.gameObject.AddComponent<Character>();
         animator = this.gameObject.GetComponent<Animator>();
         walk = this.gameObject.AddComponent<Walk>();
-        walk.MoveToResorce();
+     
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         string res = tag.Split(' ')[0];
+        
         if (collision.collider.tag.Contains(res))
         {
             walk.StopMovingToPath();
