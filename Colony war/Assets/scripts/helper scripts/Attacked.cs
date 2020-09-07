@@ -18,8 +18,12 @@ public class Attacked : MonoBehaviour
     Rigidbody2D rb;
     Animator attackerAnimator;
     bool dying = false;
+    int attackers;
+    bool facingRight;
+    float waitForSearch = 5f;
+    Collision2D collision;
+    bool decreaseLifeMehodCalled;
    
-
   
     public void SetHealth(int health)
     {
@@ -28,8 +32,24 @@ public class Attacked : MonoBehaviour
         callDieFunc = health;
         healthBar.SetMaxHealth(health);
     }
-   
-  
+
+    private void Flip(Transform transform)//flip the animation
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+
+    private void FlipAnimation(Animator myAnimator,Transform transform)
+    {
+        float h = myAnimator.GetFloat("horizontal");
+        if (h > 0 && !facingRight)
+            Flip(transform);
+        else if (h < 0 && facingRight)
+            Flip(transform);
+    }
+
     void Start()
     {
         SetHealth(maxHealth);
@@ -37,48 +57,116 @@ public class Attacked : MonoBehaviour
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
     }
+  
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void Search()
     {
+        GetComponent<Walk>().SetSearch(true);
+    }
 
-        //the attacked soldier near the attacker
-        if (collision.collider.tag.Contains("enemy" )&& collision.collider.tag!=tag)
+    void OnColliderEnter(Collision2D collision)
+    {
+        bool targeted = false;
+        if (collision.gameObject.GetComponent<Attack>() != null)
+        {
+            targeted = (collision.collider.tag.Contains("colony") && tag.Contains("enemy")) &&
+           collision.gameObject.GetComponent<Attack>().GetTarget() == this.gameObject && collision.gameObject.GetComponent<Attack>().TargetIsChosen();
+        }
+        if ((collision.collider.tag.Contains("enemy") && collision.collider.tag != tag) || targeted)
         {
 
-            attacked = true;
-          
+            GetComponent<Walk>().SetSearch(false);
 
-            InvokeRepeating("DecreaseLife", 0f, 0.5f);
+            attackers++;
+            if (!decreaseLifeMehodCalled)
+            {
+               InvokeRepeating("DecreaseLife", 0f, 0.5f);
+            }
+            decreaseLifeMehodCalled = true;
+
             attacker = collision.gameObject;
-            Vector2 velocity=attacker.GetComponent<Rigidbody2D>().velocity;
-            Vector2 shootingDirection = new Vector2();
-            if (Mathf.Abs(Attack.velocityX) > Mathf.Abs(velocity.y))
-            {
-                shootingDirection = new Vector2(velocity.y, 0);
-            }
-            else
-            {
-                shootingDirection = new Vector2(0, velocity.y);
-            }
-            animator.SetFloat("horizontal", -shootingDirection.x);
-            animator.SetFloat("vertical", -shootingDirection.y);
-
             attackerAnimator = attacker.GetComponent<Animator>();
-         
-
+            attacked = true;
+      
 
 
         }
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        this.collision = collision;
+        OnColliderEnter(collision);
+        //the attacked soldier near the attacker
+       
 
 
 
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!attacked)
+        {
+            this.collision = collision;
+
+            OnColliderEnter(collision);
+
+        }
+       
+    }
+
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+
+
+    
+        bool targeted = false;
+        if (collision.gameObject.GetComponent<Attack>() != null)
+        {
+            targeted = (collision.collider.tag.Contains("colony") && tag.Contains("enemy")) &&
+           collision.gameObject.GetComponent<Attack>().GetTarget() == this.gameObject && collision.gameObject.GetComponent<Attack>().TargetIsChosen();
+        }
+
+        //the attacked soldier is not near the attacker
+        if ((collision.collider.tag.Contains("enemy") && collision.collider.tag != tag) || targeted)
+        {
+            OnColliderExit();
+           
+        }
+    }
+
+
+    void OnColliderExit()
+    {
+        CancelInvoke("DecreaseLife");
+        attackers--;
+        attacked = false; 
+        decreaseLifeMehodCalled = false;
+        Invoke("Search", waitForSearch);
+    }
+
     void Update()
     {
-        if (attacked)//dont move
+        bool moving = GetComponent<Walk>().IsMoving();
+        Attack attack = GetComponent<Attack>();
+        if (attack != null)
         {
-           
+            bool  exitFromCollider = GetComponent<Attack>().ExitCollider();
+            if (exitFromCollider)
+            {
+                OnColliderExit();
+            }
+            else
+            {
+                if (collision != null)
+                    OnColliderEnter(collision);
+            }
+        }
+        
+        
+        if (attacked&&!moving)//dont move
+        {
             rb.velocity = new Vector3(0, 0, 0);
         }
 
@@ -92,7 +180,10 @@ public class Attacked : MonoBehaviour
 
         }
     }
-
+    public bool IsAttacked()
+    {
+        return attacked;
+    }
 
     void Die()
     {
@@ -120,12 +211,12 @@ public class Attacked : MonoBehaviour
     void DecreaseLife()
     {
 
-        if (currentHealth - 1 >= 0)//not died yet- decrease life
+        if (currentHealth - 1 > 0)//not died yet- decrease life
         {
             currentHealth--;
             healthBar.SetHealth(currentHealth);
         }
-        else if (currentHealth == 0)//this died
+        else //this died
         {
             attacked = false;
             CancelInvoke("DecreaseLife");
@@ -137,14 +228,6 @@ public class Attacked : MonoBehaviour
         }
     }
 
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        //the attacked soldier is not near the attacker
-        if (collision.collider.tag.Contains("soldier") && collision.collider.tag != tag)
-        {
-        
-           CancelInvoke("DecreaseLife");
-        }
-    }
+   
 
 }

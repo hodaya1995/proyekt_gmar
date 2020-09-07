@@ -61,15 +61,15 @@
     <Compile Include="Assets\scripts\helper scripts\Attacked.cs" />
     <Compile Include="Assets\scripts\CameraZoom.cs" />
     <Compile Include="Assets\scripts\CreateColony.cs" />
+    <Compile Include="Assets\scripts\Resource.cs" />
     <Compile Include="Assets\scripts\helper scripts\Attack.cs" />
+    <Compile Include="Assets\scripts\helper scripts\HealthBar.cs" />
     <Compile Include="Assets\scripts\helper scripts\Walk.cs" />
     <Compile Include="Assets\scripts\Soldier.cs" />
     <Compile Include="Assets\scripts\helper scripts\Character.cs" />
     <Compile Include="Assets\MainThread.cs" />
-    <Compile Include="Assets\scripts\Shooting.cs" />
-    <Compile Include="Assets\scripts\helper scripts\HealthBar.cs" />
-    <Compile Include="Assets\scripts\Resource.cs" />
     <Compile Include="Assets\scripts\Worker.cs" />
+    <Compile Include="Assets\scripts\Shooting.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -253,7 +253,7 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.1f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced">
-      <HintPath>Assets\AstarPathfindingProject\Plugins\DotNetZip\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+      <HintPath>Assets\Plugins\AstarPathfindingProject\Plugins\DotNetZip\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.1f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -632,6 +632,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="AstarPathfindingProjectEditor.csproj">
+      <Project>{949F8532-0CE0-2BF6-D30C-F25D380F270D}</Project>
+      <Name>AstarPathfindingProjectEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="AstarPathfindingProject.csproj">
       <Project>{60F342F4-3F1D-E713-D7D1-82C26E795652}</Project>
       <Name>AstarPathfindingProject</Name>
@@ -639,10 +643,6 @@
     <ProjectReference Include="PackageToolsEditor.csproj">
       <Project>{8D349EF8-D615-399A-BB56-1EE69223D3BA}</Project>
       <Name>PackageToolsEditor</Name>
-    </ProjectReference>
-    <ProjectReference Include="AstarPathfindingProjectEditor.csproj">
-      <Project>{949F8532-0CE0-2BF6-D30C-F25D380F270D}</Project>
-      <Name>AstarPathfindingProjectEditor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

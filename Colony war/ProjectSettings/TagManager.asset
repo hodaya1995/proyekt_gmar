@@ -21,6 +21,7 @@ TagManager:
   - enemy soldiers
   - colony soldiers
   - resource-test
+  - trees
   layers:
   - Default
   - TransparentFX

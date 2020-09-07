@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Pathfinding;
-
+using System.Security.Cryptography;
+using UnityEditor;
 
 public class Walk : MonoBehaviour
 {
@@ -24,129 +25,142 @@ public class Walk : MonoBehaviour
     bool automaticWalk = false;
     string res;
     bool moveToRigidbody;
+    bool stuck;
 
-    public void SetAutomaticWalking(bool automaticWalk)
+    public Vector2 Velocity = new Vector2(0, 0);
+
+    float RotateSpeed = 0.3f;
+    float startRad = 1.2f;
+    float Radius;
+    float startAngle;
+    private Vector2 centre;
+    private float angle;
+    float dist;
+    bool attacking;
+    bool collided;
+    bool search;
+    float prevVelocityX= Mathf.Infinity;
+    float prevVelocityY= Mathf.Infinity;
+    float exitAngel = 100.0f;
+  
+
+
+   public void SetSearch(bool search)
     {
-        this.automaticWalk = automaticWalk;
+        this.search = search;
     }
-
-
-    void Start()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        seeker = this.gameObject.AddComponent<Seeker>();
-    }
-
-    void LookForResorces(string res)
-    {
-        GameObject[] targets;
-        targets = GameObject.FindGameObjectsWithTag(res);
-
-        GameObject closest = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = this.transform.position;
-        foreach (GameObject target in targets)
+        collided = true;
+        attacking = this.gameObject.GetComponent<Animator>().GetBool("toAttack");
+        if (myRb != null && target !=  collision.transform&&targetChosen)
         {
-            Vector3 diff = target.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-
-            if (curDistance < distance)
+            if (collision.gameObject.tag == "gold")
             {
-
-                closest = target;
-                distance = curDistance;
-
+                startRad = 2.1f;
             }
+            else
+            {
+                startRad = 1.3f;
+            }
+            
+            Radius = startRad;
+
+            bool collisionStuck =false;
+            if (collision.gameObject.GetComponent<Walk>() != null)
+            {
+                
+                collisionStuck = collision.gameObject.GetComponent<Walk>().IsStuck();
+            }
+            if (!stuck&&!attacking&& !collisionStuck)
+            {
+           
+                centre = collision.transform.position;
+                Vector2 p1 = new Vector2(centre.x, centre.y - startRad);
+                Vector2 p2 = transform.position;
+                dist = Vector2.Distance(p1, p2);
+                angle = Mathf.Acos(((2 * (startRad * startRad) - (Mathf.Abs(dist) * Mathf.Abs(dist))) / (2 * (startRad * startRad))));
+                angle = (180 * Mathf.Deg2Rad) - angle;
+                startAngle = angle;
+                seeker.CancelCurrentPathRequest();
+                CancelInvoke("UpdatePath");
+                targetChosen = false;
+                myRb.drag = 1.5f;
+                stuck = true;
+
+                InvokeRepeating("UpdateRadius", 0f, 0.3f);
+               
+            }
+            
+           
         }
 
-
-        if (closest != null)
-        {
-
-            MoveForwardTo(closest);
-        }
-        else
-        {
-            Debug.LogAssertion("there is no resorces to find");
-        }
-    }
-    void onPathComplete(Path p)
-    {
-
-        if (!p.error)
-        {
-            path = p;
-            currentWaypoint = path.vectorPath.Count - 1;
-            targetChosen = true;
-            isMoving = true;
-            reachedEndOfPath = false;
-            if (!myAnimator.GetBool("toAttack")) myAnimator.SetBool("move", true);
-
-        }
-        else
-        {
-            Debug.LogError("path from " + mySoldier + " is not possible. error.");
-
-        }
-    }
-
-    public void MoveToResorce()
-    {
-        res = this.tag.Split(' ')[0];
-        Debug.Log("res " + res);
-        LookForResorces(res);
     }
 
-    private void Flip()//flip the animation
+ 
+    public bool IsStuck()
     {
-        facingRight = !facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+        return stuck;
     }
-
-    private void FlipAnimation()
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        float h = myAnimator.GetFloat("horizontal");
-        if (h > 0 && !facingRight)
-            Flip();
-        else if (h < 0 && facingRight)
-            Flip();
+      
+        CancelInvoke("UpdateRadius");
+        collided = false;
+       
     }
 
     void FixedUpdate()
     {
-
-        if (targetChosen)
+        if (stuck)
         {
-            FlipAnimation();
+
+            angle += RotateSpeed * Time.deltaTime;
+           Vector2 offset = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * Radius;
+            Vector2 moveTo = centre + offset;
+            
+            if (angle < (exitAngel * Mathf.Deg2Rad) + startAngle )
+            {     
+      
+                myRb.AddForce((moveTo - (Vector2)transform.position) * speed * Time.deltaTime);
+                myAnimator.SetBool("move", true);
+                myAnimator.SetFloat("horizontal", myRb.velocity.x);
+                myAnimator.SetFloat("vertical", myRb.velocity.y);
+                FlipAnimation();
+                
+               
+            }
+            else
+            {
+                CancelStuck();
+            }
+           
+            
+
+        }
+
+
+        if (targetChosen && !stuck)
+        {
             MoveToPath();
         }
         else
         {
-            if (automaticWalk) SearchAndAttack();
+            if (automaticWalk && !stuck && !collided && search) SearchAndAttack();
         }
 
 
     }
 
-    public void StopMovingToPath()
-    {
-        isMoving = false;
-        targetChosen = false;
-        CancelInvoke();
-        reachedEndOfPath = true;
-        myAnimator.SetBool("move", false);
-        myRb.AddForce(new Vector2(0, 0));
-    }
-
     void Update()
     {
+       
 
         if (!automaticWalk)
         {
             //bool detectedTouch = Input.touchCount == 1 && Input.GetTouch(0).phase == touchPhase;
             bool detectedTouch = Input.GetMouseButtonDown(0);
-            Vector3 p =Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             bool detectedTouchInZone = Move_out_of_zone.OnZone_Characters(p.x, p.y);
 
             if (!detectedTouchInZone)
@@ -155,7 +169,7 @@ public class Walk : MonoBehaviour
             }
             if (detectedTouch && detectedTouchInZone)
             {
-                
+
 
 
                 //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -193,13 +207,15 @@ public class Walk : MonoBehaviour
 
                         if (moveToRigidbody)
                         {
+                     
                             target = hitInformation.collider.transform;
                         }
                         else
                         {
+                  
                             targetPos = mousePos;
                         }
-                        
+
                         BuildPathToTarget();
                         soldierChosen = false;
                         targetChosen = true;
@@ -217,44 +233,204 @@ public class Walk : MonoBehaviour
     }
 
 
+
+  
+
+    void CancelStuck()
+    {
+        BuildPathToTarget();
+        //stuck = false;
+    }
+    public void SetAutomaticWalking(bool automaticWalk)
+    {
+        this.automaticWalk = automaticWalk;
+    }
+
+
+    void Start()
+    {
+        Seeker s = this.gameObject.AddComponent<Seeker>();
+
+        seeker = s;
+        search = true;
+    
+    }
+
+    void LookForResorces(string res)
+    {
+        GameObject[] targets;
+        targets = GameObject.FindGameObjectsWithTag(res);
+
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = this.transform.position;
+        foreach (GameObject target in targets)
+        {
+            Vector3 diff = target.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+
+            if (curDistance < distance)
+            {
+
+                closest = target;
+                distance = curDistance;
+
+            }
+        }
+
+
+        if (closest != null)
+        {
+
+            MoveForwardTo(closest);
+        }
+        else
+        {
+            Debug.LogAssertion("there is no resorces to find");
+        }
+    }
+    void onPathComplete(Path p)
+    {
+        if (!p.error)
+        {
+            path = p;
+            currentWaypoint = path.vectorPath.Count - 1;
+            targetChosen = true;
+            isMoving = true;
+            reachedEndOfPath = false;
+            if (!myAnimator.GetBool("toAttack")) myAnimator.SetBool("move", true);
+            stuck = false;
+
+        }
+        else
+        {
+            Debug.LogError("path from " + mySoldier + " is not possible. error.");
+
+        }
+    }
+
+    public void MoveToResorce()
+    {
+        res = this.tag.Split(' ')[0];
+        LookForResorces(res);
+    }
+
+    private void Flip()//flip the animation
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+
+    private void FlipAnimation()
+    {
+        float h = myAnimator.GetFloat("horizontal");
+        if (h > 0 && !facingRight)
+            Flip();
+        else if (h <0 && facingRight)
+            Flip();
+    }
+    void UpdateRadius()
+    {
+        if (collided)
+        {
+            Radius += 0.1f;
+        }
+        else
+        {
+            CancelInvoke("UpdateRadius");
+        }
+    }
+
+
+ 
+    public bool IsMoving()
+    {
+        return isMoving;
+    }
+
+    public void StopMovingToPath()
+    {
+        isMoving = false;
+        targetChosen = false;
+        CancelInvoke("UpdatePath");
+        reachedEndOfPath = true;
+        if (myAnimator == null)
+        {
+            myAnimator = this.gameObject.GetComponent<Animator>();
+        }
+        myAnimator.SetBool("move", false);
+        if (myRb == null)
+        {
+            myRb = this.gameObject.GetComponent<Rigidbody2D>();
+        }
+        myRb.AddForce(new Vector2(0, 0));
+    }
+    
+  
+
     void MoveToPath()
     {
-
-        if (!reachedEndOfPath)
+        isMoving = true;
+       if (!reachedEndOfPath)
         {
+
+        
             if (path == null)
             {
-                return;
+               return;
             }
             if (currentWaypoint <= 0)
             {
-
                 reachedEndOfPath = true;
+                
                 StopMovingToPath();
                 return;
             }
 
             else
             {
+         
                 reachedEndOfPath = false;
             }
             Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
             Vector2 force = direction * speed * Time.deltaTime;
 
+       
+           
+           myRb.AddForce(force);
 
+            float horizontalVelocity = Vector2.Dot(direction, Vector2.right);
+            float verticalVelocity = Vector2.Dot(direction, Vector2.up);
+            if (prevVelocityX != Mathf.Infinity && prevVelocityY != Mathf.Infinity && (prevVelocityX < 0 && horizontalVelocity < 0) || (prevVelocityX > 0 && horizontalVelocity > 0) || (prevVelocityX == 0 && horizontalVelocity == 0)
+                && (prevVelocityY < 0 && verticalVelocity < 0) || (prevVelocityY > 0 && verticalVelocity > 0) || (prevVelocityY == 0 && verticalVelocity == 0))
+            {
+                myAnimator.SetFloat("horizontal", horizontalVelocity);
+                myAnimator.SetFloat("vertical", verticalVelocity);
 
-            float velocityX = myRb.velocity.x;
-            float velocityY = myRb.velocity.y;
+            }else if(prevVelocityX == Mathf.Infinity && prevVelocityY == Mathf.Infinity)
+            {
+                myAnimator.SetFloat("horizontal", horizontalVelocity);
+                myAnimator.SetFloat("vertical", verticalVelocity);
 
-            myAnimator.SetFloat("horizontal", velocityX);
-            myAnimator.SetFloat("vertical", velocityY);
+            }
+            prevVelocityX = horizontalVelocity;
+            prevVelocityY = verticalVelocity;
 
-            myRb.velocity = force;
+            float h = direction.x;
+            if ( h> 0 && !facingRight)
+                Flip();
+            else if (h < 0 && facingRight)
+                Flip();
+
+            FlipAnimation();
 
             float distance = Vector2.Distance(myRb.position, (Vector2)path.vectorPath[currentWaypoint]);
 
             if (distance < nextWaypointDistance)
             {
+               
                 currentWaypoint--;
                 return;
 
@@ -314,24 +490,40 @@ public class Walk : MonoBehaviour
 
     public void BuildPathToTarget()
     {
+   
         seeker = mySoldier.GetComponent<Seeker>();
         InvokeRepeating("UpdatePath", 0f, 0.5f);
     }
 
     void UpdatePath()
     {
-        if (seeker.IsDone() && !reachedEndOfPath)
+       if (mySoldier!=null)
         {
-            if (moveToRigidbody)
+            if (seeker.IsDone() && !reachedEndOfPath)
             {
-                seeker.StartPath(target.position, mySoldier.position, onPathComplete);
+                targetChosen = true;
+             
+                  if (moveToRigidbody)
+                    {
+                        seeker.StartPath(target.position, mySoldier.position, onPathComplete);
+                    }
+                    else
+
+                    {
+
+                        seeker.StartPath(targetPos, mySoldier.position, onPathComplete);
+                    }
+                
+                
+               
+
             }
-            else
-            {
-                seeker.StartPath(targetPos, mySoldier.position, onPathComplete);
-            }
-            
         }
+        else
+        {
+            CancelInvoke("UpdatePath");
+        }
+       
 
     }
 
@@ -340,10 +532,11 @@ public class Walk : MonoBehaviour
     {
         enemyToAttack = FindClosestEnemy();
 
-        if (enemyToAttack != null && myRb != null && myAnimator != null)
-        {
-            bool attacking = myAnimator.GetBool("toAttack");
+        bool attacking = this.gameObject.GetComponent<Animator>().GetBool("toAttack");
 
+        if (enemyToAttack != null && myRb != null && myAnimator != null&&target!=null)
+        {
+          
             if (!attacking)
             {
                 float currDistance;
@@ -379,12 +572,8 @@ public class Walk : MonoBehaviour
         }
         else
         {
-            if (enemyToAttack == null)
-            {
-                Debug.Log("there is no colony soldiers to attack ");
-            }
-            else
-            {
+            if (enemyToAttack != null&&!attacking)
+            { 
                 MoveForwardTo(enemyToAttack);
 
 
