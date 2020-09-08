@@ -43,6 +43,10 @@ public class Walk : MonoBehaviour
     float prevVelocityY = Mathf.Infinity;
     float exitAngel = 100.0f;
 
+    const float EXCELLENT =100;
+    const float GOOD = 66.6f;
+    const float NEAR_DEATH = 33.3f;
+
 
 
     public void SetSearch(bool search)
@@ -447,6 +451,7 @@ public class Walk : MonoBehaviour
         numOfSoldiersToKill = 0;
         GameObject[] targets;
         string[] tagsToSearch = new string[] { "colony soldier", "gold miner", "stone miner" };
+        GameObject closestDefault = null;
         GameObject closest = null;
 
         foreach (string t in tagsToSearch)
@@ -457,20 +462,32 @@ public class Walk : MonoBehaviour
             Vector3 position = transform.position;
             foreach (GameObject target in targets)
             {
-
+                Attacked currAttackedTarget = target.GetComponent<Attacked>();
+                Attacked currAttacked = transform.GetComponent<Attacked>();
+                float currHelathPrecentTarget = currAttackedTarget.GetHealth()*1.0f / currAttackedTarget.GetMaxHealth()*1.0f;
+                float currHelathPrecent = currAttacked.GetHealth() * 1.0f / currAttacked.GetMaxHealth() * 1.0f;
+                Debug.Log("currHelathPrecentTarget " + currHelathPrecentTarget+ " currHelathPrecent "+ currHelathPrecent);
                 numOfSoldiersToKill++;
                 Vector3 diff = target.transform.position - position;
                 float curDistance = diff.sqrMagnitude;
                 if (curDistance < distance)
                 {
-                    closest = target;
+                    closestDefault = target;
                     distance = curDistance;
+                    if((GOOD<= currHelathPrecentTarget && currHelathPrecentTarget <= EXCELLENT && GOOD <= currHelathPrecent && currHelathPrecentTarget <= EXCELLENT)||
+                        (NEAR_DEATH <= currHelathPrecentTarget && currHelathPrecentTarget <= GOOD && NEAR_DEATH <= currHelathPrecent && currHelathPrecentTarget <= GOOD) ||
+                        (0 <= currHelathPrecentTarget && currHelathPrecentTarget <= NEAR_DEATH && 0 <= currHelathPrecent && currHelathPrecentTarget <= NEAR_DEATH))
+                    {
+                        closest = target;
 
+                    }
                 }
+                
             }
         }
 
-        return closest;
+        if (closest != null) return closest;
+        return closestDefault;
 
 
 

@@ -24,6 +24,15 @@ public class Attacked : MonoBehaviour
     Collision2D collision;
     bool decreaseLifeMehodCalled;
 
+    public int GetAttackersNum()
+    {
+        return attackers;
+    }
+
+    public void AddAttacker()
+    {
+        this.attackers++;
+    }
 
     public void SetHealth(int health)
     {
@@ -76,8 +85,6 @@ public class Attacked : MonoBehaviour
         {
 
             GetComponent<Walk>().SetSearch(false);
-
-            attackers++;
             if (!decreaseLifeMehodCalled)
             {
                 InvokeRepeating("DecreaseLife", 0f, 0.5f);
@@ -207,6 +214,15 @@ public class Attacked : MonoBehaviour
             }
 
         }
+    }
+    public int GetHealth()
+    {
+        return currentHealth;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
     }
     void DecreaseLife()
     {
