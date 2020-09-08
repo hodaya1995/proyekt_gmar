@@ -39,13 +39,13 @@ public class Walk : MonoBehaviour
     bool attacking;
     bool collided;
     bool search;
-    float prevVelocityX= Mathf.Infinity;
-    float prevVelocityY= Mathf.Infinity;
+    float prevVelocityX = Mathf.Infinity;
+    float prevVelocityY = Mathf.Infinity;
     float exitAngel = 100.0f;
-  
 
 
-   public void SetSearch(bool search)
+
+    public void SetSearch(bool search)
     {
         this.search = search;
     }
@@ -53,7 +53,7 @@ public class Walk : MonoBehaviour
     {
         collided = true;
         attacking = this.gameObject.GetComponent<Animator>().GetBool("toAttack");
-        if (myRb != null && target !=  collision.transform&&targetChosen)
+        if (myRb != null && target != collision.transform && targetChosen)
         {
             if (collision.gameObject.tag == "gold")
             {
@@ -63,18 +63,18 @@ public class Walk : MonoBehaviour
             {
                 startRad = 1.3f;
             }
-            
+
             Radius = startRad;
 
-            bool collisionStuck =false;
+            bool collisionStuck = false;
             if (collision.gameObject.GetComponent<Walk>() != null)
             {
-                
+
                 collisionStuck = collision.gameObject.GetComponent<Walk>().IsStuck();
             }
-            if (!stuck&&!attacking&& !collisionStuck)
+            if (!stuck && !attacking && !collisionStuck)
             {
-           
+
                 centre = collision.transform.position;
                 Vector2 p1 = new Vector2(centre.x, centre.y - startRad);
                 Vector2 p2 = transform.position;
@@ -89,25 +89,25 @@ public class Walk : MonoBehaviour
                 stuck = true;
 
                 InvokeRepeating("UpdateRadius", 0f, 0.3f);
-               
+
             }
-            
-           
+
+
         }
 
     }
 
- 
+
     public bool IsStuck()
     {
         return stuck;
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-      
+
         CancelInvoke("UpdateRadius");
         collided = false;
-       
+
     }
 
     void FixedUpdate()
@@ -116,26 +116,26 @@ public class Walk : MonoBehaviour
         {
 
             angle += RotateSpeed * Time.deltaTime;
-           Vector2 offset = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * Radius;
+            Vector2 offset = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * Radius;
             Vector2 moveTo = centre + offset;
-            
-            if (angle < (exitAngel * Mathf.Deg2Rad) + startAngle )
-            {     
-      
+
+            if (angle < (exitAngel * Mathf.Deg2Rad) + startAngle)
+            {
+
                 myRb.AddForce((moveTo - (Vector2)transform.position) * speed * Time.deltaTime);
                 myAnimator.SetBool("move", true);
                 myAnimator.SetFloat("horizontal", myRb.velocity.x);
                 myAnimator.SetFloat("vertical", myRb.velocity.y);
                 FlipAnimation();
-                
-               
+
+
             }
             else
             {
                 CancelStuck();
             }
-           
-            
+
+
 
         }
 
@@ -154,7 +154,7 @@ public class Walk : MonoBehaviour
 
     void Update()
     {
-       
+
 
         if (!automaticWalk)
         {
@@ -207,12 +207,12 @@ public class Walk : MonoBehaviour
 
                         if (moveToRigidbody)
                         {
-                     
+
                             target = hitInformation.collider.transform;
                         }
                         else
                         {
-                  
+
                             targetPos = mousePos;
                         }
 
@@ -234,7 +234,7 @@ public class Walk : MonoBehaviour
 
 
 
-  
+
 
     void CancelStuck()
     {
@@ -253,7 +253,7 @@ public class Walk : MonoBehaviour
 
         seeker = s;
         search = true;
-    
+
     }
 
     void LookForResorces(string res)
@@ -328,7 +328,7 @@ public class Walk : MonoBehaviour
         float h = myAnimator.GetFloat("horizontal");
         if (h > 0 && !facingRight)
             Flip();
-        else if (h <0 && facingRight)
+        else if (h < 0 && facingRight)
             Flip();
     }
     void UpdateRadius()
@@ -344,7 +344,7 @@ public class Walk : MonoBehaviour
     }
 
 
- 
+
     public bool IsMoving()
     {
         return isMoving;
@@ -367,39 +367,39 @@ public class Walk : MonoBehaviour
         }
         myRb.AddForce(new Vector2(0, 0));
     }
-    
-  
+
+
 
     void MoveToPath()
     {
         isMoving = true;
-       if (!reachedEndOfPath)
+        if (!reachedEndOfPath)
         {
 
-        
+
             if (path == null)
             {
-               return;
+                return;
             }
             if (currentWaypoint <= 0)
             {
                 reachedEndOfPath = true;
-                
+
                 StopMovingToPath();
                 return;
             }
 
             else
             {
-         
+
                 reachedEndOfPath = false;
             }
             Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
             Vector2 force = direction * speed * Time.deltaTime;
 
-       
-           
-           myRb.AddForce(force);
+
+
+            myRb.AddForce(force);
 
             float horizontalVelocity = Vector2.Dot(direction, Vector2.right);
             float verticalVelocity = Vector2.Dot(direction, Vector2.up);
@@ -409,7 +409,8 @@ public class Walk : MonoBehaviour
                 myAnimator.SetFloat("horizontal", horizontalVelocity);
                 myAnimator.SetFloat("vertical", verticalVelocity);
 
-            }else if(prevVelocityX == Mathf.Infinity && prevVelocityY == Mathf.Infinity)
+            }
+            else if (prevVelocityX == Mathf.Infinity && prevVelocityY == Mathf.Infinity)
             {
                 myAnimator.SetFloat("horizontal", horizontalVelocity);
                 myAnimator.SetFloat("vertical", verticalVelocity);
@@ -419,7 +420,7 @@ public class Walk : MonoBehaviour
             prevVelocityY = verticalVelocity;
 
             float h = direction.x;
-            if ( h> 0 && !facingRight)
+            if (h > 0 && !facingRight)
                 Flip();
             else if (h < 0 && facingRight)
                 Flip();
@@ -430,7 +431,7 @@ public class Walk : MonoBehaviour
 
             if (distance < nextWaypointDistance)
             {
-               
+
                 currentWaypoint--;
                 return;
 
@@ -456,7 +457,7 @@ public class Walk : MonoBehaviour
             Vector3 position = transform.position;
             foreach (GameObject target in targets)
             {
-                
+
                 numOfSoldiersToKill++;
                 Vector3 diff = target.transform.position - position;
                 float curDistance = diff.sqrMagnitude;
@@ -490,32 +491,32 @@ public class Walk : MonoBehaviour
 
     public void BuildPathToTarget()
     {
-   
+
         seeker = mySoldier.GetComponent<Seeker>();
         InvokeRepeating("UpdatePath", 0f, 0.5f);
     }
 
     void UpdatePath()
     {
-       if (mySoldier!=null)
+        if (mySoldier != null)
         {
             if (seeker.IsDone() && !reachedEndOfPath)
             {
                 targetChosen = true;
-             
-                  if (moveToRigidbody)
-                    {
-                        seeker.StartPath(target.position, mySoldier.position, onPathComplete);
-                    }
-                    else
 
-                    {
+                if (moveToRigidbody)
+                {
+                    seeker.StartPath(target.position, mySoldier.position, onPathComplete);
+                }
+                else
 
-                        seeker.StartPath(targetPos, mySoldier.position, onPathComplete);
-                    }
-                
-                
-               
+                {
+
+                    seeker.StartPath(targetPos, mySoldier.position, onPathComplete);
+                }
+
+
+
 
             }
         }
@@ -523,7 +524,7 @@ public class Walk : MonoBehaviour
         {
             CancelInvoke("UpdatePath");
         }
-       
+
 
     }
 
@@ -534,9 +535,9 @@ public class Walk : MonoBehaviour
 
         bool attacking = this.gameObject.GetComponent<Animator>().GetBool("toAttack");
 
-        if (enemyToAttack != null && myRb != null && myAnimator != null&&target!=null)
+        if (enemyToAttack != null && myRb != null && myAnimator != null && target != null)
         {
-          
+
             if (!attacking)
             {
                 float currDistance;
@@ -548,7 +549,7 @@ public class Walk : MonoBehaviour
                 {
                     currDistance = Vector2.Distance(myRb.position, targetPos);
                 }
-              
+
                 float distance = Vector2.Distance(myRb.position, enemyToAttack.transform.position);
 
                 if (seeker != null && currDistance > distance)
@@ -572,8 +573,8 @@ public class Walk : MonoBehaviour
         }
         else
         {
-            if (enemyToAttack != null&&!attacking)
-            { 
+            if (enemyToAttack != null && !attacking)
+            {
                 MoveForwardTo(enemyToAttack);
 
 

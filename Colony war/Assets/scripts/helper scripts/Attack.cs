@@ -19,7 +19,7 @@ public class Attack : MonoBehaviour
     void Start()
     {
         animator = this.GetComponent<Animator>();
-        rb= this.GetComponent<Rigidbody2D>();
+        rb = this.GetComponent<Rigidbody2D>();
 
     }
 
@@ -32,7 +32,7 @@ public class Attack : MonoBehaviour
             (targetToAttack == collision.gameObject) && targetChosen)
         {
             exitCollider = false;
-           GetComponent<Walk>().SetSearch(false);
+            GetComponent<Walk>().SetSearch(false);
             attacked = collision.gameObject;
             bool moving = GetComponent<Walk>().IsMoving();
 
@@ -59,7 +59,7 @@ public class Attack : MonoBehaviour
 
     }
 
-  
+
     public GameObject GetTarget()
     {
         return this.targetToAttack;
@@ -71,14 +71,14 @@ public class Attack : MonoBehaviour
 
         bool moving = GetComponent<Walk>().IsMoving();
 
-        if ((targetToAttack == collision.gameObject ) && targetChosen)
+        if ((targetToAttack == collision.gameObject) && targetChosen)
 
 
         {
-             if (!moving)
+            if (!moving)
             {
                 animator.SetBool("toAttack", true);
-                
+
                 rb.velocity = new Vector3(0, 0, 0);
                 Vector2 dir = new Vector2((-this.transform.position.x + attacked.transform.position.x), (-this.transform.position.y + attacked.transform.position.y)).normalized;
                 float h = dir.x;
@@ -86,7 +86,7 @@ public class Attack : MonoBehaviour
                 animator.SetFloat("horizontal", h);
                 animator.SetFloat("vertical", v);
             }
-               
+
             attacked = collision.gameObject;
             attackedAnimator = attacked.GetComponent<Animator>();
             attacking = true;
@@ -104,7 +104,7 @@ public class Attack : MonoBehaviour
         //the attacked soldier is not near the attacker-dont attack
         if (((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy")) ||
             (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy") ||
-                (targetToAttack != null )&&targetChosen)
+                (targetToAttack != null) && targetChosen)
 
         {
             exitCollider = true;
@@ -130,7 +130,8 @@ public class Attack : MonoBehaviour
     {
         return this.targetChosen;
     }
-    void Update(){
+    void Update()
+    {
         bool moving = GetComponent<Walk>().IsMoving();
         if (attacking && !moving)
         {
@@ -220,6 +221,6 @@ public class Attack : MonoBehaviour
 
 
 
-   
+
 
 }

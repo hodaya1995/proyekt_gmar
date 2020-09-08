@@ -23,8 +23,8 @@ public class Attacked : MonoBehaviour
     float waitForSearch = 5f;
     Collision2D collision;
     bool decreaseLifeMehodCalled;
-   
-  
+
+
     public void SetHealth(int health)
     {
         maxHealth = health;
@@ -41,7 +41,7 @@ public class Attacked : MonoBehaviour
         transform.localScale = theScale;
     }
 
-    private void FlipAnimation(Animator myAnimator,Transform transform)
+    private void FlipAnimation(Animator myAnimator, Transform transform)
     {
         float h = myAnimator.GetFloat("horizontal");
         if (h > 0 && !facingRight)
@@ -53,11 +53,11 @@ public class Attacked : MonoBehaviour
     void Start()
     {
         SetHealth(maxHealth);
-        
+
         rb = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
     }
-  
+
 
     void Search()
     {
@@ -80,14 +80,14 @@ public class Attacked : MonoBehaviour
             attackers++;
             if (!decreaseLifeMehodCalled)
             {
-               InvokeRepeating("DecreaseLife", 0f, 0.5f);
+                InvokeRepeating("DecreaseLife", 0f, 0.5f);
             }
             decreaseLifeMehodCalled = true;
 
             attacker = collision.gameObject;
             attackerAnimator = attacker.GetComponent<Animator>();
             attacked = true;
-      
+
 
 
         }
@@ -97,7 +97,7 @@ public class Attacked : MonoBehaviour
         this.collision = collision;
         OnColliderEnter(collision);
         //the attacked soldier near the attacker
-       
+
 
 
 
@@ -112,7 +112,7 @@ public class Attacked : MonoBehaviour
             OnColliderEnter(collision);
 
         }
-       
+
     }
 
 
@@ -120,7 +120,7 @@ public class Attacked : MonoBehaviour
     {
 
 
-    
+
         bool targeted = false;
         if (collision.gameObject.GetComponent<Attack>() != null)
         {
@@ -132,7 +132,7 @@ public class Attacked : MonoBehaviour
         if ((collision.collider.tag.Contains("enemy") && collision.collider.tag != tag) || targeted)
         {
             OnColliderExit();
-           
+
         }
     }
 
@@ -141,7 +141,7 @@ public class Attacked : MonoBehaviour
     {
         CancelInvoke("DecreaseLife");
         attackers--;
-        attacked = false; 
+        attacked = false;
         decreaseLifeMehodCalled = false;
         Invoke("Search", waitForSearch);
     }
@@ -152,7 +152,7 @@ public class Attacked : MonoBehaviour
         Attack attack = GetComponent<Attack>();
         if (attack != null)
         {
-            bool  exitFromCollider = GetComponent<Attack>().ExitCollider();
+            bool exitFromCollider = GetComponent<Attack>().ExitCollider();
             if (exitFromCollider)
             {
                 OnColliderExit();
@@ -163,9 +163,9 @@ public class Attacked : MonoBehaviour
                     OnColliderEnter(collision);
             }
         }
-        
-        
-        if (attacked&&!moving)//dont move
+
+
+        if (attacked && !moving)//dont move
         {
             rb.velocity = new Vector3(0, 0, 0);
         }
@@ -228,6 +228,6 @@ public class Attacked : MonoBehaviour
         }
     }
 
-   
+
 
 }

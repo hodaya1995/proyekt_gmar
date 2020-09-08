@@ -18,7 +18,7 @@ public class Soldier : MonoBehaviour
         animator = this.gameObject.GetComponent<Animator>();
         Attacked attacked = this.gameObject.AddComponent<Attacked>();
         attacked.healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
-      
+
         if (enemySoldier)
         {
 
@@ -33,7 +33,7 @@ public class Soldier : MonoBehaviour
         walk = this.gameObject.AddComponent<Walk>();
 
         walk.SetAutomaticWalking(enemySoldier);
-      
+
         walk.speed = speed;
 
     }
@@ -45,7 +45,7 @@ public class Soldier : MonoBehaviour
         {
 
             walk.StopMovingToPath();
-           
+
         }
 
 

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Resource : MonoBehaviour
 {
-    public float amount=100f;
+    public float amount = 100f;
     float origAmount;
     float miningSpeed;
     int statesCount;
@@ -17,7 +17,7 @@ public class Resource : MonoBehaviour
     void Start()
     {
         origAmount = amount;
-        statesCount = this.transform.childCount-1;
+        statesCount = this.transform.childCount - 1;
         currState = 0;
         res = this.tag;
         textCanvas = GetTextCanvas();
@@ -40,30 +40,30 @@ public class Resource : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
             Vector3 mousePos = Input.mousePosition;
-            
+
             if (hitInformation.collider != null)
             {
-                if (hitInformation.collider.tag==res)
+                if (hitInformation.collider.tag == res)
                 {
-                    SetText(res + "\n" + (int) amount);
+                    SetText(res + "\n" + (int)amount);
                     textCanvas.SetActive(true);
                     Invoke("HideCanvas", 3f);
                 }
             }
         }
 
-        }
+    }
 
     void HideCanvas()
     {
         textCanvas.SetActive(false);
     }
 
-        void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag.Contains("miner"))
         {
-            miningSpeed=collision.gameObject.GetComponent<Worker>().miningSpeed;
+            miningSpeed = collision.gameObject.GetComponent<Worker>().miningSpeed;
             workerAnimator = collision.gameObject.GetComponent<Animator>();
             InvokeRepeating("DecraeseResource", 0, 1f);
 
@@ -75,9 +75,9 @@ public class Resource : MonoBehaviour
         GameObject canvas = this.transform.GetChild(this.transform.childCount - 1).gameObject;
         GameObject canvas2 = canvas.transform.GetChild(canvas.transform.childCount - 1).gameObject;
         Text textCompoent = canvas2.GetComponent<Text>();
-        textCompoent.text =t;
+        textCompoent.text = t;
     }
-    
+
     GameObject GetTextCanvas()
     {
         return this.transform.GetChild(this.transform.childCount - 1).gameObject;
@@ -85,7 +85,7 @@ public class Resource : MonoBehaviour
 
     void DecraeseResource()
     {
-        
+
         if (amount <= 0)
         {
             Destroy(this.transform.GetChild(0).gameObject);
@@ -95,7 +95,7 @@ public class Resource : MonoBehaviour
         }
         else
         {
-            if (amount<=origAmount- (currState + 1)*(origAmount/statesCount))
+            if (amount <= origAmount - (currState + 1) * (origAmount / statesCount))
             {
                 Destroy(this.transform.GetChild(0).gameObject);
                 currState++;
@@ -105,7 +105,7 @@ public class Resource : MonoBehaviour
     }
 
 
-  
+
 
 
 

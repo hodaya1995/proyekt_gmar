@@ -42,15 +42,15 @@ public class MineResources : MonoBehaviour
                 if (h > 0 && !facingRight)
                 {
                     Flip();
-                    
+
                 }
-                   
+
                 else if (h < 0 && facingRight)
                 {
                     Flip();
-                    
+
                 }
-                   
+
 
 
                 MoveToPath();
@@ -77,7 +77,7 @@ public class MineResources : MonoBehaviour
 
             }
         }
-       
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -89,17 +89,17 @@ public class MineResources : MonoBehaviour
             CancelInvoke();
             reachedEndOfPath = true;
             animator.SetBool("move", false);
-            rb.AddForce(new Vector2(0,0));
+            rb.AddForce(new Vector2(0, 0));
             animator.SetBool("mine", true);
         }
     }
 
- 
-  
+
+
 
     void BuildPathToTarget()
     {
-        
+
         seeker = GetComponent<Seeker>();
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);
@@ -107,7 +107,7 @@ public class MineResources : MonoBehaviour
 
     void UpdatePath()
     {
-      
+
         if (seeker.IsDone() && !reachedEndOfPath)
         {
             seeker.StartPath(resource.position, target.position, onPathComplete);
@@ -115,7 +115,7 @@ public class MineResources : MonoBehaviour
     }
     void onPathComplete(Path p)
     {
-      
+
         if (!p.error)
         {
             path = p;
@@ -123,7 +123,7 @@ public class MineResources : MonoBehaviour
             targetChosen = true;
             reachedEndOfPath = false;
             isMoving = true;
-            animator.SetBool("move",true);
+            animator.SetBool("move", true);
 
 
         }
@@ -140,7 +140,7 @@ public class MineResources : MonoBehaviour
             }
             if (currentWaypoint >= path.vectorPath.Count)
             {
-               
+
                 reachedEndOfPath = true;
                 return;
             }
@@ -158,13 +158,13 @@ public class MineResources : MonoBehaviour
 
             animator.SetFloat("horizontal", velocityX);
             animator.SetFloat("vertical", velocityY);
-         
+
             rb.AddForce(force);
 
 
 
             float distance = Vector2.Distance(rb.position, (Vector2)path.vectorPath[currentWaypoint]);
-         
+
             if (distance < nextWaypointDistance)
             {
                 currentWaypoint++;
@@ -175,7 +175,7 @@ public class MineResources : MonoBehaviour
 
         }
     }
-    
+
 
     void MoveForwardTo(GameObject res)
     {
@@ -199,20 +199,20 @@ public class MineResources : MonoBehaviour
         {
             Vector3 diff = target.transform.position - position;
             float curDistance = diff.sqrMagnitude;
-            
+
             if (curDistance < distance)
             {
-               
+
                 closest = target;
                 distance = curDistance;
 
             }
         }
-        
+
 
         if (closest != null)
         {
-            
+
             MoveForwardTo(closest);
         }
         else
@@ -221,11 +221,11 @@ public class MineResources : MonoBehaviour
         }
     }
     void Start()
-    {       
+    {
         res = this.tag.Split(' ')[0];
-        LookForResorces(res);  
+        LookForResorces(res);
     }
 
-  
+
 
 }
