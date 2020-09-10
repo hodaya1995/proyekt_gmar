@@ -195,25 +195,26 @@ public class Attacked : MonoBehaviour
     void Die()
     {
         //fade gradually the object and finally destroy it 
-        callDieFunc--;
-        if (callDieFunc >= 0)
-        {
-            fade = GetComponent<Renderer>().material.color;
-            fade.a = fade.a / (1.0f + (1.0f / callDieFunc));
-            GetComponent<Renderer>().material.color = fade;
+        //callDieFunc--;
+        //if (callDieFunc >= 0)
+        //{
+        //    fade = GetComponent<Renderer>().material.color;
+        //    fade.a = fade.a / (1.0f + (1.0f / callDieFunc));
+        //    GetComponent<Renderer>().material.color = fade;
 
-            if (fade.a <= .1)
-            {
-                int childs = this.transform.childCount;
-                for (int i = 0; i < childs; i++)
-                {
-                    Destroy(this.transform.GetChild(i).gameObject);
-                }
-                Destroy(this.gameObject);
+        //    if (fade.a <= .1)
+        //    {
+        //        int childs = this.transform.childCount;
+        //        for (int i = 0; i < childs; i++)
+        //        {
+        //            Destroy(this.transform.GetChild(i).gameObject);
+        //        }
+        //        Destroy(this.gameObject);
 
-            }
+        //    }
 
-        }
+        //}
+        Destroy(this.gameObject);
     }
     public int GetHealth()
     {

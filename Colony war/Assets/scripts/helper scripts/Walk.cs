@@ -46,6 +46,7 @@ public class Walk : MonoBehaviour
     const float EXCELLENT =100;
     const float GOOD = 66.6f;
     const float NEAR_DEATH = 33.3f;
+    Vector2 point;
 
 
 
@@ -55,49 +56,54 @@ public class Walk : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        collided = true;
-        attacking = this.gameObject.GetComponent<Animator>().GetBool("toAttack");
-        if (myRb != null && target != collision.transform && targetChosen)
+        if (collision.gameObject.tag == "gold")
         {
-            if (collision.gameObject.tag == "gold")
-            {
-                startRad = 2.1f;
-            }
-            else
-            {
-                startRad = 1.3f;
-            }
-
-            Radius = startRad;
-
-            bool collisionStuck = false;
-            if (collision.gameObject.GetComponent<Walk>() != null)
-            {
-
-                collisionStuck = collision.gameObject.GetComponent<Walk>().IsStuck();
-            }
-            if (!stuck && !attacking && !collisionStuck)
-            {
-
-                centre = collision.transform.position;
-                Vector2 p1 = new Vector2(centre.x, centre.y - startRad);
-                Vector2 p2 = transform.position;
-                dist = Vector2.Distance(p1, p2);
-                angle = Mathf.Acos(((2 * (startRad * startRad) - (Mathf.Abs(dist) * Mathf.Abs(dist))) / (2 * (startRad * startRad))));
-                angle = (180 * Mathf.Deg2Rad) - angle;
-                startAngle = angle;
-                seeker.CancelCurrentPathRequest();
-                CancelInvoke("UpdatePath");
-                targetChosen = false;
-                myRb.drag = 1.5f;
-                stuck = true;
-
-                InvokeRepeating("UpdateRadius", 0f, 0.3f);
-
-            }
-
-
+            stuck = true;
         }
+        //collided = true;
+        //attacking = this.gameObject.GetComponent<Animator>().GetBool("toAttack");
+        //if (myRb != null && target != collision.transform && targetChosen)
+        //{
+        //    //if (collision.gameObject.tag == "gold")
+        //        //        {
+        //        //            startRad = 2.1f;
+        //        //        }
+        //        //        else
+        //        //        {
+        //        //            startRad = 1.3f;
+        //        //        }
+
+        //        //        Radius = startRad;
+
+        //        bool collisionStuck = false;
+        //    if (collision.gameObject.GetComponent<Walk>() != null)
+        //    {
+
+        //        collisionStuck = collision.gameObject.GetComponent<Walk>().IsStuck();
+        //    }
+        //    //if (!stuck && !attacking && !collisionStuck)
+        //    if (!stuck && !attacking && !(collision.gameObject.tag.Contains("soldier")))
+        //    {
+
+        //        //            centre = collision.transform.position;
+        //        //            Vector2 p1 = new Vector2(centre.x, centre.y - startRad);
+        //        //            Vector2 p2 = transform.position;
+        //        //            dist = Vector2.Distance(p1, p2);
+        //        //            angle = Mathf.Acos(((2 * (startRad * startRad) - (Mathf.Abs(dist) * Mathf.Abs(dist))) / (2 * (startRad * startRad))));
+        //        //            angle = (180 * Mathf.Deg2Rad) - angle;
+        //        //            startAngle = angle;
+        //        //            seeker.CancelCurrentPathRequest();
+        //        //            CancelInvoke("UpdatePath");
+        //        //            targetChosen = false;
+        //        //            myRb.drag = 1.5f;
+        //        stuck = true;
+
+        //        //            InvokeRepeating("UpdateRadius", 0f, 0.3f);
+
+        //    }
+
+
+        //}
 
     }
 
@@ -108,7 +114,7 @@ public class Walk : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-
+        stuck = false;
         CancelInvoke("UpdateRadius");
         collided = false;
 
@@ -116,46 +122,56 @@ public class Walk : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (stuck)
-        {
+        //if (stuck)
+        //{
 
-            angle += RotateSpeed * Time.deltaTime;
-            Vector2 offset = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * Radius;
-            Vector2 moveTo = centre + offset;
+        //    angle += RotateSpeed * Time.deltaTime;
+        //    Vector2 offset = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)) * Radius;
+        //    Vector2 moveTo = centre + offset;
 
-            if (angle < (exitAngel * Mathf.Deg2Rad) + startAngle)
-            {
+        //    if (angle < (exitAngel * Mathf.Deg2Rad) + startAngle)
+        //    {
 
-                myRb.AddForce((moveTo - (Vector2)transform.position) * speed * Time.deltaTime);
-                myAnimator.SetBool("move", true);
-                myAnimator.SetFloat("horizontal", myRb.velocity.x);
-                myAnimator.SetFloat("vertical", myRb.velocity.y);
-                FlipAnimation();
-
-
-            }
-            else
-            {
-                CancelStuck();
-            }
+        //        myRb.AddForce((moveTo - (Vector2)transform.position) * speed * Time.deltaTime);
+        //        myAnimator.SetBool("move", true);
+        //        myAnimator.SetFloat("horizontal", myRb.velocity.x);
+        //        myAnimator.SetFloat("vertical", myRb.velocity.y);
+        //        FlipAnimation();
 
 
+        //    }
+        //    else
+        //    {
+        //        CancelStuck();
+        //    }
 
-        }
 
 
-        if (targetChosen && !stuck)
+        //}
+
+
+        //if (targetChosen && !stuck)
+        if (targetChosen )
         {
             MoveToPath();
         }
         else
         {
-            if (automaticWalk && !stuck && !collided && search) SearchAndAttack();
+            //if (automaticWalk && !stuck && !collided && search)
+            if (automaticWalk && !collided && search)
+            {
+                SearchAndAttack();
+            }
         }
 
 
     }
 
+
+    public Vector2 GetCurrentMoveToPoint()
+    {
+        return point;
+    }
     void Update()
     {
 
@@ -303,7 +319,7 @@ public class Walk : MonoBehaviour
             isMoving = true;
             reachedEndOfPath = false;
             if (!myAnimator.GetBool("toAttack")) myAnimator.SetBool("move", true);
-            stuck = false;
+           // stuck = false;
 
         }
         else
@@ -402,8 +418,8 @@ public class Walk : MonoBehaviour
             Vector2 force = direction * speed * Time.deltaTime;
 
 
-
-            myRb.AddForce(force);
+            point = force;
+            //myRb.AddForce(force);
 
             float horizontalVelocity = Vector2.Dot(direction, Vector2.right);
             float verticalVelocity = Vector2.Dot(direction, Vector2.up);
@@ -420,6 +436,7 @@ public class Walk : MonoBehaviour
                 myAnimator.SetFloat("vertical", verticalVelocity);
 
             }
+            //myAnimator.SetFloat("speed", point.sqrMagnitude);
             prevVelocityX = horizontalVelocity;
             prevVelocityY = verticalVelocity;
 
@@ -466,7 +483,6 @@ public class Walk : MonoBehaviour
                 Attacked currAttacked = transform.GetComponent<Attacked>();
                 float currHelathPrecentTarget = currAttackedTarget.GetHealth()*1.0f / currAttackedTarget.GetMaxHealth()*1.0f;
                 float currHelathPrecent = currAttacked.GetHealth() * 1.0f / currAttacked.GetMaxHealth() * 1.0f;
-                Debug.Log("currHelathPrecentTarget " + currHelathPrecentTarget+ " currHelathPrecent "+ currHelathPrecent);
                 numOfSoldiersToKill++;
                 Vector3 diff = target.transform.position - position;
                 float curDistance = diff.sqrMagnitude;
@@ -515,6 +531,7 @@ public class Walk : MonoBehaviour
 
     void UpdatePath()
     {
+        
         if (mySoldier != null)
         {
             if (seeker.IsDone() && !reachedEndOfPath)
@@ -523,6 +540,11 @@ public class Walk : MonoBehaviour
 
                 if (moveToRigidbody)
                 {
+                    if (target == null)
+                    {
+                        CancelInvoke("UpdatePath");
+                        return;
+                    }
                     seeker.StartPath(target.position, mySoldier.position, onPathComplete);
                 }
                 else
