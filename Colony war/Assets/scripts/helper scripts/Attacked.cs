@@ -20,10 +20,21 @@ public class Attacked : MonoBehaviour
     bool dying = false;
     int attackers;
     bool facingRight;
-    float waitForSearch = 5f;
+    float waitForSearch = 3f;
     Collision2D collision;
     bool decreaseLifeMehodCalled;
+    bool targeted;
+    bool moving;
 
+    public void SetTargeted(bool targeted)
+    {
+        this.targeted = targeted;
+    }
+
+    public bool IsTargeted()
+    {
+        return targeted;
+    }
     public int GetAttackersNum()
     {
         return attackers;
@@ -70,7 +81,7 @@ public class Attacked : MonoBehaviour
 
     void Search()
     {
-        GetComponent<Walk>().SetSearch(true);
+       GetComponent<Walk>().SetSearch(true);
     }
 
     void OnColliderEnter(Collision2D collision)
@@ -78,11 +89,17 @@ public class Attacked : MonoBehaviour
         bool targeted = false;
         if (collision.gameObject.GetComponent<Attack>() != null)
         {
-            targeted = (collision.collider.tag.Contains("colony") && tag.Contains("enemy")) &&
-           collision.gameObject.GetComponent<Attack>().GetTarget() == this.gameObject && collision.gameObject.GetComponent<Attack>().TargetIsChosen();
+           targeted = (collision.collider.tag.Contains("colony") && tag.Contains("enemy")) &&
+           collision.gameObject.GetComponent<Attack>().GetTarget() == this.gameObject.name && collision.gameObject.GetComponent<Attack>().TargetIsChosen();
         }
-        if ((collision.collider.tag.Contains("enemy") && collision.collider.tag != tag) || targeted)
+
+        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
+        bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
+        bool collisionTargeted = (collision.collider.tag.Contains("enemy") && collision.collider.tag != tag);
+           
+        if (enemy2colony || colony2enemy || collisionTargeted)
         {
+            attacked = true;
 
             GetComponent<Walk>().SetSearch(false);
             if (!decreaseLifeMehodCalled)
@@ -93,7 +110,7 @@ public class Attacked : MonoBehaviour
 
             attacker = collision.gameObject;
             attackerAnimator = attacker.GetComponent<Animator>();
-            attacked = true;
+            
 
 
 
@@ -126,19 +143,19 @@ public class Attacked : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
 
-
-
         bool targeted = false;
         if (collision.gameObject.GetComponent<Attack>() != null)
         {
             targeted = (collision.collider.tag.Contains("colony") && tag.Contains("enemy")) &&
-           collision.gameObject.GetComponent<Attack>().GetTarget() == this.gameObject && collision.gameObject.GetComponent<Attack>().TargetIsChosen();
+           collision.gameObject.GetComponent<Attack>().GetTarget() == this.gameObject.name && collision.gameObject.GetComponent<Attack>().TargetIsChosen();
         }
 
-        //the attacked soldier is not near the attacker
-        if ((collision.collider.tag.Contains("enemy") && collision.collider.tag != tag) || targeted)
+        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
+        bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
+        bool collisionTargeted = (collision.collider.tag.Contains("enemy") && collision.collider.tag != tag);
+        if (enemy2colony || colony2enemy || collisionTargeted)
         {
-            OnColliderExit();
+           OnColliderExit();
 
         }
     }
@@ -147,6 +164,7 @@ public class Attacked : MonoBehaviour
     void OnColliderExit()
     {
         CancelInvoke("DecreaseLife");
+
         attackers--;
         attacked = false;
         decreaseLifeMehodCalled = false;
@@ -155,23 +173,9 @@ public class Attacked : MonoBehaviour
 
     void Update()
     {
-        bool moving = GetComponent<Walk>().IsMoving();
+        moving = GetComponent<Walk>().IsMoving();
         Attack attack = GetComponent<Attack>();
-        if (attack != null)
-        {
-            bool exitFromCollider = GetComponent<Attack>().ExitCollider();
-            if (exitFromCollider)
-            {
-                OnColliderExit();
-            }
-            else
-            {
-                if (collision != null)
-                    OnColliderEnter(collision);
-            }
-        }
-
-
+ 
         if (attacked && !moving)//dont move
         {
             rb.velocity = new Vector3(0, 0, 0);
@@ -194,26 +198,6 @@ public class Attacked : MonoBehaviour
 
     void Die()
     {
-        //fade gradually the object and finally destroy it 
-        //callDieFunc--;
-        //if (callDieFunc >= 0)
-        //{
-        //    fade = GetComponent<Renderer>().material.color;
-        //    fade.a = fade.a / (1.0f + (1.0f / callDieFunc));
-        //    GetComponent<Renderer>().material.color = fade;
-
-        //    if (fade.a <= .1)
-        //    {
-        //        int childs = this.transform.childCount;
-        //        for (int i = 0; i < childs; i++)
-        //        {
-        //            Destroy(this.transform.GetChild(i).gameObject);
-        //        }
-        //        Destroy(this.gameObject);
-
-        //    }
-
-        //}
         Destroy(this.gameObject);
     }
     public int GetHealth()
@@ -238,9 +222,10 @@ public class Attacked : MonoBehaviour
             attacked = false;
             CancelInvoke("DecreaseLife");
             dying = true;
-            InvokeRepeating("Die", 0f, 0.5f);
             animator.SetBool("die", true);
 
+            Invoke("Die",2.3f);
+           
 
         }
     }

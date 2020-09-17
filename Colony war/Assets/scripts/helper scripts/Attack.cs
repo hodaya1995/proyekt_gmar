@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public class Attack : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class Attack : MonoBehaviour
     Animator attackedAnimator;
     bool attacking;
     bool soldierChosen;
-    GameObject targetToAttack;
+    string targetToAttack;
     bool targetChosen;
     Rigidbody2D rb;
-    float waitForSearch = 5f;
-    bool exitCollider;
+    float waitForSearch = 3f;
+    bool exitCollider=true;
+    bool setAttack;
     void Start()
     {
         animator = this.GetComponent<Animator>();
@@ -23,100 +25,83 @@ public class Attack : MonoBehaviour
 
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
+ 
 
-        //the attacked soldier near the attacker- attack only soldiers/workers that are not you
-        if (((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy")) ||
-        (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy") ||
-            (targetToAttack == collision.gameObject) && targetChosen)
-        {
-            exitCollider = false;
-            GetComponent<Walk>().SetSearch(false);
-            attacked = collision.gameObject;
-            bool moving = GetComponent<Walk>().IsMoving();
-
-            if (!moving)
-            {
-                animator.SetBool("toAttack", true);
-
-                rb.velocity = new Vector3(0, 0, 0);
-                Vector2 dir = new Vector2((-this.transform.position.x + attacked.transform.position.x), (-this.transform.position.y + attacked.transform.position.y)).normalized;
-                float h = dir.x;
-                float v = dir.y;
-                animator.SetFloat("horizontal", h);
-                animator.SetFloat("vertical", v);
-            }
-
-            attackedAnimator = attacked.GetComponent<Animator>();
-            attacking = true;
-            GetComponent<Walk>().StopMovingToPath();
-
-
-
-        }
-
-
-    }
-
-
-    public GameObject GetTarget()
+    public string GetTarget()
     {
         return this.targetToAttack;
     }
-
-    private void OnCollisionStay2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        attacked = collision.gameObject;
-
-        bool moving = GetComponent<Walk>().IsMoving();
-
-        if ((targetToAttack == collision.gameObject) && targetChosen)
-
-
+        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
+        bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
+        bool collisionTargeted = (collision.gameObject.name.Split(' ')[0] == (targetToAttack)) && targetChosen&&this.tag!= collision.collider.tag;
+       
+        //the attacked soldier near the attacker- attack only soldiers/workers that are not you
+        if (enemy2colony || colony2enemy|| collisionTargeted)
         {
-            if (!moving)
-            {
-                animator.SetBool("toAttack", true);
+            AttackCollision(collision.gameObject);
 
-                rb.velocity = new Vector3(0, 0, 0);
-                Vector2 dir = new Vector2((-this.transform.position.x + attacked.transform.position.x), (-this.transform.position.y + attacked.transform.position.y)).normalized;
-                float h = dir.x;
-                float v = dir.y;
-                animator.SetFloat("horizontal", h);
-                animator.SetFloat("vertical", v);
-            }
-
-            attacked = collision.gameObject;
-            attackedAnimator = attacked.GetComponent<Animator>();
-            attacking = true;
-            GetComponent<Walk>().StopMovingToPath();
         }
 
-        if (moving)
-        {
-            animator.SetBool("toAttack", false);
-        }
+
     }
 
+    void AttackCollision (GameObject soldierToAttack)
+    {
+        
+        exitCollider = false;
+        GetComponent<Walk>().SetSearch(false);
+        attacked = soldierToAttack;
+        bool moving = GetComponent<Walk>().IsMoving();
+
+        if (!moving)
+        {
+            animator.SetBool("toAttack", true);
+
+            rb.velocity = new Vector3(0, 0, 0);
+            Vector2 dir = new Vector2((-this.transform.position.x + attacked.transform.position.x), (-this.transform.position.y + attacked.transform.position.y)).normalized;
+            float h = dir.x;
+            float v = dir.y;
+            animator.SetFloat("horizontal", h);
+            animator.SetFloat("vertical", v);
+        }
+       
+
+        attackedAnimator = attacked.GetComponent<Animator>();
+        attacking = true;
+        GetComponent<Walk>().StopMovingToPath();
+    }
+
+  
     void OnCollisionExit2D(Collision2D collision)
     {
         //the attacked soldier is not near the attacker-dont attack
-        if (((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy")) ||
-            (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy") ||
-                (targetToAttack != null) && targetChosen)
-
+        if (!setAttack)
         {
-            exitCollider = true;
+            bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
+            bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
+            bool collisionTargeted = (collision.gameObject.name.Split(' ')[0] == (targetToAttack)) && targetChosen && this.tag != collision.collider.tag;
+            if (enemy2colony || colony2enemy || collisionTargeted)
 
-            animator.SetBool("toAttack", false);
-            targetChosen = false;
-            attacking = false;
+            {
+                exitCollider = true;
+              
+                animator.SetBool("toAttack", false);
+                targetChosen = false;
+                attacking = false;
 
-            Invoke("Search", waitForSearch);
+                Invoke("Search",waitForSearch);
 
+            }
         }
+        
 
+    }
+    
+    public GameObject GetAttacked()
+    {
+        return attacked;
     }
     public bool ExitCollider()
     {
@@ -124,7 +109,7 @@ public class Attack : MonoBehaviour
     }
     void Search()
     {
-        GetComponent<Walk>().SetSearch(true);
+         GetComponent<Walk>().SetSearch(true);
     }
     public bool TargetIsChosen()
     {
@@ -163,14 +148,28 @@ public class Attack : MonoBehaviour
                 //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+                Vector3 mousePos = Input.mousePosition;
+                mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+                Collider2D[] nearSoldiers1 = GetNearSoldiers(mousePos);
 
 
-                if (hitInformation.collider != null && !soldierChosen)
+                if ((hitInformation.collider != null || nearSoldiers1 != null) && !soldierChosen)
                 {
 
+                    Transform t = nearSoldiers1[0].transform;
 
+                    float dis = Mathf.Infinity;
+                    foreach (Collider2D collider in nearSoldiers1)
+                    {
+                        float currDis = Mathf.Abs(Vector3.Distance(collider.transform.position, mousePos));
+                        if (currDis < dis)
+                        {
+                            dis = currDis;
+                            t = collider.transform;
+                        }
+                    }
 
-                    if (this.tag == hitInformation.collider.tag)
+                    if (this.tag == t.tag)
                     {
 
 
@@ -184,14 +183,14 @@ public class Attack : MonoBehaviour
                 else if (soldierChosen)
                 {
 
+                    Collider2D[] nearSoldiers2 = GetNearSoldiers(mousePos);
 
-
-
-                    if (hitInformation.collider != null)
+                    if (nearSoldiers2 != null&& nearSoldiers2.Length >0)
                     {
 
-                        targetToAttack = hitInformation.collider.gameObject;
+                        targetToAttack = (nearSoldiers2[0].name.Split(' '))[0];
                         targetChosen = true;
+                   
                     }
                     else
                     {
@@ -207,9 +206,30 @@ public class Attack : MonoBehaviour
         }
 
 
+       
+        if (this.tag.Contains("colony"))
+        {
+            bool solAttacked = attacked != null;
+            bool solAttackedAnimator = attacked != null;
+            if (solAttacked && solAttackedAnimator)
+            {
+                setAttack = true;
 
+                Attack attackCompOfAttacked = attacked.GetComponent<Attack>();
+                GameObject attackedOfAttacked = attackCompOfAttacked.GetAttacked();
+                if (attackCompOfAttacked != null) ;
+                {
+                    AttackCollision(attackedOfAttacked);
+                }
+            }
+            else
+            {
+                setAttack = false;
+            }
 
-
+        }
+       
+       
 
 
 
@@ -219,7 +239,10 @@ public class Attack : MonoBehaviour
 
     }
 
-
+    Collider2D[] GetNearSoldiers(Vector3 pos)
+    {
+        return Physics2D.OverlapCircleAll(pos, 1.5f);
+    }
 
 
 

@@ -7,7 +7,9 @@ public class CreateColony : MonoBehaviour
 
     void Start()
     {
-        //CreateSoldier("axe soldier", 10f, 10, new Vector3(0, 0, 0));
+        
+        
+        CreateSoldier("axe soldier", 10f, 10, new Vector3(0, 0, 0));
         //CreateWorker("gold miner", 10, 10, new Vector3(5,1, 0));
 
     }

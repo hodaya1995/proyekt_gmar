@@ -9,7 +9,7 @@ public class Soldier : MonoBehaviour
     public float speed = 20f;
     Walk walk;
     Animator animator;
-
+   
     void Start()
     {
         this.gameObject.AddComponent<Character>();
@@ -51,7 +51,7 @@ public class Soldier : MonoBehaviour
 
     }
 
-
+   
 
 
 

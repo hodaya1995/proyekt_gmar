@@ -2,7 +2,8 @@
 using Pathfinding;
 using System.Security.Cryptography;
 using UnityEditor;
-
+using System.Collections;
+using System.Collections.Generic;
 public class Walk : MonoBehaviour
 {
     Transform mySoldier;
@@ -14,7 +15,7 @@ public class Walk : MonoBehaviour
     Seeker seeker;
     Rigidbody2D myRb;
     Vector3 targetPos;
-    Transform target;
+    public Transform target;
     bool isMoving = false;
     Animator myAnimator;
     public bool targetChosen;
@@ -47,8 +48,15 @@ public class Walk : MonoBehaviour
     const float GOOD = 66.6f;
     const float NEAR_DEATH = 33.3f;
     Vector2 point;
+    GameObject prevSoldierTaregted;
+    Vector3 center;
+    bool setCenter;
 
-
+    public void SetCenter(Vector3 center)
+    {
+        setCenter = true;
+        this.center = center;
+    }
 
     public void SetSearch(bool search)
     {
@@ -157,6 +165,7 @@ public class Walk : MonoBehaviour
         }
         else
         {
+            
             //if (automaticWalk && !stuck && !collided && search)
             if (automaticWalk && !collided && search)
             {
@@ -200,17 +209,32 @@ public class Walk : MonoBehaviour
                 Vector3 mousePos = Input.mousePosition;
                 mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
+                Collider2D[] nearSoldiers1 = GetNearSoldiers(mousePos);
 
-                if (hitInformation.collider != null && !soldierChosen)
+                if ((hitInformation.collider != null || nearSoldiers1!=null) && !soldierChosen)
                 {
 
+                    Transform t = nearSoldiers1[0].transform;
 
-                    if (this.tag == hitInformation.collider.tag)
+                    float dis = Mathf.Infinity;
+                    foreach (Collider2D collider in nearSoldiers1)
                     {
-                        mySoldier = hitInformation.collider.transform;
-                        myRb = hitInformation.collider.GetComponent<Rigidbody2D>();
+                        float currDis = Mathf.Abs(Vector3.Distance(collider.transform.position,mousePos));
+                        if (currDis < dis)
+                        {
+                            dis = currDis;
+                            t = collider.transform;
+                        }
+                    }
+
+
+                    if (this.tag == t.tag)
+                    {
+                        
+                        mySoldier = t.transform;
+                        myRb = t.GetComponent<Rigidbody2D>();
                         myRb.drag = 1.5f;
-                        myAnimator = hitInformation.collider.GetComponent<Animator>();
+                        myAnimator = t.GetComponent<Animator>();
                         soldierChosen = true;
 
                     }
@@ -223,23 +247,23 @@ public class Walk : MonoBehaviour
                     if (soldierChosen)
                     {
 
-                        moveToRigidbody = hitInformation.collider != null;
+                        Collider2D [] nearSoldiers2 = GetNearSoldiers(mousePos);
+                    
+
+                        moveToRigidbody = hitInformation.collider != null && nearSoldiers2!=null;
 
                         if (moveToRigidbody)
                         {
-
-                            target = hitInformation.collider.transform;
+                            MoveToTarget(nearSoldiers2, true);
+                            
                         }
                         else
                         {
-
-                            targetPos = mousePos;
+                            MoveToTargetPos(mousePos,true);
+                            
                         }
 
-                        BuildPathToTarget();
-                        soldierChosen = false;
-                        targetChosen = true;
-                        reachedEndOfPath = false;
+                        
                     }
                 }
 
@@ -254,7 +278,52 @@ public class Walk : MonoBehaviour
 
 
 
+    Collider2D[] GetNearSoldiers(Vector3 pos)
+    {
+        return Physics2D.OverlapCircleAll(pos, 1.5f);
+    }
+    public void MoveToTarget(Collider2D[] targets, bool setNewTarget)
+    {
+        mySoldier = this.GetComponent<Transform>();
+        GameObject target = targets[0].gameObject;
+        float dis=Mathf.Infinity;
+        foreach(Collider2D t in targets)
+        {
+            float currDis = Mathf.Abs(Vector3.Distance(t.transform.position, mySoldier.position));
+            if (currDis < dis)
+            {
+                dis = currDis;
+                target = t.gameObject;
+            }
+        }
+        myRb = this.GetComponent<Rigidbody2D>();
+        myRb.drag = 1.5f;
+        myAnimator = this.GetComponent<Animator>();
+        moveToRigidbody = true;
+        this.target = target.transform;
+        if (setNewTarget) GetComponentInParent<Flock>().SetNewTarget(target, false);
+        soldierChosen = false;
+        targetChosen = true;
+        reachedEndOfPath = false;
+        BuildPathToTarget();
+       
+    }
 
+    public void MoveToTargetPos(Vector3 targetPos, bool setNewTarget)
+    {
+        mySoldier = this.GetComponent<Transform>();
+        myRb = this.GetComponent<Rigidbody2D>();
+        myRb.drag = 1.5f;
+        myAnimator = this.GetComponent<Animator>();
+        moveToRigidbody = false;
+        this.targetPos = targetPos; 
+        if (setNewTarget) GetComponentInParent<Flock>().SetNewTargetPos(targetPos);
+        soldierChosen = false;
+        targetChosen = true;
+        reachedEndOfPath = false;
+        BuildPathToTarget();
+        
+    }
 
     void CancelStuck()
     {
@@ -302,7 +371,7 @@ public class Walk : MonoBehaviour
         if (closest != null)
         {
 
-            MoveForwardTo(closest);
+            MoveForwardTo(closest,true);
         }
         else
         {
@@ -414,12 +483,25 @@ public class Walk : MonoBehaviour
 
                 reachedEndOfPath = false;
             }
-            Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
+            Vector2 direction =Vector2.zero;
+            if (setCenter)
+            {
+                 direction = 0.7f*(((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized) +(Vector2) center*0.3f;
+                setCenter = false;
+            }
+            else
+            {
+                direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
+            }
+         
             Vector2 force = direction * speed * Time.deltaTime;
 
 
             point = force;
-            //myRb.AddForce(force);
+
+           myRb.AddForce(force);
+            
+           
 
             float horizontalVelocity = Vector2.Dot(direction, Vector2.right);
             float verticalVelocity = Vector2.Dot(direction, Vector2.up);
@@ -436,7 +518,6 @@ public class Walk : MonoBehaviour
                 myAnimator.SetFloat("vertical", verticalVelocity);
 
             }
-            //myAnimator.SetFloat("speed", point.sqrMagnitude);
             prevVelocityX = horizontalVelocity;
             prevVelocityY = verticalVelocity;
 
@@ -452,7 +533,6 @@ public class Walk : MonoBehaviour
 
             if (distance < nextWaypointDistance)
             {
-
                 currentWaypoint--;
                 return;
 
@@ -467,7 +547,7 @@ public class Walk : MonoBehaviour
     {
         numOfSoldiersToKill = 0;
         GameObject[] targets;
-        string[] tagsToSearch = new string[] { "colony soldier", "gold miner", "stone miner" };
+        string[] tagsToSearch = new string[] { "colony soldier", "gold miner" };
         GameObject closestDefault = null;
         GameObject closest = null;
 
@@ -479,29 +559,31 @@ public class Walk : MonoBehaviour
             Vector3 position = transform.position;
             foreach (GameObject target in targets)
             {
-                Attacked currAttackedTarget = target.GetComponent<Attacked>();
-                Attacked currAttacked = transform.GetComponent<Attacked>();
-                float currHelathPrecentTarget = currAttackedTarget.GetHealth()*1.0f / currAttackedTarget.GetMaxHealth()*1.0f;
-                float currHelathPrecent = currAttacked.GetHealth() * 1.0f / currAttacked.GetMaxHealth() * 1.0f;
-                numOfSoldiersToKill++;
-                Vector3 diff = target.transform.position - position;
-                float curDistance = diff.sqrMagnitude;
-                if (curDistance < distance)
-                {
-                    closestDefault = target;
-                    distance = curDistance;
-                    if((GOOD<= currHelathPrecentTarget && currHelathPrecentTarget <= EXCELLENT && GOOD <= currHelathPrecent && currHelathPrecentTarget <= EXCELLENT)||
-                        (NEAR_DEATH <= currHelathPrecentTarget && currHelathPrecentTarget <= GOOD && NEAR_DEATH <= currHelathPrecent && currHelathPrecentTarget <= GOOD) ||
-                        (0 <= currHelathPrecentTarget && currHelathPrecentTarget <= NEAR_DEATH && 0 <= currHelathPrecent && currHelathPrecentTarget <= NEAR_DEATH))
+                
+                    Attacked currAttackedTarget = target.GetComponent<Attacked>();
+                    Attacked currAttacked = transform.GetComponent<Attacked>();
+                    float currHelathPrecentTarget = currAttackedTarget.GetHealth() * 1.0f / currAttackedTarget.GetMaxHealth() * 1.0f;
+                    float currHelathPrecent = currAttacked.GetHealth() * 1.0f / currAttacked.GetMaxHealth() * 1.0f;
+                    numOfSoldiersToKill++;
+                    Vector3 diff = target.transform.position - position;
+                    float curDistance = diff.sqrMagnitude;
+                    if (curDistance < distance)
                     {
-                        closest = target;
+                        closestDefault = target;
+                        distance = curDistance;
+                        if ((GOOD <= currHelathPrecentTarget && currHelathPrecentTarget <= EXCELLENT && GOOD <= currHelathPrecent && currHelathPrecentTarget <= EXCELLENT) ||
+                            (NEAR_DEATH <= currHelathPrecentTarget && currHelathPrecentTarget <= GOOD && NEAR_DEATH <= currHelathPrecent && currHelathPrecentTarget <= GOOD) ||
+                            (0 <= currHelathPrecentTarget && currHelathPrecentTarget <= NEAR_DEATH && 0 <= currHelathPrecent && currHelathPrecentTarget <= NEAR_DEATH))
+                        {
+                            closest = target;
 
+                        }
                     }
-                }
+                
                 
             }
         }
-
+      
         if (closest != null) return closest;
         return closestDefault;
 
@@ -510,17 +592,22 @@ public class Walk : MonoBehaviour
     }
 
 
-    void MoveForwardTo(GameObject soldier)
+    public void MoveForwardTo(GameObject soldier,bool setNewTarget)
     {
         mySoldier = this.GetComponent<Transform>();
         myRb = this.GetComponent<Rigidbody2D>();
         myAnimator = this.GetComponent<Animator>();
         target = soldier.GetComponent<Transform>();
+        if(setNewTarget) GetComponentInParent<Flock>().SetNewTarget(enemyToAttack,true);
         moveToRigidbody = true;
         BuildPathToTarget();
 
     }
 
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
+    }
 
     public void BuildPathToTarget()
     {
@@ -571,12 +658,20 @@ public class Walk : MonoBehaviour
     void SearchAndAttack()
     {
         enemyToAttack = FindClosestEnemy();
+        if (enemyToAttack != null)
+        {
+            target = enemyToAttack.transform;
 
-        bool attacking = this.gameObject.GetComponent<Animator>().GetBool("toAttack");
+        }
 
+
+        bool attacking = this.GetComponent<Animator>().GetBool("toAttack");
+
+      
         if (enemyToAttack != null && myRb != null && myAnimator != null && target != null)
         {
-
+         
+         
             if (!attacking)
             {
                 float currDistance;
@@ -591,33 +686,31 @@ public class Walk : MonoBehaviour
 
                 float distance = Vector2.Distance(myRb.position, enemyToAttack.transform.position);
 
-                if (seeker != null && currDistance > distance)
+                if (seeker != null) 
                 {
 
                     seeker.CancelCurrentPathRequest();
                     reachedEndOfPath = false;
                     targetChosen = true;
-                    MoveForwardTo(enemyToAttack);
+                    
+                    MoveForwardTo(enemyToAttack,true);
 
                 }
-                else if (seeker != null && numOfSoldiersToKill == 1)
-                {
-                    reachedEndOfPath = false;
-                    targetChosen = true;
-                    MoveForwardTo(enemyToAttack);
-                }
+             
             }
+          
 
 
         }
         else
         {
-            if (enemyToAttack != null && !attacking)
+           if (enemyToAttack != null && !attacking)
             {
-                MoveForwardTo(enemyToAttack);
+                MoveForwardTo(enemyToAttack,true);
 
 
             }
+           
         }
 
     }
