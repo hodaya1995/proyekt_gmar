@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 public class Attack : MonoBehaviour
 {
     Animator animator;
@@ -153,7 +149,7 @@ public class Attack : MonoBehaviour
                 Collider2D[] nearSoldiers1 = GetNearSoldiers(mousePos);
 
 
-                if ((hitInformation.collider != null || nearSoldiers1 != null) && !soldierChosen)
+                if ((hitInformation.collider != null && nearSoldiers1 != null&& nearSoldiers1.Length > 0) && !soldierChosen)
                 {
 
                     Transform t = nearSoldiers1[0].transform;

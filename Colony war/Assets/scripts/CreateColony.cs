@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateColony : MonoBehaviour
@@ -9,7 +8,7 @@ public class CreateColony : MonoBehaviour
     {
         
         
-        CreateSoldier("axe soldier", 10f, 10, new Vector3(0, 0, 0));
+        //CreateSoldier("axe soldier", 10f, 10, new Vector3(0, 0, 0));
         //CreateWorker("gold miner", 10, 10, new Vector3(5,1, 0));
 
     }

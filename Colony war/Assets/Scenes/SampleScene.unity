@@ -428,7 +428,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 5881426769298915312, guid: f813590d21de8c14f9a34761ea7903dd,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1124037296}
   soldiersCount: 6
   driveFactor: 10
@@ -480,7 +479,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 5070059515939814498, guid: c53f666c3e36b7e4b90f5b0f2a357249,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1308278800}
   soldiersCount: 6
   driveFactor: 10
@@ -614,7 +612,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 8282945331725402632, guid: b4e20296d3f397c4aaf21460c00041a8,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1124037296}
   soldiersCount: 6
   driveFactor: 10
@@ -817,7 +814,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 5080350375994329508, guid: 6caed2bd39ab1024aaf5ae5f60b6adc1,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1308278800}
   soldiersCount: 6
   driveFactor: 10
@@ -944,7 +940,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 4786261602873965373, guid: 7bea62a342b5c7d49a91268ac5dab306,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1124037296}
   soldiersCount: 6
   driveFactor: 10
@@ -2815,7 +2810,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: -712521962934908907, guid: c038d230fec487848843736d41964756,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1308278800}
   soldiersCount: 6
   driveFactor: 10
@@ -3161,7 +3155,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 7794229762529328254, guid: ff6b7ba9d8c3b634694e3af97a05e01d,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1124037296}
   soldiersCount: 6
   driveFactor: 10
@@ -3870,7 +3863,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 4127940321818944976, guid: f0f2678d1a1800546b15f20ed82856a7,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1124037296}
   soldiersCount: 6
   driveFactor: 10
@@ -4002,7 +3994,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112379439}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.794, y: -2.635, z: 129.16154}
+  m_LocalPosition: {x: 7.18, y: -2.635, z: 129.16154}
   m_LocalScale: {x: 0.67946166, y: 0.6262328, z: 1}
   m_Children:
   - {fileID: 1790237767}
@@ -4172,9 +4164,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000023841858, y: 0}
+  m_Offset: {x: 0.7973011, y: 0}
   serializedVersion: 2
-  m_Radius: 2.225
+  m_Radius: 1.4398296
 --- !u!1 &1139674924
 GameObject:
   m_ObjectHideFlags: 0
@@ -4220,7 +4212,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: -774941744520492790, guid: 5610921b17935154b8601419468e87ea,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1308278800}
   soldiersCount: 6
   driveFactor: 10
@@ -4431,7 +4422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1180421110
 Transform:
   m_ObjectHideFlags: 0
@@ -4460,8 +4451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 5285307147874732275, guid: d83366e9c0e0e3a408d9d538357530cd,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
-  instantiatePlace: {fileID: 1124037296}
+  instantiatePlace: {fileID: 1112379439}
   soldiersCount: 6
   driveFactor: 10
   maxSpeed: 5
@@ -4512,7 +4502,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 8261434946129232296, guid: 29b3ea40de41a964994924afaec8c942,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1124037296}
   soldiersCount: 6
   driveFactor: 10
@@ -4644,7 +4633,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1308278800}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.94, y: -0.53, z: 129.16154}
+  m_LocalPosition: {x: 5.49, y: 3.02, z: 129.16154}
   m_LocalScale: {x: 0.63679, y: 0.6135301, z: 1}
   m_Children: []
   m_Father: {fileID: 1587998987}
@@ -4791,7 +4780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 491410966296772505, guid: bb3baa7459ae91c4cab6f8a494a50bae,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1308278800}
   soldiersCount: 5
   driveFactor: 10
@@ -33231,7 +33219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: -6262979427432931456, guid: a85a2769f7314534380d20a808d366d8,
     type: 3}
-  behavior: {fileID: 11400000, guid: 644eda7e3ccc8e7478709ee3331e35ea, type: 2}
   instantiatePlace: {fileID: 1308278800}
   soldiersCount: 6
   driveFactor: 10
@@ -33499,7 +33486,7 @@ MonoBehaviour:
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
     cacheStartup: 0
-  showNavGraphs: 0
+  showNavGraphs: 1
   showUnwalkableNodes: 1
   debugMode: 0
   debugFloor: 0
@@ -33626,7 +33613,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: -785216749497601243, guid: 3539df52996af504992ba7e49bcba660,
     type: 3}
-  behavior: {fileID: 0}
   instantiatePlace: {fileID: 0}
   soldiersCount: 5
   driveFactor: 10

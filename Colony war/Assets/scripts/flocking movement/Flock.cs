@@ -40,7 +40,7 @@ public class Flock : MonoBehaviour
     void InstantiateSoldier()
     {
         float x = instantiatePlace.transform.position.x;
-        float y = instantiatePlace.transform.position.y + 0.5f;
+        float y = instantiatePlace.transform.position.y + 1.0f;
 
        
         if (currI % 2 == 0)
@@ -68,16 +68,8 @@ public class Flock : MonoBehaviour
         newAgent.Initialize(this);
         agents.Add(newAgent);
         copyAgents.Add(newAgent);
-        if (currI % 2 == 0 && currI < soldiersCount)
-        {
-            InstantiateSoldier();
-            //Invoke("InstantiateSoldier", 1f);
-
-        }
-        else if(currI % 2 == 1 && currI < soldiersCount)
-        {
-            InstantiateSoldier();
-        }
+         if (currI < soldiersCount) InstantiateSoldier();
+        
     }
 
 
@@ -89,19 +81,23 @@ public class Flock : MonoBehaviour
         {
             foreach (FlockAgent agent in agents)
             {
-                Walk walk = agent.GetComponent<Walk>();
-                if (isEnemy)
+                if (agent != null)
                 {
-                    walk.SetTarget(target.transform);
-                    walk.MoveForwardTo(target, false);
-                }
-                else
-                {
+                    Walk walk = agent.GetComponent<Walk>();
+                    if (isEnemy)
+                    {
+                        walk.SetTarget(target.transform);
+                        walk.MoveForwardTo(target, false);
+                    }
+                    else
+                    {
 
-                    Collider2D[] ans= new Collider2D[1];
-                    ans[0] = target.GetComponent<Collider2D>();
-                    walk.MoveToTarget(ans , false);
+                        Collider2D[] ans = new Collider2D[1];
+                        ans[0] = target.GetComponent<Collider2D>();
+                        walk.MoveToTarget(ans, false);
+                    }
                 }
+               
               
             }
             this.prev = target;
