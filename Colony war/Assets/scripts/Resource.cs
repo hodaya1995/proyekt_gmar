@@ -14,6 +14,11 @@ public class Resource : MonoBehaviour
     string res;
     GameObject textCanvas;
 
+    Text countxet;
+    int resbar = 0;
+   
+  
+
     void Start()
     {
         origAmount = amount;
@@ -22,6 +27,15 @@ public class Resource : MonoBehaviour
         res = this.tag;
         textCanvas = GetTextCanvas();
         textCanvas.SetActive(false);
+
+        GameObject child = Camera.main.transform.FindChild("bar resorces").gameObject;
+        child = child.transform.FindChild("Canvas").gameObject;
+        child = child.transform.FindChild("Image").gameObject;
+        GameObject text = child.transform.FindChild("Text").gameObject;
+        countxet = text.GetComponent<Text>();
+        countxet.text = ""+resbar;
+
+
     }
 
     void Update()
@@ -56,6 +70,7 @@ public class Resource : MonoBehaviour
 
     void HideCanvas()
     {
+
         textCanvas.SetActive(false);
     }
 
@@ -77,6 +92,15 @@ public class Resource : MonoBehaviour
         Text textCompoent = canvas2.GetComponent<Text>();
         textCompoent.text = t;
     }
+
+
+
+
+    void SetTextInBarResources(int t)
+	{
+        resbar = resbar + t;
+        countxet.text = ""+ resbar;
+	}
 
     GameObject GetTextCanvas()
     {
@@ -101,7 +125,14 @@ public class Resource : MonoBehaviour
                 currState++;
             }
         }
-        amount -= miningSpeed;
+        int temp_a = (int)amount;
+        int temp_m = (int)miningSpeed;
+        amount = temp_a;
+        miningSpeed = temp_m;
+         amount -= miningSpeed;
+        
+        Debug.Log(amount);
+        SetTextInBarResources((int)miningSpeed);
     }
 
 
