@@ -14,6 +14,10 @@ public class Resource : MonoBehaviour
     string res;
     GameObject textCanvas;
 
+
+    Text countxet;
+    int resbar = 0;
+
     void Start()
     {
         origAmount = amount;
@@ -22,6 +26,14 @@ public class Resource : MonoBehaviour
         res = this.tag;
         textCanvas = GetTextCanvas();
         textCanvas.SetActive(false);
+
+
+        GameObject child = Camera.main.transform.Find("Canvas").gameObject;
+        child = child.transform.Find("fill of the bar").gameObject;
+     
+        GameObject text = child.transform.Find("Text").gameObject;
+        countxet = text.GetComponent<Text>();
+        countxet.text = "" + resbar;
     }
 
     /// <summary>
@@ -77,8 +89,7 @@ public class Resource : MonoBehaviour
             miningSpeed = collision.gameObject.GetComponent<Worker>().miningSpeed;
             workerAnimator = collision.gameObject.GetComponent<Animator>();
             InvokeRepeating("DecraeseResource", 0, 1f);
-            SetText("" + (int)amount);
-            textCanvas.SetActive(true);
+            
           
 
         }
@@ -95,13 +106,20 @@ public class Resource : MonoBehaviour
     {
 
         GameObject canvas = this.transform.GetChild(this.transform.childCount - 1).gameObject;
-        GameObject canvas2 = canvas.transform.GetChild(0).gameObject;
+        GameObject canvas2 = canvas.transform.GetChild(canvas.transform.childCount - 1).gameObject;
         //GameObject text = canvas2.transform.GetChild(canvas.).gameObject;
         Text textCompoent = canvas2.GetComponentInChildren<Text>();
         textCompoent.text = t;
     }
 
-   
+
+    void SetTextInBarResources(int t)
+    {
+        resbar = resbar + t;
+        countxet.text = "" + resbar;
+    }
+
+
     GameObject GetTextCanvas()
     {
         return this.transform.GetChild(this.transform.childCount - 1).gameObject;
@@ -130,8 +148,17 @@ public class Resource : MonoBehaviour
                 currState++;
             }
         }
+      
+        int temp_a = (int)amount;
+        int temp_m = (int)miningSpeed;
+        amount = temp_a;
+        miningSpeed = temp_m;
         amount -= miningSpeed;
+
+ 
+        SetTextInBarResources((int)miningSpeed);
         SetText("" + (int)amount);
+
     }
 
 

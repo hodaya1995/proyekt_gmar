@@ -9,10 +9,12 @@ public class CameraZoom : MonoBehaviour
     public float zoomOutMax = 7;
     bool flag;
 
+    GameObject ResourceBar;
+
     // Start is called before the first frame update
     void Start()
     {
-
+       
     }
 
     // Update is called once per frame
@@ -25,6 +27,7 @@ public class CameraZoom : MonoBehaviour
         {
             
             touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(Input.mousePosition);
             flag = Move_out_of_zone.OnZone_Camera(touchStart.x, touchStart.y);
             
             
