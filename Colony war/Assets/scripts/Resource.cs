@@ -14,11 +14,6 @@ public class Resource : MonoBehaviour
     string res;
     GameObject textCanvas;
 
-    Text countxet;
-    int resbar = 0;
-   
-  
-
     void Start()
     {
         origAmount = amount;
@@ -27,17 +22,11 @@ public class Resource : MonoBehaviour
         res = this.tag;
         textCanvas = GetTextCanvas();
         textCanvas.SetActive(false);
-
-        GameObject child = Camera.main.transform.FindChild("bar resorces").gameObject;
-        child = child.transform.FindChild("Canvas").gameObject;
-        child = child.transform.FindChild("Image").gameObject;
-        GameObject text = child.transform.FindChild("Text").gameObject;
-        countxet = text.GetComponent<Text>();
-        countxet.text = ""+resbar;
-
-
     }
 
+    /// <summary>
+    /// for each frame: if the resource is touched, show description of the resource
+    /// </summary>
     void Update()
     {
         bool detectedTouch = Input.GetMouseButtonDown(0);
@@ -59,7 +48,7 @@ public class Resource : MonoBehaviour
             {
                 if (hitInformation.collider.tag == res)
                 {
-                    SetText(res + "\n" + (int)amount);
+                    SetText(""+(int)amount);
                     textCanvas.SetActive(true);
                     Invoke("HideCanvas", 3f);
                 }
@@ -68,12 +57,19 @@ public class Resource : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// hide the canvas of the description's text
+    /// </summary>
     void HideCanvas()
     {
-
         textCanvas.SetActive(false);
     }
 
+
+    /// <summary>
+    /// when collides with its miner- decrase the resorce gardually
+    /// </summary>
+    /// <param name="collision">miner's collision</param>
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag.Contains("miner"))
@@ -81,32 +77,41 @@ public class Resource : MonoBehaviour
             miningSpeed = collision.gameObject.GetComponent<Worker>().miningSpeed;
             workerAnimator = collision.gameObject.GetComponent<Animator>();
             InvokeRepeating("DecraeseResource", 0, 1f);
+            SetText("" + (int)amount);
+            textCanvas.SetActive(true);
+          
 
         }
     }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag.Contains("miner"))
+        {
+            HideCanvas();
+        }
+    }
+
     void SetText(string t)
     {
 
         GameObject canvas = this.transform.GetChild(this.transform.childCount - 1).gameObject;
-        GameObject canvas2 = canvas.transform.GetChild(canvas.transform.childCount - 1).gameObject;
-        Text textCompoent = canvas2.GetComponent<Text>();
+        GameObject canvas2 = canvas.transform.GetChild(0).gameObject;
+        //GameObject text = canvas2.transform.GetChild(canvas.).gameObject;
+        Text textCompoent = canvas2.GetComponentInChildren<Text>();
         textCompoent.text = t;
     }
 
-
-
-
-    void SetTextInBarResources(int t)
-	{
-        resbar = resbar + t;
-        countxet.text = ""+ resbar;
-	}
-
+   
     GameObject GetTextCanvas()
     {
         return this.transform.GetChild(this.transform.childCount - 1).gameObject;
+
     }
 
+
+    /// <summary>
+    /// decreasing resource by destroying its children
+    /// </summary>
     void DecraeseResource()
     {
 
@@ -125,14 +130,8 @@ public class Resource : MonoBehaviour
                 currState++;
             }
         }
-        int temp_a = (int)amount;
-        int temp_m = (int)miningSpeed;
-        amount = temp_a;
-        miningSpeed = temp_m;
-         amount -= miningSpeed;
-        
-        Debug.Log(amount);
-        SetTextInBarResources((int)miningSpeed);
+        amount -= miningSpeed;
+        SetText("" + (int)amount);
     }
 
 

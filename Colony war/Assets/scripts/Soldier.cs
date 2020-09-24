@@ -1,21 +1,16 @@
-﻿using Pathfinding;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
 public class Soldier : MonoBehaviour
 {
     public bool enemySoldier;
-    public int health = 10;
+    public float health = 10;
     public float speed = 20f;
     Walk walk;
-    Animator animator;
    
     void Start()
     {
-        this.gameObject.AddComponent<Character>();
         this.gameObject.AddComponent<Attack>();
 
-        animator = this.gameObject.GetComponent<Animator>();
         Attacked attacked = this.gameObject.AddComponent<Attacked>();
         attacked.healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
 
@@ -38,7 +33,20 @@ public class Soldier : MonoBehaviour
 
     }
 
+    public void SetHealth(float health)
+    {
+        this.health = health;
+    }
 
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
+    /// <summary>
+    /// when soldier collides with enemy- stop moving to path
+    /// </summary>
+    /// <param name="collision">enemy's collision</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag != this.tag && (collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("miner")))

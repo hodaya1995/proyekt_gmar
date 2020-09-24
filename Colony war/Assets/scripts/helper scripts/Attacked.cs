@@ -3,8 +3,8 @@
 public class Attacked : MonoBehaviour
 {
     Animator animator;
-    public int maxHealth = 5;
-    int currentHealth;
+    public float maxHealth = 5;
+    float currentHealth;
     bool attacked = false;
     public HealthBar healthBar;
     GameObject attacker;
@@ -17,6 +17,7 @@ public class Attacked : MonoBehaviour
     bool targeted;
     bool moving;
 
+   
     public void SetTargeted(bool targeted)
     {
         this.targeted = targeted;
@@ -26,17 +27,15 @@ public class Attacked : MonoBehaviour
     {
         return targeted;
     }
+
+
     public int GetAttackersNum()
     {
         return attackers;
     }
 
-    public void AddAttacker()
-    {
-        this.attackers++;
-    }
-
-    public void SetHealth(int health)
+  
+    public void SetHealth(float health)
     {
         maxHealth = health;
         currentHealth = health;
@@ -61,14 +60,9 @@ public class Attacked : MonoBehaviour
 
     void OnColliderEnter(Collision2D collision)
     {
-      
-
-        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
-        bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
-        bool collisionTargeted = (collision.collider.tag.Contains("enemy") && collision.collider.tag != tag);
-           
-        if (enemy2colony || colony2enemy || collisionTargeted)
+        if (IsColliderTriggered(collision))
         {
+           
             attacked = true;
 
             GetComponent<Walk>().SetSearch(false);
@@ -79,9 +73,7 @@ public class Attacked : MonoBehaviour
             decreaseLifeMehodCalled = true;
             attacker = collision.gameObject;
             attackerAnimator = attacker.GetComponent<Animator>();
-            
-
-
+      
 
         }
     }
@@ -105,20 +97,28 @@ public class Attacked : MonoBehaviour
 
 
     void OnCollisionExit2D(Collision2D collision)
-    {
-
-
-        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
-        bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
-        bool collisionTargeted = (collision.collider.tag.Contains("enemy") && collision.collider.tag != tag);
-        if (enemy2colony || colony2enemy || collisionTargeted)
+    {      
+        if (IsColliderTriggered(collision))
         {
            OnColliderExit();
 
         }
     }
 
+    private bool IsColliderTriggered(Collision2D collision)
+    {
+        bool enemy2colony = false;
+        bool colony2enemy = false;
+        if (collision.gameObject.GetComponent<Attack>() != null)
+        {
+            string taregt = collision.gameObject.GetComponent<Attack>().GetTarget();
+            enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy") && taregt == this.name.Split(' ')[0];
+            colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy")) && taregt == this.name.Split(' ')[0];
+        }
 
+        bool collisionTargeted = (collision.collider.tag.Contains("enemy") && collision.collider.tag != tag);
+        return (enemy2colony || colony2enemy || collisionTargeted);
+    }
     void OnColliderExit()
     {
         CancelInvoke("DecreaseLife");
@@ -156,21 +156,21 @@ public class Attacked : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
-    public int GetHealth()
+    public float GetHealth()
     {
         return currentHealth;
     }
 
-    public int GetMaxHealth()
+    public float GetMaxHealth()
     {
         return maxHealth;
     }
     void DecreaseLife()
     {
-
-        if (currentHealth - 1 > 0)//not died yet- decrease life
+        float hitPower = attacker.GetComponent<Attack>().GetHitPower();
+        if (currentHealth - hitPower > 0)//not died yet- decrease life
         {
-            currentHealth--;
+            currentHealth-= hitPower;
             healthBar.SetHealth(currentHealth);
         }
         else //this died

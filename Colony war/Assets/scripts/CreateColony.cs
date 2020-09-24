@@ -18,10 +18,10 @@ public class CreateColony : MonoBehaviour
 
     }
 
-    void CreateSoldier(string name, float speed, int life, Vector3 pos)
+    void CreateSoldier(string name, float speed, float life, Vector3 pos)
     {
         string tag = "colony soldier";
-        GameObject[] allObj = (GameObject[])FindObjectsOfTypeAll(typeof(GameObject));
+        GameObject[] allObj = (GameObject[]) FindObjectsOfTypeAll(typeof(GameObject));
         GameObject[] obj = FindGameObjectWithTag(allObj, tag);
         GameObject soldier = null;
         foreach (GameObject sol in obj)
@@ -63,33 +63,33 @@ public class CreateColony : MonoBehaviour
         return (GameObject[])res.ToArray();
     }
 
-    void CreateWorker(string tag, int speedMining, int life, Vector3 pos)
-    {
-        GameObject[] allObj = (GameObject[])FindObjectsOfTypeAll(typeof(GameObject));
-        GameObject[] obj = FindGameObjectWithTag(allObj, tag);
+    //void CreateWorker(string tag, int speedMining, int life, Vector3 pos)
+    //{
+    //    GameObject[] allObj = (GameObject[])FindObjectsOfTypeAll(typeof(GameObject));
+    //    GameObject[] obj = FindGameObjectWithTag(allObj, tag);
 
-        GameObject worker = null;
+    //    GameObject worker = null;
 
-        if (obj.Length > 0)
-        {
-            worker = (GameObject)obj[0];
-        }
-        if (worker == null)
-        {
-            Debug.LogError("no such game object " + tag);
-        }
-        else
-        {
-            Quaternion rot = new Quaternion();
-            GameObject copiedWorker = Instantiate(worker, pos, rot) as GameObject;
-            copiedWorker.SetActive(true);
-            copiedWorker.GetComponent<Attacked>().maxHealth = life;
-            copiedWorker.GetComponent<MineResources>().speedMining = speedMining;
-            Rigidbody2D rb = copiedWorker.GetComponent<Rigidbody2D>();
-            rb.drag = 1.5f;
+    //    if (obj.Length > 0)
+    //    {
+    //        worker = (GameObject)obj[0];
+    //    }
+    //    if (worker == null)
+    //    {
+    //        Debug.LogError("no such game object " + tag);
+    //    }
+    //    else
+    //    {
+    //        Quaternion rot = new Quaternion();
+    //        GameObject copiedWorker = Instantiate(worker, pos, rot) as GameObject;
+    //        copiedWorker.SetActive(true);
+    //        copiedWorker.GetComponent<Attacked>().maxHealth = life;
+    //        copiedWorker.GetComponent<MineResources>().speedMining = speedMining;
+    //        Rigidbody2D rb = copiedWorker.GetComponent<Rigidbody2D>();
+    //        rb.drag = 1.5f;
 
-        }
-    }
+    //    }
+    //}
 
 
 

@@ -11,9 +11,10 @@ public class Attack : MonoBehaviour
     string targetToAttack;
     bool targetChosen;
     Rigidbody2D rb;
-    float waitForSearch = 3f;
+    float waitForSearch = 0.5f;
     bool exitCollider=true;
     bool setAttack;
+    float hitPower = 1f;
     void Start()
     {
         animator = this.GetComponent<Animator>();
@@ -21,7 +22,10 @@ public class Attack : MonoBehaviour
 
     }
 
- 
+    public void SetHitPower(float hitPower)
+    {
+        this.hitPower = hitPower;
+    }
 
     public string GetTarget()
     {
@@ -29,12 +33,8 @@ public class Attack : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
-        bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
-        bool collisionTargeted = (collision.gameObject.name.Split(' ')[0] == (targetToAttack)) && targetChosen&&this.tag!= collision.collider.tag;
-       
-        //the attacked soldier near the attacker- attack only soldiers/workers that are not you
-        if (enemy2colony || colony2enemy|| collisionTargeted)
+      //the attacked soldier near the attacker- attack only soldiers/workers that are not you
+        if (IsColliderTriggered(collision))
         {
             AttackCollision(collision.gameObject);
 
@@ -55,8 +55,10 @@ public class Attack : MonoBehaviour
         {
             animator.SetBool("toAttack", true);
 
+            
+           // Vector2 dir = new Vector2((-this.transform.position.x + attacked.transform.position.x), (-this.transform.position.y + attacked.transform.position.y)).normalized;
+            Vector3 dir = (attacked.transform.position-this.transform.position).normalized;
             rb.velocity = new Vector3(0, 0, 0);
-            Vector2 dir = new Vector2((-this.transform.position.x + attacked.transform.position.x), (-this.transform.position.y + attacked.transform.position.y)).normalized;
             float h = dir.x;
             float v = dir.y;
             animator.SetFloat("horizontal", h);
@@ -75,10 +77,8 @@ public class Attack : MonoBehaviour
         //the attacked soldier is not near the attacker-dont attack
         if (!setAttack)
         {
-            bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
-            bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
-            bool collisionTargeted = (collision.gameObject.name.Split(' ')[0] == (targetToAttack)) && targetChosen && this.tag != collision.collider.tag;
-            if (enemy2colony || colony2enemy || collisionTargeted)
+           
+            if (IsColliderTriggered(collision))
 
             {
                 exitCollider = true;
@@ -95,6 +95,13 @@ public class Attack : MonoBehaviour
 
     }
     
+    private bool IsColliderTriggered(Collision2D collision)
+    {
+        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
+        bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
+        bool collisionTargeted = (collision.gameObject.name.Split(' ')[0] == (targetToAttack)) && targetChosen && this.tag != collision.collider.tag;
+        return (enemy2colony || colony2enemy || collisionTargeted);
+    }
     public GameObject GetAttacked()
     {
         return attacked;
@@ -213,7 +220,7 @@ public class Attack : MonoBehaviour
 
                 Attack attackCompOfAttacked = attacked.GetComponent<Attack>();
                 GameObject attackedOfAttacked = attackCompOfAttacked.GetAttacked();
-                if (attackCompOfAttacked != null) ;
+                if (attackCompOfAttacked != null) 
                 {
                     AttackCollision(attackedOfAttacked);
                 }
@@ -233,6 +240,11 @@ public class Attack : MonoBehaviour
 
 
 
+    }
+
+    public float GetHitPower()
+    {
+        return hitPower;
     }
 
     Collider2D[] GetNearSoldiers(Vector3 pos)

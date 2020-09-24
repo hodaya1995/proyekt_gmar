@@ -1,7 +1,4 @@
-﻿using Pathfinding;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Worker : MonoBehaviour
 {
@@ -15,12 +12,15 @@ public class Worker : MonoBehaviour
     {
         Attacked attacked = this.gameObject.AddComponent<Attacked>();
         attacked.healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
-        this.gameObject.AddComponent<Character>();
         animator = this.gameObject.GetComponent<Animator>();
         walk = this.gameObject.AddComponent<Walk>();
 
 
     }
+    /// <summary>
+    /// when collides with resource- start to mine.
+    /// </summary>
+    /// <param name="collision"> resource's collison </param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         string res = tag.Split(' ')[0];

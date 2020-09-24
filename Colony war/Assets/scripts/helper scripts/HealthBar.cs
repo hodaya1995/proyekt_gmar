@@ -8,14 +8,22 @@ public class HealthBar : MonoBehaviour
 	public Gradient gradient;
 	public Image fill;
 
-	public void SetMaxHealth(int health)
+	/// <summary>
+	/// set the maximum silder's health of character.
+	/// </summary>
+	/// <param name="health">maximum health</param>
+	public void SetMaxHealth(float health)
 	{
 		slider.maxValue = health;
 		slider.value = health;
 		fill.color = gradient.Evaluate(1f);
 	}
 
-	public void SetHealth(int health)
+	/// <summary>
+	/// set the current silder's health of character.
+	/// </summary>
+	/// <param name="health">current health</param>
+	public void SetHealth(float health)
 	{
 		slider.value = health;
 

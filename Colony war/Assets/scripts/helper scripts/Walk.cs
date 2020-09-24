@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Pathfinding;
+using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class Walk : MonoBehaviour
 {
@@ -18,48 +20,86 @@ public class Walk : MonoBehaviour
     public bool targetChosen;
     bool soldierChosen;
     bool facingRight = false;
-    int numOfSoldiersToKill = 0;
     GameObject enemyToAttack;
     bool automaticWalk = false;
     string res;
     bool moveToRigidbody;
-    bool stuck;
-
     public Vector2 Velocity = new Vector2(0, 0);
     bool collided;
     bool search;
     float prevVelocityX = Mathf.Infinity;
-    float prevVelocityY = Mathf.Infinity;
-   
+    float prevVelocityY = Mathf.Infinity; 
     const float EXCELLENT =100;
     const float GOOD = 66.6f;
     const float NEAR_DEATH = 33.3f;
     Vector2 point;
-    Vector3 center;
-    bool setCenter;
 
-    public void SetCenter(Vector3 center)
-    {
-        setCenter = true;
-        this.center = center;
-    }
+    bool stuck;
+    GameObject frontSoldier;
 
     public void SetSearch(bool search)
     {
         this.search = search;
     }
 
-
-
-    public bool IsStuck()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        return stuck;
+        if (this.tag == collision.collider.tag && this.name.Split(' ')[0] == collision.collider.name.Split(' ')[0]&&!stuck&&!collision.gameObject.GetComponent<Animator>().GetBool("move"))//stuck
+        {
+            stuck = true;
+            frontSoldier = collision.gameObject;
+            SetSoldierAsObstacle(frontSoldier);
+           
+        }
     }
     
+   
+
+
+   
+    void SetSoldierAsObstacle(GameObject frontSoldier)
+    {
+        DynamicGridObstacle obstacle = frontSoldier.GetComponent<DynamicGridObstacle>();
+        string frontSoldierLayer = frontSoldier.name.Split(' ')[0];
+        obstacle.enabled = true;
+        this.GetComponentInParent<Flock>().SetAsObstacle(true, frontSoldierLayer);
+    }
+
+
+    void ResetSoldierAsObstacle(GameObject frontSoldier)
+    {
+        DynamicGridObstacle obstacle = frontSoldier.GetComponent<DynamicGridObstacle>();
+        string frontSoldierLayer = frontSoldier.name.Split(' ')[0];
+        obstacle.enabled = false;
+        this.GetComponentInParent<Flock>().SetAsObstacle(false, frontSoldierLayer);
+    }
+    public void StopMovingToPath()
+    {
+        isMoving = false;
+        targetChosen = false;
+        CancelInvoke("UpdatePath");
+        reachedEndOfPath = true;
+        if (myAnimator == null)
+        {
+            myAnimator = this.gameObject.GetComponent<Animator>();
+        }
+        myAnimator.SetBool("move", false);
+        if (myRb == null)
+        {
+            myRb = this.gameObject.GetComponent<Rigidbody2D>();
+        }
+        myRb.AddForce(new Vector2(0, 0));
+    }
+
+
 
     void FixedUpdate()
     {
-       
+
+        if (stuck && this.GetComponent<Animator>().GetBool("toAttack"))
+        {
+            ResetSoldierAsObstacle(frontSoldier);
+        }
         if (targetChosen )
         {
             MoveToPath();
@@ -110,9 +150,7 @@ public class Walk : MonoBehaviour
                 mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
                 Collider2D[] nearSoldiers1 = GetNearSoldiers(mousePos);
-                Debug.Log("nearSoldiers1 COUNT " + nearSoldiers1.Length);
-
-                if ((hitInformation.collider != null && nearSoldiers1!=null && nearSoldiers1.Length > 0) && !soldierChosen)
+               if ((hitInformation.collider != null && nearSoldiers1!=null && nearSoldiers1.Length > 0) && !soldierChosen)
                 {
 
                     Transform t = nearSoldiers1[0].transform;
@@ -128,10 +166,10 @@ public class Walk : MonoBehaviour
                         }
                     }
 
+                  
 
-                    if (this.tag == t.tag)
+                    if ((this.gameObject.name.Split(' ')[0] == t.gameObject.name.Split(' ')[0]) &&(this.tag ==t.tag))
                     {
-                        
                         mySoldier = t.transform;
                         myRb = t.GetComponent<Rigidbody2D>();
                         myRb.drag = 1.5f;
@@ -149,9 +187,9 @@ public class Walk : MonoBehaviour
                     {
 
                         Collider2D [] nearSoldiers2 = GetNearSoldiers(mousePos);
-                    
+                       
 
-                        moveToRigidbody = hitInformation.collider != null && nearSoldiers2!=null;
+                        moveToRigidbody = hitInformation.collider != null && nearSoldiers2.Length>0;
 
                         if (moveToRigidbody)
                         {
@@ -160,6 +198,7 @@ public class Walk : MonoBehaviour
                         }
                         else
                         {
+                           
                             MoveToTargetPos(mousePos,true);
                             
                         }
@@ -181,10 +220,34 @@ public class Walk : MonoBehaviour
 
     Collider2D[] GetNearSoldiers(Vector3 pos)
     {
-        return Physics2D.OverlapCircleAll(pos, 0.5f);
+        Collider2D[] allColliders = Physics2D.OverlapCircleAll(pos, 1.5f);
+        if(allColliders.Length > 0)
+        {
+            List<Collider2D> ans = new List<Collider2D>();
+
+            Collider2D closest = allColliders[0];
+            foreach (Collider2D collider in allColliders)
+            {
+                if (Mathf.Abs(Vector3.Distance(closest.gameObject.transform.position, pos)) > Mathf.Abs(Vector3.Distance(collider.gameObject.transform.position, pos)))
+                {
+                    closest = collider;
+                }
+            }
+            foreach (Collider2D collider in allColliders)
+            {
+                if (collider.gameObject.layer == closest.gameObject.layer)
+                {
+                    ans.Add(collider);
+                }
+            }
+            return ans.ToArray();
+        }
+        return allColliders;
     }
     public void MoveToTarget(Collider2D[] targets, bool setNewTarget)
     {
+        
+
         mySoldier = this.GetComponent<Transform>();
         GameObject target = targets[0].gameObject;
         float dis=Mathf.Infinity;
@@ -235,11 +298,13 @@ public class Walk : MonoBehaviour
 
     void Start()
     {
+      
         Seeker s = this.gameObject.AddComponent<Seeker>();
 
         seeker = s;
         search = true;
-
+        DynamicGridObstacle obstacle = this.GetComponent<DynamicGridObstacle>();
+        obstacle.enabled = false;
     }
 
     void LookForResorces(string res)
@@ -285,14 +350,9 @@ public class Walk : MonoBehaviour
             isMoving = true;
             reachedEndOfPath = false;
             if (!myAnimator.GetBool("toAttack")) myAnimator.SetBool("move", true);
-           // stuck = false;
-
+           
         }
-        else
-        {
-            Debug.LogError("path of " + mySoldier + " is not possible. error.");
-
-        }
+       
     }
 
     public void MoveToResorce()
@@ -325,24 +385,7 @@ public class Walk : MonoBehaviour
         return isMoving;
     }
 
-    public void StopMovingToPath()
-    {
-        isMoving = false;
-        targetChosen = false;
-        CancelInvoke("UpdatePath");
-        reachedEndOfPath = true;
-        if (myAnimator == null)
-        {
-            myAnimator = this.gameObject.GetComponent<Animator>();
-        }
-        myAnimator.SetBool("move", false);
-        if (myRb == null)
-        {
-            myRb = this.gameObject.GetComponent<Rigidbody2D>();
-        }
-        myRb.AddForce(new Vector2(0, 0));
-    }
-
+   
 
 
     void MoveToPath()
@@ -369,16 +412,9 @@ public class Walk : MonoBehaviour
 
                 reachedEndOfPath = false;
             }
-            Vector2 direction =Vector2.zero;
-            if (setCenter)
-            {
-                 direction = 0.7f*(((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized) +(Vector2) center*0.3f;
-                setCenter = false;
-            }
-            else
-            {
-                direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
-            }
+           
+            Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
+            
          
             Vector2 force = direction * speed * Time.deltaTime;
 
@@ -431,7 +467,6 @@ public class Walk : MonoBehaviour
 
     GameObject FindClosestEnemy()
     {
-        numOfSoldiersToKill = 0;
         GameObject[] targets;
         string[] tagsToSearch = new string[] { "colony soldier", "gold miner" };
         GameObject closestDefault = null;
@@ -450,7 +485,6 @@ public class Walk : MonoBehaviour
                     Attacked currAttacked = transform.GetComponent<Attacked>();
                     float currHelathPrecentTarget = currAttackedTarget.GetHealth() * 1.0f / currAttackedTarget.GetMaxHealth() * 1.0f;
                     float currHelathPrecent = currAttacked.GetHealth() * 1.0f / currAttacked.GetMaxHealth() * 1.0f;
-                    numOfSoldiersToKill++;
                     Vector3 diff = target.transform.position - position;
                     float curDistance = diff.sqrMagnitude;
                     if (curDistance < distance)
@@ -497,7 +531,6 @@ public class Walk : MonoBehaviour
 
     public void BuildPathToTarget()
     {
-
         seeker = mySoldier.GetComponent<Seeker>();
         InvokeRepeating("UpdatePath", 0f, 0.5f);
     }

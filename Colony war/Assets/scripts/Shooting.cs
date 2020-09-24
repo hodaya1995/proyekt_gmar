@@ -7,7 +7,9 @@ public class Shooting : MonoBehaviour
     public GameObject weaponPrefab;
     public Animator animator;
 
-
+    /// <summary>
+    /// instatiate weapon and aim to target
+    /// </summary>
     void Shoot()
     {
         float x = animator.GetFloat("horizontal");

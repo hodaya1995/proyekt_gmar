@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
+using System.Linq;
 
 public class Flock : MonoBehaviour
 {
     public FlockAgent agentPrefab;
-    List<FlockAgent> agents = new List<FlockAgent>();
- 
     public GameObject instantiatePlace;
 
+    List<FlockAgent> agents = new List<FlockAgent>(); 
     [Range(1, 500)]
     public int soldiersCount = 6;
-  
     [Range(1f, 100f)]
     public float driveFactor = 10f;
     [Range(1f, 100f)]
@@ -29,6 +29,10 @@ public class Flock : MonoBehaviour
     Vector3 prevPos = Vector3.zero;
 
 
+    public List<FlockAgent> GetAgents()
+    {
+        return this.agents;
+    }
 
     void Start()
     {
@@ -37,7 +41,29 @@ public class Flock : MonoBehaviour
       
            
     }
-    void InstantiateSoldier()
+    public void SetAsObstacle(bool asObstacle,string layerName)
+    {
+       
+        AstarPath astarPath = GameObject.Find("A*").GetComponent<AstarPath>();
+
+        if (astarPath == null)
+        {
+            Debug.LogError("No Astar Path component found on this GameObject.");
+
+            return;
+        }
+
+
+
+        foreach (GridGraph graph in astarPath.graphs.Cast<GridGraph>())
+        {
+            graph.SetGridShape(InspectorGridMode.IsometricGrid,layerName,asObstacle);
+            
+        }
+
+      
+    }
+    FlockAgent InstantiateSoldier()
     {
         float x = instantiatePlace.transform.position.x;
         float y = instantiatePlace.transform.position.y + 1.0f;
@@ -65,18 +91,31 @@ public class Flock : MonoBehaviour
 
         newAgent.name = agentPrefab.name+" " + currI;
         
-        newAgent.Initialize(this);
+        newAgent.SetFlock(this);
         agents.Add(newAgent);
         copyAgents.Add(newAgent);
-         if (currI < soldiersCount) InstantiateSoldier();
-        
+        if (currI < soldiersCount) InstantiateSoldier();
+        else currI = 0;
+        return newAgent;
+
+
     }
 
-
+    public void CreateNewSoldier(int numOfSoldierToCreate,float speed, float life, float hitPower)
+    {
+        soldiersCount = numOfSoldierToCreate;
+        for(int i=0;i< numOfSoldierToCreate; i++)
+        {
+            FlockAgent newSoldier = InstantiateSoldier();
+            newSoldier.GetComponent<Soldier>().SetHealth(life);
+            newSoldier.GetComponent<Soldier>().SetSpeed(speed);
+            newSoldier.GetComponent<Attack>().SetHitPower(hitPower);
+        }
+       
+    }
 
     public void SetNewTarget(GameObject target, bool isEnemy)
     {
-
         if (prev == null && target!=null&&!firstCall)
         {
             foreach (FlockAgent agent in agents)

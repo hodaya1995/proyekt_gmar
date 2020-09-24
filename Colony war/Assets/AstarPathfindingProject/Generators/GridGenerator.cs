@@ -92,6 +92,44 @@ namespace Pathfinding {
 			RemoveGridGraphFromStatic();
 		}
 
+
+
+
+		public void SetGridShape(InspectorGridMode shape,string layerName,bool asObstacle)
+		{
+			switch (shape)
+			{
+				case InspectorGridMode.Grid:
+					isometricAngle = 0;
+					aspectRatio = 1;
+					uniformEdgeCosts = false;
+					if (neighbours == NumNeighbours.Six) neighbours = NumNeighbours.Eight;
+					break;
+				case InspectorGridMode.Hexagonal:
+					aspectRatio = 1;
+					uniformEdgeCosts = true;
+					neighbours = NumNeighbours.Six;
+					break;
+				case InspectorGridMode.IsometricGrid:
+					uniformEdgeCosts = false;
+					if (neighbours == NumNeighbours.Six) neighbours = NumNeighbours.Eight;
+					if (asObstacle)
+					{
+						prevMask = collision.mask;
+						collision.mask |= LayerMask.GetMask(layerName);
+					}
+					else
+					{
+						collision.mask = prevMask;
+					}
+					break;
+				case InspectorGridMode.Advanced:
+				default:
+					break;
+			}
+			inspectorGridMode = shape;
+		}
+
 		protected override void DestroyAllNodes () {
 			GetNodes(node => {
 				// If the grid data happens to be invalid (e.g we had to abort a graph update while it was running) using 'false' as
@@ -356,6 +394,7 @@ namespace Pathfinding {
 		public bool showMeshSurface = true;
 
 
+		private LayerMask prevMask;
 		/// <summary>\}</summary>
 
 		/// <summary>
@@ -435,9 +474,12 @@ namespace Pathfinding {
 			unclampedSize = new Vector2(10, 10);
 			nodeSize = 1F;
 			collision = new GraphCollision();
+
 			transform = new GraphTransform(Matrix4x4.identity);
+			prevMask = collision.mask;
 		}
 
+		
 		public override void RelocateNodes (Matrix4x4 deltaMatrix) {
 			// It just makes a lot more sense to use the other overload and for that case we don't have to serialize the matrix
 			throw new System.Exception("This method cannot be used for Grid Graphs. Please use the other overload of RelocateNodes instead");
