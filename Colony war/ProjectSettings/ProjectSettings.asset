@@ -648,7 +648,8 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: SCENE_FUSION
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
@@ -740,10 +741,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: cb2d5fec-2efc-4716-ade3-8393fe8daa05
+  cloudProjectId: cb0786ea-3848-4f72-b1e7-aeab399fe5c6
   framebufferDepthMemorylessMode: 0
   projectName: Colony war
-  organizationId: kaikhhhh
+  organizationId: hodbat2
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
