@@ -22,8 +22,8 @@ TagManager:
   - colony soldiers
   - resource-test
   - trees
-  - archer building
-  - stable building
+  - colony building
+  - soldier building
   layers:
   - Default
   - TransparentFX
