@@ -525,6 +525,11 @@ namespace Pathfinding {
 			finalRaycastRadius = thickRaycastDiameter*scale*0.5F;
 		}
 
+
+		public void SetDiamater(float d)
+        {
+			this.diameter = d;
+        }
 		/// <summary>
 		/// Returns if the position is obstructed.
 		/// If <see cref="collisionCheck"/> is false, this will always return true.\n

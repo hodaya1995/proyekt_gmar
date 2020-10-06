@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using SevenZip.CommandLineParser;
+using UnityEngine;
 public class Attack : MonoBehaviour
 {
     Animator animator;
-    GameObject attacked;
+    public GameObject attacked;
     public static float velocityX;
     public static float velocityY;
     Animator attackedAnimator;
-    bool attacking;
+    public bool attacking;
     bool soldierChosen;
     string targetToAttack;
     bool targetChosen;
@@ -15,11 +16,12 @@ public class Attack : MonoBehaviour
     bool exitCollider=true;
     bool setAttack;
     float hitPower = 1f;
+    
     void Start()
     {
         animator = this.GetComponent<Animator>();
         rb = this.GetComponent<Rigidbody2D>();
-
+  
     }
 
     public void SetHitPower(float hitPower)
@@ -43,35 +45,74 @@ public class Attack : MonoBehaviour
 
     }
 
-    void AttackCollision (GameObject soldierToAttack)
+    public void AttackCollision (GameObject soldierToAttack)
     {
+        if(soldierToAttack!=null && GetComponent<Walk>().target != null)
+        {
+            string desiredTarget = GetComponent<Walk>().target.name;
+            if (desiredTarget != soldierToAttack.name)
+            {
+                GameObject targetedAttacker = soldierToAttack.GetComponent<Attacked>().GetTargetedAttacker();
+                if(targetedAttacker != null) targetedAttacker.GetComponent<Walk>().SetSearch(true);
+            }
+        }
+        
         
         exitCollider = false;
         GetComponent<Walk>().SetSearch(false);
         attacked = soldierToAttack;
         bool moving = GetComponent<Walk>().IsMoving();
-
-        if (!moving)
+        bool attacking = animator.GetBool("toAttack");
+        if (!attacking)
         {
+            attacked = soldierToAttack;
             animator.SetBool("toAttack", true);
 
-            
-           // Vector2 dir = new Vector2((-this.transform.position.x + attacked.transform.position.x), (-this.transform.position.y + attacked.transform.position.y)).normalized;
             Vector3 dir = (attacked.transform.position-this.transform.position).normalized;
             rb.velocity = new Vector3(0, 0, 0);
-            float h = dir.x;
-            float v = dir.y;
+            
+            float h = Vector2.Dot(dir, Vector2.right);
+            float v = Vector2.Dot(dir, Vector2.up);
             animator.SetFloat("horizontal", h);
             animator.SetFloat("vertical", v);
+            
+            FlipAnimation(dir);
         }
-       
+
 
         attackedAnimator = attacked.GetComponent<Animator>();
         attacking = true;
-        GetComponent<Walk>().StopMovingToPath();
+        //GetComponent<Walk>().StopMovingToPath();
     }
 
-  
+    private void Flip()//flip the animation
+    {
+
+        GetComponent<Walk>().facingRight = !GetComponent<Walk>().facingRight;
+        Vector3 theScale = this.transform.localScale;
+        theScale.x *= -1;
+        this.transform.localScale = theScale;
+    }
+
+    private void FlipAnimation(Vector2 dir)
+    {
+        
+        float horizontal = dir.x;
+        if (horizontal > 0 && !GetComponent<Walk>().facingRight)
+        {
+            Flip();
+        }
+            
+        else if (horizontal < 0 && GetComponent<Walk>().facingRight)
+        {
+            Flip();
+        }
+       
+
+
+    }
+
+
     void OnCollisionExit2D(Collision2D collision)
     {
         //the attacked soldier is not near the attacker-dont attack
@@ -100,6 +141,7 @@ public class Attack : MonoBehaviour
         bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
         bool collisionTargeted = (collision.gameObject.name.Split(' ')[0] == (targetToAttack)) && targetChosen && this.tag != collision.collider.tag;
         return (enemy2colony || colony2enemy || collisionTargeted);
+
     }
     public GameObject GetAttacked()
     {
@@ -221,10 +263,10 @@ public class Attack : MonoBehaviour
                 if (attackCompOfAttacked != null)
                 {
                     GameObject attackedOfAttacked = attackCompOfAttacked.GetAttacked();
-                    if (attackCompOfAttacked != null)
-                    {
-                        AttackCollision(attackedOfAttacked);
-                    }
+                    //if (attackCompOfAttacked != null)
+                    //{
+                    //    AttackCollision(attackedOfAttacked);
+                    //}
                 }
                
             }

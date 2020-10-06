@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5302827304785566116}
   - component: {fileID: 5302827304785566042}
   - component: {fileID: 5302827304785566043}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 5302827305041393186}
   - component: {fileID: 5302827305041393184}
   - component: {fileID: 5302827305041393185}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 5302827305388001772}
   - component: {fileID: 5302827305388001773}
   - component: {fileID: 5302827305388001774}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Canvas (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 5302827306067851185}
   - component: {fileID: 5302827306067851191}
   - component: {fileID: 5285307147874732275}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: soldier with sword
   m_TagString: colony soldier
   m_Icon: {fileID: 0}
@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: 5302827306114858002}
   - component: {fileID: 5302827306114858000}
   - component: {fileID: 5302827306114858001}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: swordC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 5302827306286731714}
   - component: {fileID: 5302827306286731712}
   - component: {fileID: 5302827306286731713}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}

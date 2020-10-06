@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using Math = System.Math;
 using UnityEngine;
 #if UNITY_5_5_OR_NEWER
@@ -84,12 +85,14 @@ namespace Pathfinding {
 	[JsonOptIn]
 	[Pathfinding.Util.Preserve]
 	public class GridGraph : NavGraph, IUpdatableGraph, ITransformedGraph {
+		
 		/// <summary>This function will be called when this graph is destroyed</summary>
 		protected override void OnDestroy () {
 			base.OnDestroy();
 
 			// Clean up a reference in a static variable which otherwise should point to this graph forever and stop the GC from collecting it
 			RemoveGridGraphFromStatic();
+			
 		}
 
 
@@ -97,6 +100,7 @@ namespace Pathfinding {
 
 		public void SetGridShape(InspectorGridMode shape,string layerName,bool asObstacle)
 		{
+           
 			switch (shape)
 			{
 				case InspectorGridMode.Grid:
@@ -111,16 +115,22 @@ namespace Pathfinding {
 					neighbours = NumNeighbours.Six;
 					break;
 				case InspectorGridMode.IsometricGrid:
+					
+					
 					uniformEdgeCosts = false;
 					if (neighbours == NumNeighbours.Six) neighbours = NumNeighbours.Eight;
 					if (asObstacle)
 					{
-						prevMask = collision.mask;
-						collision.mask |= LayerMask.GetMask(layerName);
+						//prevMask = collision.mask;
+						LayerMask maskToApply = LayerMask.GetMask(layerName);
+						
+						collision.mask |= maskToApply;
 					}
 					else
 					{
 						collision.mask = prevMask;
+						
+						
 					}
 					break;
 				case InspectorGridMode.Advanced:
@@ -395,6 +405,7 @@ namespace Pathfinding {
 
 
 		private LayerMask prevMask;
+		
 		/// <summary>\}</summary>
 
 		/// <summary>
@@ -402,6 +413,7 @@ namespace Pathfinding {
 		/// See: <see cref="UpdateTransform"/>
 		/// </summary>
 		public Vector2 size { get; protected set; }
+		//adfsfsDictionary<string, string> masks = new Dictionary<string, string>();
 
 		/* End collision and stuff */
 
@@ -477,6 +489,7 @@ namespace Pathfinding {
 
 			transform = new GraphTransform(Matrix4x4.identity);
 			prevMask = collision.mask;
+			
 		}
 
 		

@@ -19,7 +19,7 @@ public class Walk : MonoBehaviour
     Animator myAnimator;
     public bool targetChosen;
     bool soldierChosen;
-    bool facingRight = false;
+    public bool facingRight = false;
     GameObject enemyToAttack;
     bool automaticWalk = false;
     string res;
@@ -33,8 +33,12 @@ public class Walk : MonoBehaviour
 
     bool stuck;
     GameObject frontSoldier;
-    string sol = "axe enemy 5";
-  
+    GameObject targetObject;
+    bool startedToMove;
+    public Collider2D[] potentialTargets;
+
+
+
     public void SetSearch(bool search)
     {
         this.search = search;
@@ -42,33 +46,137 @@ public class Walk : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Animator>() != null)
+        if (!startedToMove)
         {
-           
-            if (((this.tag == collision.collider.tag && this.name.Split(' ')[0] == collision.collider.name.Split(' ')[0] &&
-             !collision.gameObject.GetComponent<Animator>().GetBool("move") && !stuck)
-            || collision.gameObject.GetComponent<Animator>().GetBool("die")))//stuck
-            {
-              
-                stuck = true;
-                frontSoldier = collision.gameObject;
-                SetSoldierAsObstacle(frontSoldier);
+            startedToMove = true;
+        }
+       
 
+        if (!stuck)
+        {
+         
+            if (collision.gameObject.GetComponent<Animator>() != null)
+            {
+
+                
+                if ((((this.tag == collision.collider.tag && this.name.Split(' ')[0] == collision.collider.name.Split(' ')[0]) &&
+                 ((!collision.gameObject.GetComponent<Animator>().GetBool("move")) || collision.rigidbody.velocity.magnitude < 0.05f))
+                || collision.gameObject.GetComponent<Animator>().GetBool("die"))
+                ||(this.tag == "enemy soldier" && collision.collider.tag == "enemy building") ||(this.tag == "colony soldier" && collision.collider.tag == "colony building"))//stuck
+                {
+
+                    stuck = true;
+                    frontSoldier = collision.gameObject;
+                    SetSoldierAsObstacle(frontSoldier);
+                   
+                }
+            }
+        }
+        
+        
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+      
+
+        if (!stuck)
+        {
+            
+            if (collision.gameObject.GetComponent<Animator>() != null)
+            {
+
+                if (startedToMove)
+                {
+                    if ((((this.tag == collision.collider.tag && this.name.Split(' ')[0] == collision.collider.name.Split(' ')[0]) &&
+                                    ((!collision.gameObject.GetComponent<Animator>().GetBool("move")) || collision.rigidbody.velocity.magnitude < 0.05f))
+                                   || collision.gameObject.GetComponent<Animator>().GetBool("die"))
+                                   || (this.tag == "enemy soldier" && collision.collider.tag == "enemy building") || (this.tag == "colony soldier" && collision.collider.tag == "colony building"))//stuck
+                    {
+
+                        stuck = true;
+                        if (!collision.gameObject.GetComponent<Walk>().stuck)
+                        {
+                            frontSoldier = collision.gameObject;
+                            SetSoldierAsObstacle(frontSoldier);
+                        }
+                        
+                        
+                        //InvokeRepeating("LookIfStiilStuck", 3f, 1.5f);
+                    }
+                }
+
+            }
+        }
+        else
+        {
+           //Debug.Log(this.name + " " + this.myAnimator.GetFloat("horizontal")+" "+ this.myAnimator.GetFloat("vertical"));
+        }
+        if(collision.gameObject.GetComponent<Walk>() != null)
+        {
+            if (stuck && collision.gameObject.GetComponent<Walk>().stuck && collision.gameObject.GetComponent<Animator>().GetBool("move") && GetComponent<Animator>().GetBool("move"))
+            {
+                float myHorizontal = this.GetComponent<Animator>().GetFloat("horizontal");
+                float colHoriznotal = collision.gameObject.GetComponent<Animator>().GetFloat("horizontal");
+                float myVerticall = this.GetComponent<Animator>().GetFloat("vertical");
+                float colVertical = collision.gameObject.GetComponent<Animator>().GetFloat("vertical");
+                if (Mathf.Abs(myHorizontal + colHoriznotal) < 0.05f && Mathf.Abs(myVerticall + colVertical) < 0.05f) //if they moving to  the same direction and stuck
+                {
+
+                    StopMovingToPath();
+                    RewalkToTarget();
+                    collision.gameObject.GetComponent<Walk>().StopMovingToPath();
+                    collision.gameObject.GetComponent<Walk>().RewalkToTarget();
+                }
             }
         }
         
     }
-   
-  
+    public void LookIfStiilStuck()
+    {
+        if (stuck)
+        {
+            BuildPathToTarget();
+
+        }
+        else
+        {
+            CancelInvoke("LookIfStiilStuck");
+        }
+    }
+
 
    
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        
+        if (stuck)
+        {
+            if (collision.gameObject.GetComponent<Animator>() != null)
+            {
+
+                if (((this.tag == collision.collider.tag && this.name.Split(' ')[0] == collision.collider.name.Split(' ')[0] &&
+                 (collision.rigidbody.velocity.magnitude < 0.05f))
+                 || (this.tag == "enemy soldier" && collision.collider.tag == "enemy building") || (this.tag == "colony soldier" && collision.collider.tag == "colony building")))//stuck
+                {
+                   
+                    ResetSoldierAsObstacle(frontSoldier);
+                    stuck = false;
+
+
+                }
+            }
+        }
+    }
+
+
+
 
 
     void SetSoldierAsObstacle(GameObject frontSoldier)
     {
         if (frontSoldier != null)
         {
-         
             DynamicGridObstacle obstacle = frontSoldier.GetComponent<DynamicGridObstacle>();
             string frontSoldierLayer = frontSoldier.name.Split(' ')[0];
             obstacle.enabled = true;
@@ -78,15 +186,25 @@ public class Walk : MonoBehaviour
     }
 
 
-    void ResetSoldierAsObstacle(GameObject frontSoldier)
+    void ResetSoldierAsObstacle(GameObject soldier)
     {
-     
-        DynamicGridObstacle obstacle = frontSoldier.GetComponent<DynamicGridObstacle>();
-        string frontSoldierLayer = frontSoldier.name.Split(' ')[0];
-        obstacle.enabled = false;
-        this.GetComponentInParent<Flock>().SetAsObstacle(false, frontSoldierLayer);
+    
+        stuck = false;
+        if (soldier != null)
+        {
+            DynamicGridObstacle obstacle = soldier.GetComponent<DynamicGridObstacle>();
+            obstacle.enabled = false;
+
+
+            string frontSoldierLayer = soldier.name.Split(' ')[0];
+
+            this.GetComponentInParent<Flock>().SetAsObstacle(false, frontSoldierLayer);
+        }
+       
         
     }
+
+
     public void StopMovingToPath()
     {
         isMoving = false;
@@ -105,12 +223,25 @@ public class Walk : MonoBehaviour
         myRb.AddForce(new Vector2(0, 0));
     }
 
+    public void RewalkToTarget()
+    {
+        if (!automaticWalk)
+        {
+            soldierChosen = false;
+            targetChosen = true;
+            reachedEndOfPath = false;
+            BuildPathToTarget();
+        }
+       
+    }
 
 
     void FixedUpdate()
     {
+        
         Animator anim = this.GetComponent<Animator>();
         bool move = true;
+        
         if (anim != null)
         {
             move = anim.GetBool("move");
@@ -118,15 +249,34 @@ public class Walk : MonoBehaviour
         if (!move)
         {
             this.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-        }
 
+        }
+        else
+        {
+            bool attacked = this.GetComponent<Attacked>().IsAttacked();//
+            if (attacked)
+            {
+               
+                GameObject attacker = this.GetComponent<Attacked>().attacker;
+                //Debug.Log("name " + this.name + " " + (attacker != null) + " " + (this.GetComponent<Attack>() != null));
+                if (attacker !=null && this.GetComponent<Attack>() != null)
+                {
+                    this.GetComponent<Attack>().AttackCollision(attacker);
+                }
+                
+               
+            }
+        }
+        
         if (stuck && this.GetComponent<Animator>().GetBool("toAttack")&&frontSoldier!=null)
         {
+           
             ResetSoldierAsObstacle(frontSoldier);
         }
-
+        
         if (targetChosen )
         {
+         
             MoveToPath();
         }
         else
@@ -137,10 +287,37 @@ public class Walk : MonoBehaviour
                 SearchAndAttack();
             }
         }
+        if(target != null&& targetObject != null)
+        {
+            if (target.name.Contains("building"))
+            {
+
+                if (target.GetComponent<DestructOfBuilding>().IsObstacle())
+                {
+                    float distanceToBuilding = Mathf.Abs(Vector3.Distance(target.position, this.transform.position));
+                    if (distanceToBuilding < 3f)
+                    {
+                        ResetBuildingAsObstacle(targetObject);
+                        target.GetComponent<DestructOfBuilding>().SetObstacle(false);
+                    }
+
+                }
+
+            }
+        }
+        
 
 
     }
 
+    void ResetBuildingAsObstacle(GameObject building)
+    {
+
+        DynamicGridObstacle obstacle = building.GetComponent<DynamicGridObstacle>();
+        obstacle.enabled = false;
+        this.GetComponentInParent<Flock>().SetAsObstacle(false, "buildings");
+
+    }
 
     public Vector2 GetCurrentMoveToPoint()
     {
@@ -245,7 +422,7 @@ public class Walk : MonoBehaviour
 
     Collider2D[] GetNearSoldiers(Vector3 pos)
     {
-        Collider2D[] allColliders = Physics2D.OverlapCircleAll(pos, 1.5f);
+        Collider2D[] allColliders = Physics2D.OverlapCircleAll(pos, 3f);
         if(allColliders.Length > 0)
         {
             List<Collider2D> ans = new List<Collider2D>();
@@ -272,7 +449,7 @@ public class Walk : MonoBehaviour
     public void MoveToTarget(Collider2D[] targets, bool setNewTarget)
     {
         
-
+        potentialTargets = targets;
         mySoldier = this.GetComponent<Transform>();
         GameObject target = targets[0].gameObject;
         float dis=Mathf.Infinity;
@@ -293,6 +470,7 @@ public class Walk : MonoBehaviour
         }
         if (target.GetComponent<Attacked>() != null)
         {
+            target.GetComponent<Attacked>().SetTargetedAttacker(this.gameObject);
             target.GetComponent<Attacked>().SetTargeted(true);
         }
         
@@ -300,7 +478,9 @@ public class Walk : MonoBehaviour
         myRb.drag = 1.5f;
         myAnimator = this.GetComponent<Animator>();
         moveToRigidbody = true;
+        this.targetObject = target;
         this.target = target.transform;
+       
         if (setNewTarget && GetComponentInParent<Flock>()!=null) GetComponentInParent<Flock>().SetNewTarget(target, false);
         soldierChosen = false;
         targetChosen = true;
@@ -341,6 +521,8 @@ public class Walk : MonoBehaviour
         search = true;
         DynamicGridObstacle obstacle = this.GetComponent<DynamicGridObstacle>();
         obstacle.enabled = false;
+        string layer = this.name.Split(' ')[0];
+        this.GetComponentInParent<Flock>().SetAsObstacle(false, layer);
     }
 
     void LookForResorces(string res)
@@ -407,6 +589,7 @@ public class Walk : MonoBehaviour
 
     private void FlipAnimation()
     {
+
         float h = myAnimator.GetFloat("horizontal");
         if (h > 0 && !facingRight)
             Flip();
@@ -448,44 +631,51 @@ public class Walk : MonoBehaviour
 
                 reachedEndOfPath = false;
             }
-           
+
             Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - myRb.position).normalized;
-            
-         
+
+
             Vector2 force = direction * speed * Time.deltaTime;
 
 
             point = force;
 
-           myRb.AddForce(force);
             
+            myRb.AddForce(force);
+
+
+
+            if (myAnimator.GetBool("move"))
+            {
+
+                float horizontalVelocity = Vector2.Dot(direction, Vector2.right);
+                float verticalVelocity = Vector2.Dot(direction, Vector2.up);
+                if (prevVelocityX != Mathf.Infinity && prevVelocityY != Mathf.Infinity && (prevVelocityX < 0 && horizontalVelocity < 0) || (prevVelocityX > 0 && horizontalVelocity > 0) || (prevVelocityX == 0 && horizontalVelocity == 0)
+                    && (prevVelocityY < 0 && verticalVelocity < 0) || (prevVelocityY > 0 && verticalVelocity > 0) || (prevVelocityY == 0 && verticalVelocity == 0))
+                {
+                    myAnimator.SetFloat("horizontal", horizontalVelocity);
+                    myAnimator.SetFloat("vertical", verticalVelocity);
+
+                }
+                else if (prevVelocityX == Mathf.Infinity && prevVelocityY == Mathf.Infinity)
+                {
+                    myAnimator.SetFloat("horizontal", horizontalVelocity);
+                    myAnimator.SetFloat("vertical", verticalVelocity);
+
+                }
+                prevVelocityX = horizontalVelocity;
+                prevVelocityY = verticalVelocity;
+
+            
+                float h = direction.x;
+                if (h > 0 && !facingRight)
+                    Flip();
+                else if (h < 0 && facingRight)
+                    Flip();
+
+                FlipAnimation();
+            }
            
-
-            float horizontalVelocity = Vector2.Dot(direction, Vector2.right);
-            float verticalVelocity = Vector2.Dot(direction, Vector2.up);
-            if (prevVelocityX != Mathf.Infinity && prevVelocityY != Mathf.Infinity && (prevVelocityX < 0 && horizontalVelocity < 0) || (prevVelocityX > 0 && horizontalVelocity > 0) || (prevVelocityX == 0 && horizontalVelocity == 0)
-                && (prevVelocityY < 0 && verticalVelocity < 0) || (prevVelocityY > 0 && verticalVelocity > 0) || (prevVelocityY == 0 && verticalVelocity == 0))
-            {
-                myAnimator.SetFloat("horizontal", horizontalVelocity);
-                myAnimator.SetFloat("vertical", verticalVelocity);
-
-            }
-            else if (prevVelocityX == Mathf.Infinity && prevVelocityY == Mathf.Infinity)
-            {
-                myAnimator.SetFloat("horizontal", horizontalVelocity);
-                myAnimator.SetFloat("vertical", verticalVelocity);
-
-            }
-            prevVelocityX = horizontalVelocity;
-            prevVelocityY = verticalVelocity;
-
-            float h = direction.x;
-            if (h > 0 && !facingRight)
-                Flip();
-            else if (h < 0 && facingRight)
-                Flip();
-
-            FlipAnimation();
 
             float distance = Vector2.Distance(myRb.position, (Vector2)path.vectorPath[currentWaypoint]);
 
@@ -521,7 +711,7 @@ public class Walk : MonoBehaviour
                     Vector3 diff = target.transform.position - position;
                     float curDistance = diff.sqrMagnitude;
                     bool targeted = true;
-                    if (this.target != null)
+                    if (this.target != null&& target.GetComponent<Attacked>() != null)
                     {
                         targeted = (!target.GetComponent<Attacked>().IsTargeted() && this.target.name != target.name);
                     }
@@ -540,7 +730,11 @@ public class Walk : MonoBehaviour
             return null;
         }
 
-        if(closest.GetComponent<Attacked>()!=null) closest.GetComponent<Attacked>().SetTargeted(true);
+        if (closest.GetComponent<Attacked>() != null)
+        {
+            closest.GetComponent<Attacked>().SetTargetedAttacker(this.gameObject);
+            closest.GetComponent<Attacked>().SetTargeted(true);
+        }
        
         return closest;
 
@@ -551,6 +745,7 @@ public class Walk : MonoBehaviour
 
     public void MoveForwardTo(GameObject soldier,bool setNewTarget)
     {
+        targetObject = soldier;
         mySoldier = this.GetComponent<Transform>();
         myRb = this.GetComponent<Rigidbody2D>();
         myAnimator = this.GetComponent<Animator>();
@@ -622,7 +817,11 @@ public class Walk : MonoBehaviour
             {
                 if (target.name != enemyToAttack.transform.name)
                 {
-                    enemyToAttack.GetComponent<Attacked>().SetTargeted(false);
+                    if(enemyToAttack.GetComponent<Attacked>() != null)
+                    {
+                        enemyToAttack.GetComponent<Attacked>().SetTargeted(false);
+                    }
+                    
                 }
             }
            

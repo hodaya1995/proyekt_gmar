@@ -6,7 +6,9 @@ public class Soldier : MonoBehaviour
     public float health = 10;
     public float speed = 20f;
     Walk walk;
-   
+    bool stopedWalking;
+
+
     void Start()
     {
         this.gameObject.AddComponent<Attack>();
@@ -51,7 +53,7 @@ public class Soldier : MonoBehaviour
     {
         if (collision.collider.tag != this.tag && (collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("miner")))
         {
-
+            stopedWalking = true;
             walk.StopMovingToPath();
 
         }
@@ -59,7 +61,19 @@ public class Soldier : MonoBehaviour
 
     }
 
-   
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        //if (collision.collider.tag != this.tag && (collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("miner")))
+        if(stopedWalking)
+        {
+          
+            walk.RewalkToTarget();
+            stopedWalking = false;
+
+        }
+
+    }
 
 
 

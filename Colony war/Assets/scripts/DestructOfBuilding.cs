@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class DestructOfBuilding : MonoBehaviour
 {
 
-    GameObject[] particles = new GameObject[6];
+    GameObject[] particles = new GameObject[7];
     Slider slide;
     public Gradient gradient;
     public Image fill;
@@ -18,15 +18,16 @@ public class DestructOfBuilding : MonoBehaviour
     bool flag = false;
     bool flag2 = true;
     Vector3[] Memory_For_The_First_Fires=new Vector3[4] ;
+    bool isObstacle = true;
 
 
     // Start is called before the first frame update
     void Start()
     {
 
-
         GameObject g = this.gameObject;
         slide = g.GetComponentInChildren<Slider>();
+        slide.interactable = false;
         fill.color = gradient.Evaluate(1f);
         slide.maxValue = Bar_Life_Building;
         slide.value = Bar_Life_Building;
@@ -35,15 +36,10 @@ public class DestructOfBuilding : MonoBehaviour
         Destruct_Building.SetActive(false);
 
 
-        particles[0] = this.transform.Find("Particle System1").gameObject;
-        particles[1] = this.transform.Find("Particle System2").gameObject;
-        particles[2] = this.transform.Find("Particle System3").gameObject;
-        particles[3] = this.transform.Find("Particle System4").gameObject;
-        particles[4] = this.transform.Find("Particle System5").gameObject;
-        particles[5] = this.transform.Find("Particle System6").gameObject;
-     
+
         for (int i = 0; i < particles.Length; i++)
         {
+            particles[i] = this.transform.Find("Particle System"+(i+1)).gameObject;
             particles[i].SetActive(false);
 
 
@@ -64,12 +60,20 @@ public class DestructOfBuilding : MonoBehaviour
 
     }
 
-
+    public bool IsObstacle()
+    {
+        return isObstacle;
+    }
+    public void SetObstacle(bool isObstacle)
+    {
+        this.isObstacle = isObstacle;
+    }
 
     void OnCollisionEnter2D(Collision2D collider)
     {
 
-        if (collider.gameObject.GetComponent<Attack>() != null&&collider.collider.tag=="enemy soldier")
+        if (collider.gameObject.GetComponent<Attack>() != null&&((collider.collider.tag=="enemy soldier"&&this.tag == "colony building")||
+            (collider.collider.tag == "colony soldier" && this.tag == "enemy building")))
         {
 
             animator = collider.gameObject.GetComponent<Animator>();
@@ -163,6 +167,7 @@ public class DestructOfBuilding : MonoBehaviour
 
         else if (fill.color == gradient.colorKeys[0].color && flag2 == true)
         {
+            particles[6].transform.position = new Vector3(particles[1].transform.position.x, particles[1].transform.position.y, particles[1].transform.position.z);
             particles[1].transform.position = new Vector3(particles[3].transform.position.x, particles[3].transform.position.y, particles[3].transform.position.z);
             particles[3].transform.position = new Vector3(particles[0].transform.position.x, particles[0].transform.position.y, particles[0].transform.position.z);
             particles[0].transform.position = new Vector3(particles[2].transform.position.x, particles[2].transform.position.y, particles[2].transform.position.z);
@@ -170,7 +175,7 @@ public class DestructOfBuilding : MonoBehaviour
 
             particles[4].SetActive(true);
             particles[5].SetActive(true);
-        
+            particles[6].SetActive(true);
             flag2 = false;
 
 
@@ -195,7 +200,7 @@ public class DestructOfBuilding : MonoBehaviour
         else if (fill.color == gradient.colorKeys[1].color)
         {
             flag2 = true;
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < particles.Length; i++)
             {
                 if (i < 4)
                 {

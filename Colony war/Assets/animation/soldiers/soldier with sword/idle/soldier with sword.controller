@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!206 &-8548836110453421789
 BlendTree:
-  m_ObjectHideFlags: 3
+  m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -411,7 +411,7 @@ AnimatorStateMachine:
     m_Position: {x: 510, y: 1100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6780777590888783434}
-    m_Position: {x: 250, y: 980, z: 0}
+    m_Position: {x: 200, y: 780, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2510473030262261507}
     m_Position: {x: 730, y: 510, z: 0}

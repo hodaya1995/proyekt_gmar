@@ -23,7 +23,7 @@ TagManager:
   - resource-test
   - trees
   - colony building
-  - soldier building
+  - enemy building
   layers:
   - Default
   - TransparentFX

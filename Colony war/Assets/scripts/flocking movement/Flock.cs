@@ -10,7 +10,7 @@ public class Flock : MonoBehaviour
 
     List<FlockAgent> agents = new List<FlockAgent>(); 
     [Range(1, 500)]
-    public int soldiersCount = 6;
+    public int soldiersCount = 3;
     [Range(1f, 100f)]
     public float driveFactor = 10f;
     [Range(1f, 100f)]
@@ -66,7 +66,7 @@ public class Flock : MonoBehaviour
     FlockAgent InstantiateSoldier()
     {
         float x = instantiatePlace.transform.position.x;
-        float y = instantiatePlace.transform.position.y + 1.0f;
+        float y = instantiatePlace.transform.position.y + 2.5f;
 
        
         if (currI % 2 == 0)

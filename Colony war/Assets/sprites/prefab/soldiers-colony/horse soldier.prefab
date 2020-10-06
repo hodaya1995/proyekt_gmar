@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 299684433349422923}
   - component: {fileID: 299684433349422921}
   - component: {fileID: 299684433349422922}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 299684433735055366}
   - component: {fileID: 299684433735055367}
   - component: {fileID: 299684433735055368}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Canvas (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 299684434180138639}
   - component: {fileID: 299684434180138637}
   - component: {fileID: 299684434180138638}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 299684435047639354}
   - component: {fileID: 299684435047639352}
   - component: {fileID: 299684435047639353}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: horseC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 299684435204061079}
   - component: {fileID: 299684435204061078}
   - component: {fileID: 8282945331725402632}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: horse soldier
   m_TagString: colony soldier
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 299684435239161317}
   - component: {fileID: 299684435239161315}
   - component: {fileID: 299684435239161316}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

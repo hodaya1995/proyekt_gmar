@@ -5,9 +5,9 @@ public class Attacked : MonoBehaviour
     Animator animator;
     public float maxHealth = 5;
     float currentHealth;
-    bool attacked = false;
+    public bool attacked = false;
     public HealthBar healthBar;
-    GameObject attacker;
+    public GameObject attacker;
 
     Rigidbody2D rb;
     Animator attackerAnimator;
@@ -16,8 +16,18 @@ public class Attacked : MonoBehaviour
     bool decreaseLifeMehodCalled;
     bool targeted;
     bool moving;
+    float lifeToDecrease;
+    GameObject targetedAttacker;
 
-   
+    public void SetTargetedAttacker(GameObject targetedAttacker)
+    {
+        this.targetedAttacker = targetedAttacker;
+    }
+
+    public GameObject GetTargetedAttacker()
+    {
+        return this.targetedAttacker;
+    }
     public void SetTargeted(bool targeted)
     {
         this.targeted = targeted;
@@ -63,9 +73,11 @@ public class Attacked : MonoBehaviour
     {
         if (IsColliderTriggered(collision))
         {
-           
-            attacked = true;
 
+
+            attacked = true;
+            attackers++;
+            lifeToDecrease += collision.gameObject.GetComponent<Attack>().GetHitPower();
             GetComponent<Walk>().SetSearch(false);
             if (!decreaseLifeMehodCalled)
             {
@@ -74,13 +86,18 @@ public class Attacked : MonoBehaviour
             decreaseLifeMehodCalled = true;
             attacker = collision.gameObject;
             attackerAnimator = attacker.GetComponent<Animator>();
-      
+
 
         }
+        
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        OnColliderEnter(collision);
+        if (!attacked)
+        {
+            OnColliderEnter(collision);
+        }
+        
         //the attacked soldier near the attacker
 
     }
@@ -101,31 +118,43 @@ public class Attacked : MonoBehaviour
     {      
         if (IsColliderTriggered(collision))
         {
-           OnColliderExit();
+           OnColliderExit(collision.gameObject);
 
         }
     }
 
     private bool IsColliderTriggered(Collision2D collision)
     {
-        bool enemy2colony = false;
-        bool colony2enemy = false;
+        //bool enemy2colony = false;
+        //bool colony2enemy = false;
+        //if (collision.gameObject.GetComponent<Attack>() != null)
+        //{
+        //    string taregt = collision.gameObject.GetComponent<Attack>().GetTarget();
+        //    enemy2colony = (collision.collider.tag == "gold miner") && this.tag == "enemy soldier" && taregt == this.name.Split(' ')[0] && collision.gameObject.GetComponent<Animator>().GetBool("toAttack") && collision.gameObject.GetComponent<Walk>().target.name == this.name;
+        //    colony2enemy = ((collision.collider.tag == "colony soldier") && this.tag == "enemy soldier") && taregt == this.name.Split(' ')[0] && collision.gameObject.GetComponent<Animator>().GetBool("toAttack");
+        //}
+
+        //bool collisionTargeted = (collision.collider.tag == "enemy soldier" && collision.collider.tag != tag)&&collision.gameObject.GetComponent<Animator>().GetBool("toAttack") && collision.gameObject.GetComponent<Walk>().target.name == this.name;
+        //return ((enemy2colony || colony2enemy || collisionTargeted) );
+
         if (collision.gameObject.GetComponent<Attack>() != null)
         {
-            string taregt = collision.gameObject.GetComponent<Attack>().GetTarget();
-            enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy") && taregt == this.name.Split(' ')[0];
-            colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy")) && taregt == this.name.Split(' ')[0];
+            if (collision.gameObject.GetComponent<Animator>().GetBool("toAttack") && collision.gameObject.GetComponent<Attack>().attacked != null)
+            {
+                if (collision.gameObject.GetComponent<Attack>().attacked.name == this.name) return true;
+            }
+            //string taregt = collision.gameObject.GetComponent<Attack>().get
+           // enemy2colony = (collision.collider.tag == "gold miner") && this.tag == "enemy soldier" && taregt == this.name.Split(' ')[0] && collision.gameObject.GetComponent<Animator>().GetBool("toAttack") && collision.gameObject.GetComponent<Walk>().target.name == this.name;
+            //colony2enemy = ((collision.collider.tag == "colony soldier") && this.tag == "enemy soldier") && taregt == this.name.Split(' ')[0] && collision.gameObject.GetComponent<Animator>().GetBool("toAttack");
         }
-
-        bool collisionTargeted = (collision.collider.tag.Contains("enemy") && collision.collider.tag != tag);
-        return (enemy2colony || colony2enemy || collisionTargeted);
+        return false;
     }
-    void OnColliderExit()
+    void OnColliderExit(GameObject obj)
     {
-        CancelInvoke("DecreaseLife");
-
-        attackers--;
         attacked = false;
+        CancelInvoke("DecreaseLife");
+        lifeToDecrease -= obj.GetComponent<Attack>().GetHitPower();
+        attackers--;      
         decreaseLifeMehodCalled = false;
         Invoke("Search", waitForSearch);
     }
@@ -134,10 +163,10 @@ public class Attacked : MonoBehaviour
     {
         moving = GetComponent<Walk>().IsMoving();
    
-        if (attacked && !moving)//dont move
-        {
-            rb.velocity = new Vector3(0, 0, 0);
-        }
+        //if (attacked && !moving)//dont move
+        //{
+        //    rb.velocity = new Vector3(0, 0, 0);
+        //}
 
         if (attackerAnimator != null)
         {
@@ -155,10 +184,7 @@ public class Attacked : MonoBehaviour
 
     void Die()
     {
-        if (attacker != null)
-        {
-            attacker.GetComponent<Walk>().StopMovingToPath();
-        }
+        
         Destroy(this.gameObject);
 
     }
@@ -173,7 +199,11 @@ public class Attacked : MonoBehaviour
     }
     void DecreaseLife()
     {
-        float hitPower = attacker.GetComponent<Attack>().GetHitPower();
+        if (!attackerAnimator.GetBool("toAttack"))
+        {
+           attacker.GetComponent<Attack>().AttackCollision(this.gameObject);
+        }
+        float hitPower = lifeToDecrease;//attacker.GetComponent<Attack>().GetHitPower();
         if (currentHealth - hitPower > 0)//not died yet- decrease life
         {
             currentHealth-= hitPower;

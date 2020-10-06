@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3417666780090160256}
   - component: {fileID: 3417666780090160287}
   - component: {fileID: 3417666780090160286}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: spearC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 3417666780634580889}
   - component: {fileID: 3417666780634580887}
   - component: {fileID: 3417666780634580888}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 3417666780709551372}
   - component: {fileID: 3417666780709551373}
   - component: {fileID: 3417666780709551374}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,7 +318,7 @@ GameObject:
   - component: {fileID: 3417666780736903968}
   - component: {fileID: 3417666780736903998}
   - component: {fileID: 3417666780736903999}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 3417666780997860161}
   - component: {fileID: 3417666780997860191}
   - component: {fileID: 3417666780997860160}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,13 +467,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3417666781195432252}
   - component: {fileID: 3417666781195432248}
-  - component: {fileID: 3417666781195432250}
   - component: {fileID: 3417666781195432246}
+  - component: {fileID: 3417666781195432250}
   - component: {fileID: 3417666781195432249}
   - component: {fileID: 3417666781195432251}
   - component: {fileID: 3417666781195432247}
   - component: {fileID: 7794229762529328254}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: soldier with spear
   m_TagString: colony soldier
   m_Icon: {fileID: 0}
@@ -546,25 +546,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &3417666781195432250
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3417666781195432253}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 68e645546d4e6634d82c02d6ddf2e98a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!50 &3417666781195432246
 Rigidbody2D:
   serializedVersion: 4
@@ -586,6 +567,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &3417666781195432250
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3417666781195432253}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 68e645546d4e6634d82c02d6ddf2e98a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &3417666781195432249
 MonoBehaviour:
   m_ObjectHideFlags: 0

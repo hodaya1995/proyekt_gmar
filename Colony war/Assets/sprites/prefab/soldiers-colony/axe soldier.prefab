@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5695087045651168083}
   - component: {fileID: 5695087045651168093}
   - component: {fileID: 8261434946129232296}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: axe soldier
   m_TagString: colony soldier
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 5695087045730925441}
   - component: {fileID: 5695087045730925443}
   - component: {fileID: 5695087045730925442}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 5695087045987086056}
   - component: {fileID: 5695087045987086058}
   - component: {fileID: 5695087045987086057}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: axeC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 5695087046284295048}
   - component: {fileID: 5695087046284295050}
   - component: {fileID: 5695087046284295049}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 5695087046707387370}
   - component: {fileID: 5695087046707387369}
   - component: {fileID: 5695087046707387368}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Canvas (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,7 +597,7 @@ GameObject:
   - component: {fileID: 5695087046861759436}
   - component: {fileID: 5695087046861759438}
   - component: {fileID: 5695087046861759437}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}

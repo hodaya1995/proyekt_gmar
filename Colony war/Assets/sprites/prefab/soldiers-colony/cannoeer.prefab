@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7338160034323207782}
   - component: {fileID: 7338160034323207783}
   - component: {fileID: 7338160034323207780}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Canvas (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 7338160034432931484}
   - component: {fileID: 7338160034432931486}
   - component: {fileID: 7338160034432931487}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 7338160034645490756}
   - component: {fileID: 7338160034645490758}
   - component: {fileID: 7338160034645490759}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 7338160035925350316}
   - component: {fileID: 7338160035925350318}
   - component: {fileID: 7338160035925350319}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: heart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 7338160036196725374}
   - component: {fileID: 7338160036196725368}
   - component: {fileID: 7338160036196725369}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: cannoneerC hb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -474,7 +474,7 @@ GameObject:
   - component: {fileID: 7338160036240920051}
   - component: {fileID: 7338160036240920060}
   - component: {fileID: 5881426769298915312}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: cannoeer
   m_TagString: colony soldier
   m_Icon: {fileID: 0}
