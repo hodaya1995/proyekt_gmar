@@ -54,7 +54,7 @@ public class Soldier : MonoBehaviour
         if (collision.collider.tag != this.tag && (collision.collider.tag.Contains("soldier") || collision.collider.tag.Contains("miner")))
         {
             stopedWalking = true;
-            walk.StopMovingToPath();
+            walk.StopMovingToPath(true);
 
         }
 

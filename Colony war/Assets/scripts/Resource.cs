@@ -22,6 +22,8 @@ public class Resource : MonoBehaviour
         res = this.tag;
         textCanvas = GetTextCanvas();
       
+        HideCanvas();
+      
     }
 
     /// <summary>
@@ -29,31 +31,32 @@ public class Resource : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //bool detectedTouch = Input.GetMouseButtonDown(0);
+        bool detectedTouch = Input.GetMouseButtonDown(0);
 
 
-        //if (detectedTouch)
-        //{
+        if (detectedTouch)
+        {
 
 
 
-        //    //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-        //    //Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);
-        //    //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
-        //    Vector3 mousePos = Input.mousePosition;
+            //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            //Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);
+            //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+            Vector3 mousePos = Input.mousePosition;
 
-        //    if (hitInformation.collider != null)
-        //    {
-        //        if (hitInformation.collider.tag == res)
-        //        {
-        //            SetText(""+(int)amount);
-        //            textCanvas.SetActive(true);
-        //            //Invoke("HideCanvas", 3f);
-        //        }
-        //    }
-        //}
+            if (hitInformation.collider != null)
+            {
+                if (hitInformation.collider.tag == res)
+                {
+                    Resource resource = hitInformation.collider.gameObject.GetComponent<Resource>();
+                    resource.SetText("" + (int)amount);
+                    resource.textCanvas.SetActive(true);
+                    resource.Invoke("HideCanvas", 3f);
+                }
+            }
+        }
 
     }
 
@@ -93,11 +96,7 @@ public class Resource : MonoBehaviour
 
     void SetText(string t)
     {
-
-        GameObject canvas = this.transform.GetChild(this.transform.childCount - 1).gameObject;
-        GameObject canvas2 = canvas.transform.GetChild(0).gameObject;
-        //GameObject text = canvas2.transform.GetChild(canvas.).gameObject;
-        Text textCompoent = canvas2.GetComponentInChildren<Text>();
+        Text textCompoent = (this.transform.Find("Canvas")).Find("Text").GetComponentInChildren<Text>();
         textCompoent.text = t;
     }
 
@@ -109,7 +108,7 @@ public class Resource : MonoBehaviour
     }
 
 
-    /// <summary>
+    /// <summary>//
     /// decreasing resource by destroying its children
     /// </summary>
     void DecraeseResource()

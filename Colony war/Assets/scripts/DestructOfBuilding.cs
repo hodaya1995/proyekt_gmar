@@ -25,6 +25,7 @@ public class DestructOfBuilding : MonoBehaviour
     void Start()
     {
 
+       
         GameObject g = this.gameObject;
         slide = g.GetComponentInChildren<Slider>();
         slide.interactable = false;
@@ -60,6 +61,7 @@ public class DestructOfBuilding : MonoBehaviour
 
     }
 
+    
     public bool IsObstacle()
     {
         return isObstacle;

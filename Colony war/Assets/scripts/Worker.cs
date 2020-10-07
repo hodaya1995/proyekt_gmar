@@ -27,7 +27,7 @@ public class Worker : MonoBehaviour
 
         if (collision.collider.tag.Contains(res))
         {
-            walk.StopMovingToPath();
+            walk.StopMovingToPath(false);
             animator.SetBool("mine", true);
         }
     }
