@@ -14,6 +14,10 @@ public class Resource : MonoBehaviour
     string res;
     GameObject textCanvas;
 
+
+    Text countxet;
+    int resbar = 0;
+
     void Start()
     {
         origAmount = amount;
@@ -21,9 +25,15 @@ public class Resource : MonoBehaviour
         currState = 0;
         res = this.tag;
         textCanvas = GetTextCanvas();
-      
-        HideCanvas();
-      
+        textCanvas.SetActive(false);
+
+
+        GameObject child = Camera.main.transform.Find("Canvas").gameObject;
+        child = child.transform.Find("fill of the bar").gameObject;
+
+        GameObject text = child.transform.Find("Text").gameObject;
+        countxet = text.GetComponent<Text>();
+        countxet.text = "" + resbar;
     }
 
     /// <summary>
@@ -50,10 +60,9 @@ public class Resource : MonoBehaviour
             {
                 if (hitInformation.collider.tag == res)
                 {
-                    Resource resource = hitInformation.collider.gameObject.GetComponent<Resource>();
-                    resource.SetText("" + (int)amount);
-                    resource.textCanvas.SetActive(true);
-                    resource.Invoke("HideCanvas", 3f);
+                    SetText("" + (int)amount);
+                    textCanvas.SetActive(true);
+                    Invoke("HideCanvas", 3f);
                 }
             }
         }
@@ -80,9 +89,8 @@ public class Resource : MonoBehaviour
             miningSpeed = collision.gameObject.GetComponent<Worker>().miningSpeed;
             workerAnimator = collision.gameObject.GetComponent<Animator>();
             InvokeRepeating("DecraeseResource", 0, 1f);
-            SetText("" + (int)amount);
-            textCanvas.SetActive(true);
-          
+
+
 
         }
     }
@@ -96,11 +104,22 @@ public class Resource : MonoBehaviour
 
     void SetText(string t)
     {
-        Text textCompoent = (this.transform.Find("Canvas")).Find("Text").GetComponentInChildren<Text>();
+
+        GameObject canvas = this.transform.GetChild(this.transform.childCount - 1).gameObject;
+        GameObject canvas2 = canvas.transform.GetChild(canvas.transform.childCount - 1).gameObject;
+        //GameObject text = canvas2.transform.GetChild(canvas.).gameObject;
+        Text textCompoent = canvas2.GetComponentInChildren<Text>();
         textCompoent.text = t;
     }
 
-   
+
+    void SetTextInBarResources(int t)
+    {
+        resbar = resbar + t;
+        countxet.text = "" + resbar;
+    }
+
+
     GameObject GetTextCanvas()
     {
         return this.transform.GetChild(this.transform.childCount - 1).gameObject;
@@ -108,7 +127,7 @@ public class Resource : MonoBehaviour
     }
 
 
-    /// <summary>//
+    /// <summary>
     /// decreasing resource by destroying its children
     /// </summary>
     void DecraeseResource()
@@ -129,9 +148,17 @@ public class Resource : MonoBehaviour
                 currState++;
             }
         }
+
+        int temp_a = (int)amount;
+        int temp_m = (int)miningSpeed;
+        amount = temp_a;
+        miningSpeed = temp_m;
         amount -= miningSpeed;
-        Resources.gold += miningSpeed;
-        SetText("" + (int)Resources.gold);
+
+
+        SetTextInBarResources((int)miningSpeed);
+        SetText("" + (int)amount);
+
     }
 
 
@@ -140,3 +167,4 @@ public class Resource : MonoBehaviour
 
 
 }
+

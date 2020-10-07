@@ -38,7 +38,7 @@ public class Walk : MonoBehaviour
     bool startedToMove;
     public Collider2D[] potentialTargets;
 
-
+    bool If_Butoon_Collide_On_Tool_Building=false;
 
     public void SetSearch(bool search)
     {
@@ -937,6 +937,11 @@ public class Walk : MonoBehaviour
 
         }
 
+    }
+
+    public void Set_If_Butoon_Collide_On_Tool_Building(bool b)
+    {
+        this.If_Butoon_Collide_On_Tool_Building = b;
     }
 
 }
