@@ -1,18 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Building : MonoBehaviour
+public class Building : CreateColony
 {
-    // Start is called before the first frame update
+    public string name;
+    public string buildingHealth;
+    public int buildingCost;
+
+    public GameObject Panel;
+
     void Start()
     {
-        
+        Panel.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+
+            if (hitInformation.collider != null)
+            {
+                if (hitInformation.collider.tag == this.tag)
+                {
+                    OpenPanel();
+                }
+            }
+        }
+
     }
+
+
+
+    public void OpenPanel()
+    {
+        if (Panel != null)
+        {
+            bool isActive = Panel.activeSelf;
+
+            Panel.SetActive(!isActive);
+        }
+    }
+
 }
