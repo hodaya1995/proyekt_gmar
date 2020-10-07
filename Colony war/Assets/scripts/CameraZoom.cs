@@ -8,18 +8,25 @@ public class CameraZoom : MonoBehaviour
     public float zoomOutMin = 1;
     public float zoomOutMax = 7;
     bool flag;
+    GameObject Tool_Resources;
+    Vector3 Point_Tool_Resources;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        Point_Tool_Resources = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.scaledPixelHeight, Camera.main.transform.position.z));
+        Point_Tool_Resources.z = Camera.main.transform.position.z + 5;
+        Tool_Resources = Camera.main.gameObject.transform.Find("Canvas").gameObject.transform.Find("fill of the bar").gameObject;
+        Tool_Resources.transform.position = Point_Tool_Resources;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        
+
+        Point_Tool_Resources = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.scaledPixelHeight, Camera.main.transform.position.z));
+        Point_Tool_Resources.z = Camera.main.transform.position.z + 5;
+        Tool_Resources.transform.position = Point_Tool_Resources;
         //true on start
         if (Input.GetMouseButtonDown(0))
         {
