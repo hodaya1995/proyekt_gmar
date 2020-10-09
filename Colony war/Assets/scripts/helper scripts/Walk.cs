@@ -341,6 +341,7 @@ public class Walk : MonoBehaviour
                 SearchAndAttack();
             }
         }
+       
         if (target != null && targetObject != null)
         {
             if (target.name.Contains("building"))
@@ -404,10 +405,15 @@ public class Walk : MonoBehaviour
             {
                 soldierChosen = false;
             }
-            if (detectedTouch && detectedTouchInZone)
+
+			if (If_Butoon_Collide_On_Tool_Building)
+			{
+                Debug.Log(If_Butoon_Collide_On_Tool_Building);
+            }
+            if (detectedTouch && detectedTouchInZone && !If_Butoon_Collide_On_Tool_Building)
             {
 
-
+                Debug.Log(If_Butoon_Collide_On_Tool_Building);
 
                 //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 //Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);

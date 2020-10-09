@@ -14,6 +14,8 @@ public class Worker : MonoBehaviour
         attacked.healthBar = this.gameObject.GetComponentInChildren<HealthBar>();
         animator = this.gameObject.GetComponent<Animator>();
         walk = this.gameObject.AddComponent<Walk>();
+        this.gameObject.AddComponent<DestructOfBuilding>();
+        this.gameObject.AddComponent<Build_Building>();
 
 
     }

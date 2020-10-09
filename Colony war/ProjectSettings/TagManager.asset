@@ -24,6 +24,7 @@ TagManager:
   - trees
   - colony building
   - enemy building
+  - first stage of the building
   layers:
   - Default
   - TransparentFX

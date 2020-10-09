@@ -25,11 +25,13 @@ public class Build_Building : MonoBehaviour
     string Name_Of_Building;
     bool Sturctue_Mine;
 
+    bool isObstacle = true;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        if (this.transform.parent.gameObject.name == "Main Camera")
+        if (this.transform.parent.gameObject.name == "buildings")
         {
 
             GameObject g = this.gameObject;
@@ -45,7 +47,14 @@ public class Build_Building : MonoBehaviour
         }
     }
 
-
+    public bool IsObstacle()
+    {
+        return isObstacle;
+    }
+    public void SetObstacle(bool isObstacle)
+    {
+        this.isObstacle = isObstacle;
+    }
 
     void OnCollisionEnter2D(Collision2D collider)
     {
@@ -235,12 +244,16 @@ public class Build_Building : MonoBehaviour
             if (Sturctue_Mine)
             {
                 GameObject o = Instantiate(GameObject.Find("characthers").transform.Find("colony soldiers").Find("buildings").Find(Name_Of_Building).gameObject);
+                GameObject r = GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject;
+                o.transform.SetParent(r.transform);
                 o.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
                 o.SetActive(true);
             }
             else if (!Sturctue_Mine)
 			{
                 GameObject o = Instantiate(GameObject.Find("characthers").transform.Find("enemy soldiers").Find("buildings").Find(Name_Of_Building).gameObject);
+                GameObject r = GameObject.Find("characters").transform.Find("enemy soldiers").Find("buildings").gameObject;
+                o.transform.SetParent(r.transform);
                 o.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
                 o.SetActive(true);
             }

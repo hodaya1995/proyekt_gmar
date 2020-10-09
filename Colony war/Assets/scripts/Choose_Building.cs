@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ public class Choose_Building : MonoBehaviour
     GameObject worker = null;
     bool Sturctue_Mine;
 
-
+    
 
     void Start()
     {
@@ -99,6 +100,18 @@ public class Choose_Building : MonoBehaviour
 
                 Move_Building_To_Build.SetActive(false);
                 start_building = Instantiate(Camera.main.transform.Find("first stage of the building").gameObject);
+                if (Sturctue_Mine)
+                {
+                    GameObject o = GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject;
+                    start_building.transform.SetParent(o.transform);
+                }
+                else if (!Sturctue_Mine)
+				{
+                    GameObject o = GameObject.Find("characters").transform.Find("enemy soldiers").Find("buildings").gameObject;
+                    start_building.transform.SetParent(o.transform);
+                }
+                
+                
                 start_building.transform.position = new Vector3(Move_Building_To_Build.transform.position.x, Move_Building_To_Build.transform.position.y, Move_Building_To_Build.transform.position.z);
                 start_building.GetComponent<Build_Building>().Set_Name_Of_Building(building);
                 start_building.GetComponent<Build_Building>().Set_Side_Of_Player(Sturctue_Mine);
@@ -125,6 +138,7 @@ public class Choose_Building : MonoBehaviour
                     Sturctue_Mine = true;
                     worker = hitInformation.collider.gameObject;
                     worker.GetComponent<Walk>().Set_If_Butoon_Collide_On_Tool_Building(false);
+                    
                     GameObject child = Camera.main.transform.Find("Canvas").gameObject;
                     child = child.transform.Find("fill of the bar").gameObject;
                     GameObject text = child.transform.Find("Text").gameObject;
@@ -174,7 +188,8 @@ public class Choose_Building : MonoBehaviour
                     }
 
                 }
-
+                
+                
                 else if (hitInformation.collider.gameObject.transform.parent.gameObject.name == "bar of buildings" && hitInformation.collider.gameObject.name!="collider black"
                     && hitInformation.collider.gameObject.GetComponent<SpriteRenderer>()!=null)
                 {
@@ -264,6 +279,7 @@ public class Choose_Building : MonoBehaviour
 			{
                 if (worker != null)
                 {
+                    Debug.Log(worker);
                     worker.GetComponent<Walk>().Set_If_Butoon_Collide_On_Tool_Building(false);
                     worker = null;
                 }

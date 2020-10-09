@@ -11,6 +11,8 @@ public class Soldier : MonoBehaviour
 
     void Start()
     {
+        this.gameObject.AddComponent<DestructOfBuilding>();
+        this.gameObject.AddComponent<Build_Building>();
         this.gameObject.AddComponent<Attack>();
 
         Attacked attacked = this.gameObject.AddComponent<Attacked>();

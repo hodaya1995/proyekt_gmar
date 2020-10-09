@@ -48,6 +48,7 @@ public class DestructOfBuilding : MonoBehaviour
                 slide.value = Bar_Life_Building;
                 this.gameObject.tag = "buildings";
                 Destruct_Building = Instantiate(this.transform.parent.gameObject.transform.Find("destruct building").gameObject);
+                Destruct_Building.transform.SetParent(this.gameObject.transform);
                 Destruct_Building.SetActive(false);
                
 
