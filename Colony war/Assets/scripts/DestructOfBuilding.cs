@@ -112,9 +112,11 @@ public class DestructOfBuilding : MonoBehaviour
 
         }
 
-        else if (this.Sturctue_Mine && this.tag == "buildings" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name== "colony soldiers"
-            || !this.Sturctue_Mine && this.tag == "buildings" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
-		{
+        //      else if (this.Sturctue_Mine && this.tag == "buildings" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name== "colony soldiers"
+        //          || !this.Sturctue_Mine && this.tag == "buildings" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
+        //{
+        else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.tag.Contains("gold miner"))
+            { 
             Animator animator = collider.gameObject.GetComponent<Animator>();
             animator.SetBool("mine", true);
             list_Worksers.Add(collider.gameObject);

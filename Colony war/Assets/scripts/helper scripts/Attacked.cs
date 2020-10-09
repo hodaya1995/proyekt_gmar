@@ -15,7 +15,6 @@ public class Attacked : MonoBehaviour
     float waitForSearch = 3f;
     bool decreaseLifeMehodCalled;
     bool targeted;
-    bool moving;
     float lifeToDecrease;
     GameObject targetedAttacker;
 
@@ -161,8 +160,7 @@ public class Attacked : MonoBehaviour
 
     void Update()
     {
-        moving = GetComponent<Walk>().IsMoving();
-   
+      
         //if (attacked && !moving)//dont move
         //{
         //    rb.velocity = new Vector3(0, 0, 0);

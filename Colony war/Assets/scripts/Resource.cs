@@ -13,13 +13,15 @@ public class Resource : MonoBehaviour
     Animator workerAnimator;
     string res;
     GameObject textCanvas;
-
+    public bool occupied;
 
     Text countxet;
-    int resbar = 0;
+    int resbar = (int) Resources.gold;
+    GameObject miner;
 
     void Start()
     {
+        
         origAmount = amount;
         statesCount = this.transform.childCount - 1;
         currState = 0;
@@ -56,13 +58,17 @@ public class Resource : MonoBehaviour
             RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
             Vector3 mousePos = Input.mousePosition;
 
+            mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+            //Debug.Log(mousePos);
             if (hitInformation.collider != null)
             {
                 if (hitInformation.collider.tag == res)
                 {
-                    SetText("" + (int)amount);
-                    textCanvas.SetActive(true);
-                    Invoke("HideCanvas", 3f);
+                    Resource resource = hitInformation.collider.gameObject.GetComponent<Resource>();
+                    resource.SetText("" + (int)amount);
+                    resource.textCanvas.SetActive(true);
+                    resource.Invoke("HideCanvas", 3f);
                 }
             }
         }
@@ -84,20 +90,24 @@ public class Resource : MonoBehaviour
     /// <param name="collision">miner's collision</param>
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag.Contains("miner"))
+        if (collision.collider.tag.Contains("gold miner"))
         {
             miningSpeed = collision.gameObject.GetComponent<Worker>().miningSpeed;
             workerAnimator = collision.gameObject.GetComponent<Animator>();
+            occupied = true;
             InvokeRepeating("DecraeseResource", 0, 1f);
-
+            miner = collision.gameObject;
 
 
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.tag.Contains("miner"))
+        if (collision.collider.tag.Contains("gold miner"))
+        //if (collision.collider.tag == "gold miner colony")
         {
+           
+            occupied = false;
             HideCanvas();
         }
     }
@@ -115,7 +125,8 @@ public class Resource : MonoBehaviour
 
     void SetTextInBarResources(int t)
     {
-        resbar = resbar + t;
+        resbar =t;
+        //resbar = resbar + t;
         countxet.text = "" + resbar;
     }
 
@@ -154,9 +165,12 @@ public class Resource : MonoBehaviour
         amount = temp_a;
         miningSpeed = temp_m;
         amount -= miningSpeed;
-
-
-        SetTextInBarResources((int)miningSpeed);
+        if (miner.tag == "gold miner colony")
+        {
+            Resources.gold += miningSpeed;
+           
+        }
+        SetTextInBarResources((int)Resources.gold);
         SetText("" + (int)amount);
 
     }

@@ -40,6 +40,10 @@ public class Walk : MonoBehaviour
 
     bool If_Butoon_Collide_On_Tool_Building=false;
 
+
+    Collider2D[] resourcesAround;
+    GameObject resource;
+
     public void SetSearch(bool search)
     {
         this.search = search;
@@ -412,9 +416,6 @@ public class Walk : MonoBehaviour
             }
             if (detectedTouch && detectedTouchInZone && !If_Butoon_Collide_On_Tool_Building)
             {
-
-                Debug.Log(If_Butoon_Collide_On_Tool_Building);
-
                 //touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 //Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);
                 //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
@@ -423,11 +424,25 @@ public class Walk : MonoBehaviour
                 Vector3 mousePos = Input.mousePosition;
 
                 mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-
+                Debug.Log(mousePos);
                 Collider2D[] nearSoldiers1 = GetNearSoldiers(mousePos);
-                if ((hitInformation.collider != null && nearSoldiers1 != null && nearSoldiers1.Length > 0) && !soldierChosen)
-                {
 
+                bool barSelected = false;
+                if (hitInformation.collider.gameObject.transform != null && hitInformation.collider.gameObject.transform.parent != null)
+                {
+                    barSelected = hitInformation.collider.gameObject.transform.parent.gameObject.name == "bar of buildings" && hitInformation.collider.gameObject.name != "collider black"
+                    && hitInformation.collider.gameObject.GetComponent<SpriteRenderer>() != null;
+                }
+                Debug.Log("barSelected " + barSelected);
+                if (((hitInformation.collider != null && nearSoldiers1 != null && nearSoldiers1.Length > 0) || (hitInformation.collider.tag == "gold miner colony" && this.tag == "gold miner colony")) && !soldierChosen)
+                {
+                    Debug.Log("walk  ");
+                    if (this.tag == "gold miner colony")
+                    {
+
+                        nearSoldiers1 = new Collider2D[1];
+                        nearSoldiers1[0] = hitInformation.collider;
+                    }
                     Transform t = nearSoldiers1[0].transform;
 
                     float dis = Mathf.Infinity;
@@ -443,12 +458,16 @@ public class Walk : MonoBehaviour
 
 
 
-                    if ((this.gameObject.name.Split(' ')[0] == t.gameObject.name.Split(' ')[0]) && (this.tag == t.tag))
+
+
+                    if (((this.gameObject.name.Split(' ')[0] == t.gameObject.name.Split(' ')[0]) && (this.tag == t.tag)) && this.name.Contains("soldier") || (this.name == t.name))
                     {
+                        Debug.Log(t.name + " " + this.name);
                         mySoldier = t.transform;
                         myRb = t.GetComponent<Rigidbody2D>();
                         myRb.drag = 1.5f;
                         myAnimator = t.GetComponent<Animator>();
+                        Debug.Log("soldier chosen");
                         soldierChosen = true;
 
                     }
@@ -456,28 +475,53 @@ public class Walk : MonoBehaviour
 
 
                 }
-                else if (!ContainMyTag(nearSoldiers1))
+
+                else if ((!ContainMyTag(nearSoldiers1)) && !barSelected)
                 {
                     if (soldierChosen)
                     {
 
                         Collider2D[] nearSoldiers2 = GetNearSoldiers(mousePos);
-
+                        if (hitInformation.collider.tag == "gold")
+                        {
+                            nearSoldiers2 = new Collider2D[1];
+                            nearSoldiers2[0] = hitInformation.collider;
+                        }
 
                         moveToRigidbody = hitInformation.collider != null && nearSoldiers2.Length > 0;
 
                         if (moveToRigidbody)
                         {
-                            MoveToTarget(nearSoldiers2, true);
+                            Debug.Log("MoveToTarget " + this.name);
+                            if (this.tag == "gold miner colony")
+                            {
+                                MoveToTarget(nearSoldiers2, false);
+                            }
+                            else
+                            {
+                                MoveToTarget(nearSoldiers2, true);
+                            }
+
+
+
 
                         }
                         else
                         {
+                            Debug.Log("MoveToTargetPos");
+                            if (this.tag == "gold miner colony")
+                            {
+                                MoveToTargetPos(mousePos, false);
+                            }
+                            else
+                            {
+                                MoveToTargetPos(mousePos, true);
+                            }
 
-                            MoveToTargetPos(mousePos, true);
+
 
                         }
-
+                        soldierChosen = false;
 
                     }
                 }
@@ -485,6 +529,118 @@ public class Walk : MonoBehaviour
                 {
                     soldierChosen = false;
                 }
+                ////touchPosWorld = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+                // //Vector2 touchPosWorld2D = new Vector2(touchPosWorld.x, touchPosWorld.y);
+                // //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld2D, Vector2.zero);
+                // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                // RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+                // Vector3 mousePos = Input.mousePosition;
+
+                // mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+                // Debug.Log(mousePos);
+                // Collider2D[] nearSoldiers1 = GetNearSoldiers(mousePos);
+
+                // bool barSelected = false;
+                // if (hitInformation.collider.gameObject.transform !=null && hitInformation.collider.gameObject.transform.parent != null)
+                // {
+                //     barSelected = hitInformation.collider.gameObject.transform.parent.gameObject.name == "bar of buildings" && hitInformation.collider.gameObject.name != "collider black"
+                //     && hitInformation.collider.gameObject.GetComponent<SpriteRenderer>() != null;
+                // }
+                // Debug.Log("barSelected " + barSelected);
+                // if (((hitInformation.collider != null && nearSoldiers1 != null && nearSoldiers1.Length > 0) || (hitInformation.collider.tag == "gold miner colony"  &&this.tag == "gold miner colony"))&& !soldierChosen)
+                // {
+                //     Debug.Log("walk  ");
+                //     if (this.tag == "gold miner colony")
+                //     {
+
+                //         nearSoldiers1 = new Collider2D[1];
+                //         nearSoldiers1[0] = hitInformation.collider;
+                //     }
+                //     Transform t = nearSoldiers1[0].transform;
+
+                //     float dis = Mathf.Infinity;
+                //     foreach (Collider2D collider in nearSoldiers1)
+                //     {
+                //         float currDis = Mathf.Abs(Vector3.Distance(collider.transform.position, mousePos));
+                //         if (currDis < dis)
+                //         {
+                //             dis = currDis;
+                //             t = collider.transform;
+                //         }
+                //     }
+
+
+
+
+
+                //     if (((this.gameObject.name.Split(' ')[0] == t.gameObject.name.Split(' ')[0]) && (this.tag == t.tag))&& this.name.Contains("soldier")|| (this.name == t.name))
+                //     {
+                //         Debug.Log(t.name + " " + this.name);
+                //         mySoldier = t.transform;
+                //         myRb = t.GetComponent<Rigidbody2D>();
+                //         myRb.drag = 1.5f;
+                //         myAnimator = t.GetComponent<Animator>();
+                //         Debug.Log("soldier chosen");
+                //         soldierChosen = true;
+
+                //     }
+
+
+
+                // }
+
+                // else if ((!ContainMyTag(nearSoldiers1))&&!barSelected)
+                // {
+                //     if (soldierChosen)
+                //     {
+
+                //         Collider2D[] nearSoldiers2 = GetNearSoldiers(mousePos);
+                //         if(hitInformation.collider.tag == "gold" )
+                //         {
+                //             nearSoldiers2 = new Collider2D[1];
+                //             nearSoldiers2[0] = hitInformation.collider;
+                //          }
+
+                //         moveToRigidbody = hitInformation.collider != null && nearSoldiers2.Length > 0;
+
+                //         if (moveToRigidbody)
+                //         {
+                //             Debug.Log("MoveToTarget "+this.name);
+                //             if (this.tag == "gold miner colony")
+                //             {
+                //                 MoveToTarget(nearSoldiers2, false);
+                //             }
+                //             else
+                //             {
+                //                 MoveToTarget(nearSoldiers2, true);
+                //             }
+
+
+
+
+                //         }
+                //         else
+                //         {
+                //             Debug.Log("MoveToTargetPos");
+                //             if (this.tag == "gold miner colony")
+                //             {
+                //                 MoveToTargetPos(mousePos, false);
+                //             }
+                //             else{
+                //                 MoveToTargetPos(mousePos, true);
+                //             }
+
+
+
+                //         }
+                //         soldierChosen = false;
+
+                //     }
+                // }
+                // else
+                // {
+                //     soldierChosen = false;
+                // }
 
             }
 
@@ -525,7 +681,7 @@ public class Walk : MonoBehaviour
     }
     public void MoveToTarget(Collider2D[] targets, bool setNewTarget)
     {
-
+        Debug.Log("MoveToTarget");
         potentialTargets = targets;
         mySoldier = this.GetComponent<Transform>();
         GameObject target = targets[0].gameObject;
@@ -558,11 +714,74 @@ public class Walk : MonoBehaviour
         this.targetObject = target;
         this.target = target.transform;
 
+        if (resource != null && resource.GetComponent<Resource>() != null)
+        {
+            resource.GetComponent<Resource>().occupied = false;
+
+            for (int i = 0; i < resourcesAround.Length; i++)
+            {
+
+                resourcesAround[i].GetComponent<Resource>().occupied = false;
+            }
+        }
+        resource = target;
+        resourcesAround = Physics2D.OverlapCircleAll(resource.transform.position, 3f);
+        if (resource != null && resource.GetComponent<Resource>() != null)
+        {
+            resource.GetComponent<Resource>().occupied = true;
+            for (int i = 0; i < resourcesAround.Length; i++)
+            {
+                if (resourcesAround[i].GetComponent<Resource>() != null)
+                {
+                    resourcesAround[i].GetComponent<Resource>().occupied = true;
+                }
+
+            }
+        }
+
         if (setNewTarget && GetComponentInParent<Flock>() != null) GetComponentInParent<Flock>().SetNewTarget(target, false);
         soldierChosen = false;
         targetChosen = true;
         reachedEndOfPath = false;
         BuildPathToTarget();
+
+        //potentialTargets = targets;
+        //mySoldier = this.GetComponent<Transform>();
+        //GameObject target = targets[0].gameObject;
+        //float dis = Mathf.Infinity;
+        //foreach (Collider2D t in targets)
+        //{
+        //    float currDis = Mathf.Abs(Vector3.Distance(t.transform.position, mySoldier.position));
+        //    Attacked attckComp = t.GetComponent<Attacked>();
+        //    bool isAttacked = false;
+        //    if (attckComp != null)
+        //    {
+        //        isAttacked = attckComp.IsTargeted();
+        //    }
+        //    if (currDis < dis && !isAttacked)
+        //    {
+        //        dis = currDis;
+        //        target = t.gameObject;
+        //    }
+        //}
+        //if (target.GetComponent<Attacked>() != null)
+        //{
+        //    target.GetComponent<Attacked>().SetTargetedAttacker(this.gameObject);
+        //    target.GetComponent<Attacked>().SetTargeted(true);
+        //}
+
+        //myRb = this.GetComponent<Rigidbody2D>();
+        //myRb.drag = 1.5f;
+        //myAnimator = this.GetComponent<Animator>();
+        //moveToRigidbody = true;
+        //this.targetObject = target;
+        //this.target = target.transform;
+
+        //if (setNewTarget && GetComponentInParent<Flock>() != null) GetComponentInParent<Flock>().SetNewTarget(target, false);
+        //soldierChosen = false;
+        //targetChosen = true;
+        //reachedEndOfPath = false;
+        //BuildPathToTarget();
 
     }
 
@@ -600,10 +819,18 @@ public class Walk : MonoBehaviour
         obstacle.enabled = false;
         string layer = this.name.Split(' ')[0];
         this.GetComponentInParent<Flock>().SetAsObstacle(false, layer);
+
+        res = "gold";
+        if (this.tag == "gold miner enemy")
+        {
+
+            LookForResorces(res);
+        }
     }
 
     void LookForResorces(string res)
     {
+
         GameObject[] targets;
         targets = GameObject.FindGameObjectsWithTag(res);
 
@@ -615,7 +842,7 @@ public class Walk : MonoBehaviour
             Vector3 diff = target.transform.position - position;
             float curDistance = diff.sqrMagnitude;
 
-            if (curDistance < distance)
+            if (curDistance < distance && !target.GetComponent<Resource>().occupied)
             {
 
                 closest = target;
@@ -627,13 +854,69 @@ public class Walk : MonoBehaviour
 
         if (closest != null)
         {
+            if (resource != null && resource.GetComponent<Resource>() != null)
+            {
+                Debug.Log("resource != null false " + this.name);
+                resource.GetComponent<Resource>().occupied = false;
 
+                for (int i = 0; i < resourcesAround.Length; i++)
+                {
+
+                    resourcesAround[i].GetComponent<Resource>().occupied = false;
+                }
+            }
+            resource = closest;
+            resourcesAround = Physics2D.OverlapCircleAll(resource.transform.position, 1f);
+            Debug.Log(resourcesAround.Length);
+            if (resource != null && resource.GetComponent<Resource>() != null)
+            {
+                Debug.Log("resource != null true " + this.name);
+                resource.GetComponent<Resource>().occupied = true;
+                for (int i = 0; i < resourcesAround.Length; i++)
+                {
+                    if (resourcesAround[i].GetComponent<Resource>() != null)
+                    {
+                        resourcesAround[i].GetComponent<Resource>().occupied = true;
+                    }
+
+                }
+            }
             MoveForwardTo(closest, true);
         }
         else
         {
             Debug.LogAssertion("there is no resorces to find");
         }
+        //GameObject[] targets;
+        //targets = GameObject.FindGameObjectsWithTag(res);
+
+        //GameObject closest = null;
+        //float distance = Mathf.Infinity;
+        //Vector3 position = this.transform.position;
+        //foreach (GameObject target in targets)
+        //{
+        //    Vector3 diff = target.transform.position - position;
+        //    float curDistance = diff.sqrMagnitude;
+
+        //    if (curDistance < distance)
+        //    {
+
+        //        closest = target;
+        //        distance = curDistance;
+
+        //    }
+        //}
+
+
+        //if (closest != null)
+        //{
+
+        //    MoveForwardTo(closest, true);
+        //}
+        //else
+        //{
+        //    Debug.LogAssertion("there is no resorces to find");
+        //}
     }
     void onPathComplete(Path p)
     {
@@ -771,7 +1054,7 @@ public class Walk : MonoBehaviour
     GameObject FindClosestEnemy()
     {
         GameObject[] targets;
-        string[] tagsToSearch = new string[] { "colony soldier", "gold miner", "colony building" };
+        string[] tagsToSearch = new string[] { "colony soldier", "gold miner colony", "colony building" };
         GameObject closest = null;
         float distance = Mathf.Infinity;
         foreach (string t in tagsToSearch)

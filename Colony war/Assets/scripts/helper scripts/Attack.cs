@@ -137,7 +137,7 @@ public class Attack : MonoBehaviour
     
     private bool IsColliderTriggered(Collision2D collision)
     {
-        bool enemy2colony = (collision.collider.tag.Contains("gold miner")) && this.tag.Contains("enemy");
+        bool enemy2colony = (collision.collider.tag.Contains("gold miner colony")) && this.tag.Contains("enemy");
         bool colony2enemy = ((collision.collider.tag.Contains("colony")) && this.tag.Contains("enemy"));
         bool collisionTargeted = (collision.gameObject.name.Split(' ')[0] == (targetToAttack)) && targetChosen && this.tag != collision.collider.tag;
         return (enemy2colony || colony2enemy || collisionTargeted);

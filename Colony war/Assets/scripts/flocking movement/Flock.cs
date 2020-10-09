@@ -66,7 +66,7 @@ public class Flock : MonoBehaviour
     FlockAgent InstantiateSoldier()
     {
         float x = instantiatePlace.transform.position.x;
-        float y = instantiatePlace.transform.position.y + 2.5f;
+        float y = instantiatePlace.transform.position.y + 1.5f;
 
        
         if (currI % 2 == 0)

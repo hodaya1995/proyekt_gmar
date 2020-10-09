@@ -13,7 +13,7 @@ public class PreMenuScript : MonoBehaviour
 
     public void DontStopLoading()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("MenuScene");
     }
   
 

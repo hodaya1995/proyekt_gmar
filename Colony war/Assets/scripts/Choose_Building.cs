@@ -61,11 +61,12 @@ public class Choose_Building : MonoBehaviour
                 GameObject text = child.transform.Find("Text").gameObject;
                 Text countxet = text.GetComponent<Text>();
                 string building="";
-
+                int numberOfResource = 0;
                 if (Move_Building_To_Build.name == "stable move")
                 {
                     int num = int.Parse(countxet.text) - 200;
                     countxet.text = " " + num;
+                    numberOfResource = num;
                     building = "stable";
                 }
 
@@ -73,6 +74,7 @@ public class Choose_Building : MonoBehaviour
                 {
                     int num = int.Parse(countxet.text) - 150;
                     countxet.text = " " + num;
+                    numberOfResource = num;
                     building = "barracks";
                 }
 
@@ -80,6 +82,7 @@ public class Choose_Building : MonoBehaviour
                 {
                     int num = int.Parse(countxet.text) - 170;
                     countxet.text = " " + num;
+                    numberOfResource = num;
                     building = "archer building";
                 }
 
@@ -87,6 +90,7 @@ public class Choose_Building : MonoBehaviour
                 {
                     int num = int.Parse(countxet.text) - 120;
                     countxet.text = " " + num;
+                    numberOfResource = num;
                     building = "worker building";
                 }
 
@@ -94,6 +98,7 @@ public class Choose_Building : MonoBehaviour
                 {
                     int num = int.Parse(countxet.text) - 120;
                     countxet.text = " " + num;
+                    numberOfResource = num;
                     building = "protect tower";
                     
                 }
@@ -116,9 +121,9 @@ public class Choose_Building : MonoBehaviour
                 start_building.GetComponent<Build_Building>().Set_Name_Of_Building(building);
                 start_building.GetComponent<Build_Building>().Set_Side_Of_Player(Sturctue_Mine);
                 start_building.SetActive(true);
-                
 
 
+                Resources.gold = numberOfResource;
 
 
             }
@@ -130,8 +135,10 @@ public class Choose_Building : MonoBehaviour
             RaycastHit2D hitInformation = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
             if (hitInformation.collider != null)
             {
-                
-                if (hitInformation.collider.gameObject.GetComponent<Worker>() != null && hitInformation.collider.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers")
+
+                //if (hitInformation.collider.gameObject.GetComponent<Worker>() != null && hitInformation.collider.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers")
+                //{
+                if (hitInformation.collider.tag == "gold miner colony")
                 {
 
 
@@ -191,7 +198,8 @@ public class Choose_Building : MonoBehaviour
                 
                 
                 else if (hitInformation.collider.gameObject.transform.parent.gameObject.name == "bar of buildings" && hitInformation.collider.gameObject.name!="collider black"
-                    && hitInformation.collider.gameObject.GetComponent<SpriteRenderer>()!=null)
+                    && hitInformation.collider.gameObject.GetComponent<SpriteRenderer>()!=null
+                    &&!(hitInformation.collider.tag == "colony gold miner" && Sturctue_Mine))//hodaya
                 {
                     worker.GetComponent<Walk>().Set_If_Butoon_Collide_On_Tool_Building(true);
                     GameObject child = Camera.main.transform.Find("Canvas").gameObject;

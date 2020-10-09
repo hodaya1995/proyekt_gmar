@@ -16,9 +16,10 @@ public class MineResources : MonoBehaviour
     Animator animator;
     bool targetChosen;
     string res;
-    public int speedMining;
+    public int speedMining =1;
 
     bool facingRight = false;
+    Walk walk;
     public void SetMiningSpeed(int speed)
     {
         this.speedMining = speed;
@@ -77,6 +78,14 @@ public class MineResources : MonoBehaviour
 
             }
         }
+        if (this.resource!=null&&this.resource.GetComponent<Resource>().occupied)
+        {
+            if (walk!=null){
+                walk.StopMovingToPath(false) ;
+            }
+            
+            LookForResorces(res);
+        }
 
     }
 
@@ -88,7 +97,6 @@ public class MineResources : MonoBehaviour
             targetChosen = false;
             CancelInvoke();
             reachedEndOfPath = true;
-            animator.SetBool("move", false);
             rb.AddForce(new Vector2(0, 0));
             animator.SetBool("mine", true);
         }
@@ -99,9 +107,6 @@ public class MineResources : MonoBehaviour
 
     void BuildPathToTarget()
     {
-
-        seeker = GetComponent<Seeker>();
-
         InvokeRepeating("UpdatePath", 0f, 0.5f);
     }
 
@@ -179,10 +184,7 @@ public class MineResources : MonoBehaviour
 
     void MoveForwardTo(GameObject res)
     {
-        target = this.GetComponent<Transform>();
-        rb = this.GetComponent<Rigidbody2D>();
-        rb.drag = 1.5f;
-        animator = this.GetComponent<Animator>();
+       
         resource = res.GetComponent<Transform>();
         BuildPathToTarget();
     }
@@ -200,7 +202,7 @@ public class MineResources : MonoBehaviour
             Vector3 diff = target.transform.position - position;
             float curDistance = diff.sqrMagnitude;
 
-            if (curDistance < distance)
+            if (curDistance < distance && !target.GetComponent<Resource>().occupied)
             {
 
                 closest = target;
@@ -217,13 +219,27 @@ public class MineResources : MonoBehaviour
         }
         else
         {
-            Debug.LogAssertion("there is no resorces to find");
+            Debug.LogAssertion("there is no resources to find");
         }
     }
     void Start()
     {
-        res = this.tag.Split(' ')[0];
-        LookForResorces(res);
+        seeker = this.gameObject.AddComponent<Seeker>();
+        res = "gold";
+        Debug.Log("this.tag " + this.tag);
+        if (this.tag == "gold miner enemy")
+        {
+            Debug.Log("gold miner enemy");
+            LookForResorces(res);
+        }
+        else
+        {
+            walk =this.gameObject.AddComponent<Walk>();
+        }
+        target = this.GetComponent<Transform>();
+        rb = this.GetComponent<Rigidbody2D>();
+        rb.drag = 1.5f;
+        animator = this.GetComponent<Animator>();
     }
 
 

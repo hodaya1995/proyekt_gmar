@@ -76,8 +76,10 @@ public class Build_Building : MonoBehaviour
 
         }
 
-        else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers"
-             || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
+        //else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers"
+        //     || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
+        //{
+        else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.tag.Contains("gold miner"))
         {
             Animator animator = collider.gameObject.GetComponent<Animator>();
            
