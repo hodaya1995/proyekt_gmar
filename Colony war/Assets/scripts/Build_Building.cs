@@ -59,8 +59,8 @@ public class Build_Building : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collider)
     {
 
-        if (this.Sturctue_Mine &&  this.tag == "first stage of the building" && collider.gameObject.GetComponent<Attack>() != null && collider.gameObject.transform.parent.gameObject.name == "enemy soldiers"
-            || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Attack>() != null && collider.gameObject.transform.parent.gameObject.name == "colony soldiers")
+        if (this.Sturctue_Mine &&  this.tag == "first stage of the building" && collider.gameObject.GetComponent<Attack>() != null && collider.gameObject.transform.parent.parent.gameObject.name == "enemy soldiers"
+            || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Attack>() != null && collider.gameObject.transform.parent.parent.gameObject.name == "colony soldiers")
         {
              
 
@@ -76,10 +76,10 @@ public class Build_Building : MonoBehaviour
 
         }
 
-        //else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers"
-        //     || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
-        //{
-        else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.tag.Contains("gold miner"))
+        else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers"
+            || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
+        
+        
         {
             Animator animator = collider.gameObject.GetComponent<Animator>();
            
@@ -98,8 +98,8 @@ public class Build_Building : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Attack>() != null && collision.gameObject.transform.parent.gameObject.name == "enemy soldiers"
-             || !this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Attack>() != null && collision.gameObject.transform.parent.gameObject.name == "colony soldiers")
+        if (this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Attack>() != null && collision.gameObject.transform.parent.parent.gameObject.name == "enemy soldiers"
+             || !this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Attack>() != null && collision.gameObject.transform.parent.parent.gameObject.name == "colony soldiers")
         {
             Animator a = collision.gameObject.GetComponent<Animator>();
             a.SetBool("toAttack", false);
@@ -245,16 +245,16 @@ public class Build_Building : MonoBehaviour
             this.gameObject.SetActive(false);
             if (Sturctue_Mine)
             {
-                GameObject o = Instantiate(GameObject.Find("characthers").transform.Find("colony soldiers").Find("buildings").Find(Name_Of_Building).gameObject);
-                GameObject r = GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject;
+                GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building).gameObject);
+                GameObject r = this.transform.parent.gameObject;
                 o.transform.SetParent(r.transform);
                 o.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
                 o.SetActive(true);
             }
             else if (!Sturctue_Mine)
 			{
-                GameObject o = Instantiate(GameObject.Find("characthers").transform.Find("enemy soldiers").Find("buildings").Find(Name_Of_Building).gameObject);
-                GameObject r = GameObject.Find("characters").transform.Find("enemy soldiers").Find("buildings").gameObject;
+                GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building).gameObject);
+                GameObject r = this.transform.parent.gameObject;
                 o.transform.SetParent(r.transform);
                 o.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
                 o.SetActive(true);

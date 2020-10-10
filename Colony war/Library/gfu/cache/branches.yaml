@@ -13,31 +13,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cacheType: 2
-  lastUpdatedAtString: 2020-10-09T11:54:52.571+03:00
-  initializedAtString: 2020-10-09T11:54:37.817+03:00
-  localBranches: []
-  remoteBranches: []
+  lastUpdatedAtString: 2020-10-09T13:09:41.709+03:00
+  initializedAtString: 2020-10-09T13:09:41.685+03:00
+  localBranches:
+  - name: master
+    tracking: origin/master
+  remoteBranches:
+  - name: origin/HEAD
+    tracking: '[None]'
+  - name: origin/master
+    tracking: '[None]'
   remotes:
   - name: origin
-    url: https://github.com/hodaya1995/proyekt_gmar
+    url: https://github.com/hodaya1995/proyekt_gmar.git
     login: 
     user: 
     host: 
     function: 0
     token: 
   localConfigBranches:
-    keys: []
-    values: []
+    keys:
+    - master
+    values:
+    - name: master
+      remote:
+        name: origin
+        url: https://github.com/hodaya1995/proyekt_gmar.git
+      trackingBranch: master
   remoteConfigBranches:
     keys:
     - origin
     subKeys:
-    - Values: []
+    - Values:
+      - HEAD
+      - master
     subKeyValues:
-    - Values: []
+    - Values:
+      - name: HEAD
+        remote:
+          name: origin
+          url: https://github.com/hodaya1995/proyekt_gmar.git
+        trackingBranch: 
+      - name: master
+        remote:
+          name: origin
+          url: https://github.com/hodaya1995/proyekt_gmar.git
+        trackingBranch: 
   configRemotes:
     keys:
     - origin
     values:
     - name: origin
-      url: https://github.com/hodaya1995/proyekt_gmar
+      url: https://github.com/hodaya1995/proyekt_gmar.git
