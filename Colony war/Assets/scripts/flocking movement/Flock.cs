@@ -8,7 +8,7 @@ public class Flock : MonoBehaviour
     public FlockAgent agentPrefab;
     public GameObject instantiatePlace;
 
-    List<FlockAgent> agents = new List<FlockAgent>();
+    List<FlockAgent> agents = new List<FlockAgent>(); 
     [Range(1, 500)]
     public int soldiersCount = 3;
     [Range(1f, 100f)]
@@ -22,10 +22,10 @@ public class Flock : MonoBehaviour
 
     Vector2 randomSquare;
     int currI;
-    List<FlockAgent> copyAgents = new List<FlockAgent>();
+    List<FlockAgent> copyAgents =new List<FlockAgent>();
     float transRad = 0.2f;
     GameObject prev;
-    bool firstCall = true;
+    bool firstCall=true;
     Vector3 prevPos = Vector3.zero;
 
 
@@ -38,12 +38,12 @@ public class Flock : MonoBehaviour
     {
         randomSquare = new Vector2();
         InstantiateSoldier();
-
-
+      
+           
     }
-    public static void SetAsObstacle(bool asObstacle, string layerName)
+    public static void SetAsObstacle(bool asObstacle,string layerName)
     {
-
+       
         AstarPath astarPath = GameObject.Find("A*").GetComponent<AstarPath>();
 
         if (astarPath == null)
@@ -57,21 +57,21 @@ public class Flock : MonoBehaviour
 
         foreach (GridGraph graph in astarPath.graphs.Cast<GridGraph>())
         {
-            graph.SetGridShape(InspectorGridMode.IsometricGrid, layerName, asObstacle);
-
+            graph.SetGridShape(InspectorGridMode.IsometricGrid,layerName,asObstacle);
+            
         }
 
-
+      
     }
     FlockAgent InstantiateSoldier()
     {
         float x = instantiatePlace.transform.position.x;
         float y = instantiatePlace.transform.position.y + 1.5f;
 
-
+       
         if (currI % 2 == 0)
         {
-            randomSquare = new Vector2(-transRad + x, transRad * (soldiersCount - currI) + y);
+            randomSquare = new Vector2(-transRad + x, transRad * (soldiersCount - currI) + y );
         }
         else
         {
@@ -89,8 +89,8 @@ public class Flock : MonoBehaviour
                 transform
                 );
 
-        newAgent.name = agentPrefab.name + " " + currI;
-
+        newAgent.name = agentPrefab.name+" " + currI;
+        
         newAgent.SetFlock(this);
         agents.Add(newAgent);
         copyAgents.Add(newAgent);
@@ -105,7 +105,7 @@ public class Flock : MonoBehaviour
     {
         currI = soldiersCount;
         soldiersCount++;
-
+        
         FlockAgent newSoldier = InstantiateSoldier();
         newSoldier.GetComponent<Soldier>().SetHealth(life);
         newSoldier.GetComponent<Soldier>().SetSpeed(speed);
@@ -130,7 +130,7 @@ public class Flock : MonoBehaviour
 
     public void SetNewTarget(GameObject target, bool isEnemy)
     {
-        if (prev == null && target != null && !firstCall)
+        if (prev == null && target!=null&&!firstCall)
         {
             foreach (FlockAgent agent in agents)
             {
@@ -150,11 +150,11 @@ public class Flock : MonoBehaviour
                         walk.MoveToTarget(ans, false);
                     }
                 }
-
-
+               
+              
             }
             this.prev = target;
-
+            
         }
         firstCall = false;
         prev = target;
@@ -169,7 +169,7 @@ public class Flock : MonoBehaviour
             {
                 Walk walk = agent.GetComponent<Walk>();
                 walk.MoveToTargetPos(targetPos, false);
-
+                
 
             }
             this.prevPos = targetPos;

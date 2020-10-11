@@ -217,10 +217,10 @@ public class Walk : MonoBehaviour
     {
         if (frontSoldier != null)
         {
-            DynamicGridObstacle obstacle = frontSoldier.GetComponent<DynamicGridObstacle>();
-            string frontSoldierLayer = frontSoldier.name.Split(' ')[0];
-            obstacle.enabled = true;
-            Flock.SetAsObstacle(true, frontSoldierLayer);
+            //DynamicGridObstacle obstacle = frontSoldier.GetComponent<DynamicGridObstacle>();
+            //string frontSoldierLayer = frontSoldier.name.Split(' ')[0];
+            //obstacle.enabled = true;
+            //Flock.SetAsObstacle(true, frontSoldierLayer);
         }
 
     }
@@ -232,13 +232,13 @@ public class Walk : MonoBehaviour
         stuck = false;
         if (soldier != null)
         {
-            DynamicGridObstacle obstacle = soldier.GetComponent<DynamicGridObstacle>();
-            obstacle.enabled = false;
+            //DynamicGridObstacle obstacle = soldier.GetComponent<DynamicGridObstacle>();
+            //obstacle.enabled = false;
 
 
-            string frontSoldierLayer = soldier.name.Split(' ')[0];
+            //string frontSoldierLayer = soldier.name.Split(' ')[0];
 
-            Flock.SetAsObstacle(false, frontSoldierLayer);
+            //Flock.SetAsObstacle(false, frontSoldierLayer);
         }
 
 
@@ -344,7 +344,7 @@ public class Walk : MonoBehaviour
 
         if (target != null && targetObject != null)
         {
-            if (target.name.Contains("building"))
+            if (target.tag.Contains("building")) //new added -changed to target.tag 
             {
 
                 if (target.GetComponent<DestructOfBuilding>().IsObstacle())
@@ -357,6 +357,22 @@ public class Walk : MonoBehaviour
                     }
 
                 }
+
+            }
+
+
+	    if (target.tag=="resource" && this.tag.Contains("gold miner")) //new added
+            {
+
+                
+                float distanceToBuilding = Mathf.Abs(Vector3.Distance(target.position, this.transform.position));
+                if (distanceToBuilding < 3f)
+                {
+                    Resource.ResetResourceAsObstacle(targetObject);
+                    
+                }
+
+                
 
             }
         }

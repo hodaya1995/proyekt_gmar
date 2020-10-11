@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using Pathfinding;
 using System.Collections.Generic;
-using System.Security.Permissions;
-using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Rendering;
+using System;
 
 public class Building : CreateColony
 {
@@ -38,6 +38,23 @@ public class Building : CreateColony
     }
 
 
+    void SetBuildingAsObstacle(GameObject building)
+    {
+
+        DynamicGridObstacle obstacle = building.GetComponent<DynamicGridObstacle>();
+        obstacle.enabled = false;
+        Flock.SetAsObstacle(true, "buildings");
+
+    }
+
+    void ResetBuildingAsObstacle(GameObject building)
+    {
+
+        DynamicGridObstacle obstacle = building.GetComponent<DynamicGridObstacle>();
+        obstacle.enabled = false;
+        Flock.SetAsObstacle(false, "buildings");
+
+    }
 
     public void OpenPanel()
     {

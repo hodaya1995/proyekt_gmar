@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cacheType: 1
-  lastUpdatedAtString: 2020-10-11T02:15:37.190+03:00
-  initializedAtString: 2020-10-10T23:28:44.316+03:00
+  lastUpdatedAtString: 2020-10-11T08:40:35.221+03:00
+  initializedAtString: 2020-10-11T08:40:34.635+03:00
   currentGitRemote:
     name: origin
-    url: https://github.com/hodaya1995/proyekt_gmar.git
+    url: https://github.com/hodaya1995/proyekt_gmar
     login: 
     user: 
     host: 
@@ -25,14 +25,14 @@ MonoBehaviour:
     token: 
   currentGitBranch:
     name: master
-    tracking: origin/master
+    tracking: 
   currentConfigBranch:
     name: master
     remote:
-      name: origin
-      url: https://github.com/hodaya1995/proyekt_gmar.git
-    trackingBranch: master
+      name: 
+      url: 
+    trackingBranch: 
   currentConfigRemote:
     name: origin
-    url: https://github.com/hodaya1995/proyekt_gmar.git
+    url: https://github.com/hodaya1995/proyekt_gmar
   currentHead: 

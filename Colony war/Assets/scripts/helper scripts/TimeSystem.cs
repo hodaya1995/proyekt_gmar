@@ -24,13 +24,14 @@ public class TimeSystem : Building
         bar.SetActive(false);
         OpenPanel();
     }
-    /*
+
     public void GoldCheck()
     {
-        
+
         int cost;
         if (this.name == "archer building") cost = 50;
         else if (this.name == "stable building") cost = 60;
+        else if (this.name == "barracks") cost = 70;
         else cost = 40;
 
         GameObject child = Camera.main.transform.Find("Canvas").gameObject;
@@ -42,8 +43,8 @@ public class TimeSystem : Building
 
         if (int.Parse(context.text) >= cost) AnimateBar();
         else OpenPanel();
-        
-        AnimateBar();
+
+        //AnimateBar();
     }
-*/
+
 }

@@ -20,120 +20,120 @@ public class CreateColony : MonoBehaviour
     {
     }
 
-    void CreateSoldier(string name, string buildingName, float speed, float life, Vector3 pos)
-    {
-        string tag = "colony soldier";
-        GameObject[] allObj = (GameObject[])FindObjectsOfTypeAll(typeof(GameObject));
-        GameObject[] obj = FindGameObjectWithTag(allObj, tag);
-        GameObject soldier = null;
-        GameObject soldierBuilding = null;
+    //void CreateSoldier(string name, string buildingName, float speed, float life, Vector3 pos)
+    //{
+    //    string tag = "colony soldier";
+    //    GameObject[] allObj = (GameObject[])FindObjectsOfTypeAll(typeof(GameObject));
+    //    GameObject[] obj = FindGameObjectWithTag(allObj, tag);
+    //    GameObject soldier = null;
+    //    GameObject soldierBuilding = null;
 
-        foreach (GameObject sol in obj)
-        {
-            if (sol.name == name)
-            {
-                soldier = sol;
-                break;
-            }
-        }
-        if (soldier == null)
-        {
-            Debug.LogError("no such game object " + name);
-        }
-        else
-        {
-            foreach (GameObject sol in allObj)
-            {
-                if (sol.name == buildingName)
-                {
-                    soldierBuilding = sol;
-                    break;
-                }
-            }
+    //    foreach (GameObject sol in obj)
+    //    {
+    //        if (sol.name == name)
+    //        {
+    //            soldier = sol;
+    //            break;
+    //        }
+    //    }
+    //    if (soldier == null)
+    //    {
+    //        Debug.LogError("no such game object " + name);
+    //    }
+    //    else
+    //    {
+    //        foreach (GameObject sol in allObj)
+    //        {
+    //            if (sol.name == buildingName)
+    //            {
+    //                soldierBuilding = sol;
+    //                break;
+    //            }
+    //        }
 
-            int dis = 0;
-            if (name == "horse soldier") dis = totalHorse;
-            else if (name == "axe") dis = totalAxe;
-            else dis = totalArcher;
+    //        int dis = 0;
+    //        if (name == "horse soldier") dis = totalHorse;
+    //        else if (name == "axe") dis = totalAxe;
+    //        else dis = totalArcher;
 
-            Vector3 newSoldierPos = new Vector3(soldierBuilding.transform.position.x,
-                soldierBuilding.transform.position.y - soldierBuilding.transform.localScale.y - 0.5f, soldierBuilding.transform.position.z);
+    //        Vector3 newSoldierPos = new Vector3(soldierBuilding.transform.position.x,
+    //            soldierBuilding.transform.position.y - soldierBuilding.transform.localScale.y - 0.5f, soldierBuilding.transform.position.z);
 
-            foreach (GameObject p in obj)
-            {
-                if (p.transform.position == newSoldierPos)
-                {
-                    if (dis % 2 == 0)
-                    {
-                        newSoldierPos = new Vector3(soldierBuilding.transform.position.x + dis / 2,
-                            soldierBuilding.transform.position.y - soldierBuilding.transform.localScale.y - 0.5f, soldierBuilding.transform.position.z);
-                    }
-                    else
-                    {
-                        newSoldierPos = new Vector3(soldierBuilding.transform.position.x - dis / 2,
-                            soldierBuilding.transform.position.y - soldierBuilding.transform.localScale.y - 0.5f, soldierBuilding.transform.position.z);
-                    }
+    //        foreach (GameObject p in obj)
+    //        {
+    //            if (p.transform.position == newSoldierPos)
+    //            {
+    //                if (dis % 2 == 0)
+    //                {
+    //                    newSoldierPos = new Vector3(soldierBuilding.transform.position.x + dis / 2,
+    //                        soldierBuilding.transform.position.y - soldierBuilding.transform.localScale.y - 0.5f, soldierBuilding.transform.position.z);
+    //                }
+    //                else
+    //                {
+    //                    newSoldierPos = new Vector3(soldierBuilding.transform.position.x - dis / 2,
+    //                        soldierBuilding.transform.position.y - soldierBuilding.transform.localScale.y - 0.5f, soldierBuilding.transform.position.z);
+    //                }
 
-                    break;
-                }
-            }
+    //                break;
+    //            }
+    //        }
 
-            Quaternion rot = new Quaternion();
-            //GameObject copiedSoldier = Instantiate(soldier, newSoldierPos, rot) as GameObject;
-            copiedSoldier = Instantiate(soldier, newSoldierPos, rot) as GameObject;
-            copiedSoldier.SetActive(false);
-            //copiedSoldier.SetActive(true);
-            copiedSoldier.GetComponent<Soldier>().health = life;
-            copiedSoldier.GetComponent<Soldier>().speed = speed;
-            Rigidbody2D rb = copiedSoldier.GetComponent<Rigidbody2D>();
-            rb.drag = 1.5f;
+    //        Quaternion rot = new Quaternion();
+    //        //GameObject copiedSoldier = Instantiate(soldier, newSoldierPos, rot) as GameObject;
+    //        copiedSoldier = Instantiate(soldier, newSoldierPos, rot) as GameObject;
+    //        copiedSoldier.SetActive(false);
+    //        //copiedSoldier.SetActive(true);
+    //        copiedSoldier.GetComponent<Soldier>().health = life;
+    //        copiedSoldier.GetComponent<Soldier>().speed = speed;
+    //        Rigidbody2D rb = copiedSoldier.GetComponent<Rigidbody2D>();
+    //        rb.drag = 1.5f;
+           
 
+    //    }
 
-        }
-
-    }
-
-
-    private GameObject[] FindGameObjectWithTag(GameObject[] allObj, string tag)
-    {
-        List<GameObject> res = new List<GameObject>();
-        foreach (GameObject obj in allObj)
-        {
-            if (obj.tag == tag)
-            {
-                res.Add(obj);
-            }
-        }
-        return (GameObject[])res.ToArray();
-    }
+    //}
 
 
-    void CreateWorker(string tag, int speedMining, int life, Vector3 pos)
-    {
-        GameObject[] allObj = (GameObject[])FindObjectsOfTypeAll(typeof(GameObject));
-        GameObject[] obj = FindGameObjectWithTag(allObj, tag);
+    //private GameObject[] FindGameObjectWithTag(GameObject[] allObj, string tag)
+    //{
+    //    List<GameObject> res = new List<GameObject>();
+    //    foreach (GameObject obj in allObj)
+    //    {
+    //        if (obj.tag == tag)
+    //        {
+    //            res.Add(obj);
+    //        }
+    //    }
+    //    return (GameObject[])res.ToArray();
+    //}
 
-        GameObject worker = null;
 
-        if (obj.Length > 0)
-        {
-            worker = (GameObject)obj[0];
-        }
-        if (worker == null)
-        {
-            Debug.LogError("no such game object " + tag);
-        }
-        else
-        {
-            Quaternion rot = new Quaternion();
-            GameObject copiedWorker = Instantiate(worker, pos, rot) as GameObject;
-            copiedWorker.SetActive(true);
-            copiedWorker.GetComponent<Attacked>().maxHealth = life;
-            copiedWorker.GetComponent<MineResources>().speedMining = speedMining;
-            Rigidbody2D rb = copiedWorker.GetComponent<Rigidbody2D>();
-            rb.drag = 1.5f;
-        }
-    }
+    //void CreateWorker(string tag, int speedMining, int life, Vector3 pos)
+    //{
+    //    GameObject[] allObj = (GameObject[])FindObjectsOfTypeAll(typeof(GameObject));
+    //    GameObject[] obj = FindGameObjectWithTag(allObj, tag);
+
+    //    GameObject worker = null;
+
+    //    if (obj.Length > 0)
+    //    {
+    //        worker = (GameObject)obj[0];
+    //    }
+    //    if (worker == null)
+    //    {
+    //        Debug.LogError("no such game object " + tag);
+    //    }
+    //    else
+    //    {
+    //        Quaternion rot = new Quaternion();
+    //        GameObject copiedWorker = Instantiate(worker, pos, rot) as GameObject;
+    //        copiedWorker.SetActive(true);
+    //        copiedWorker.GetComponent<Attacked>().maxHealth = life;
+    //        copiedWorker.GetComponent<MineResources>().speedMining = speedMining;
+    //        Rigidbody2D rb = copiedWorker.GetComponent<Rigidbody2D>();
+    //        rb.drag = 1.5f;
+    //    }
+    //}
 
 
     public void CreateAnArcher()
@@ -152,7 +152,11 @@ public class CreateColony : MonoBehaviour
             totalArcher++;
             totalSoldier++;
 
-            CreateSoldier("archer soldier", "archer building", 10f, 10, new Vector3(0, 0, 0));
+            Flock flock = this.transform.parent.parent.parent.parent.GetComponent<Flock>();
+
+            copiedSoldier = flock.CreateNewSoldier(20f, 10, 1);
+            copiedSoldier.SetActive(false);
+            Invoke("TimerBarHelper", 5f);
 
             Resources.gold -= 50;
 
@@ -179,10 +183,10 @@ public class CreateColony : MonoBehaviour
 
             Flock flock = this.transform.parent.parent.parent.parent.GetComponent<Flock>();
 
-            copiedSoldier = flock.CreateNewWorker(100, 100.0f / 60.0f);
+            copiedSoldier =flock.CreateNewWorker(100, 100.0f / 60.0f);
             copiedSoldier.SetActive(false);
             Invoke("TimerBarHelper", 5f);
-
+           
             Resources.gold -= 40;
 
             context.text = "" + Resources.gold;
@@ -203,7 +207,11 @@ public class CreateColony : MonoBehaviour
 
             totalAxe++;
             totalSoldier++;
-            CreateSoldier("axe", "barracks", 10, 10, new Vector3(5, 1, 0));
+            Flock flock = this.transform.parent.parent.parent.parent.GetComponent<Flock>();
+
+            copiedSoldier = flock.CreateNewSoldier(20f, 10 ,1);
+            copiedSoldier.SetActive(false);
+            Invoke("TimerBarHelper", 5f);
 
             Resources.gold -= 70;
 
@@ -227,7 +235,11 @@ public class CreateColony : MonoBehaviour
             totalHorse++;
             totalSoldier++;
 
-            CreateSoldier("horse soldier", "stable building", 10, 10, new Vector3(5, 1, 0));
+            Flock flock = this.transform.parent.parent.parent.parent.GetComponent<Flock>();
+
+            copiedSoldier = flock.CreateNewSoldier(20f, 10, 1);
+            copiedSoldier.SetActive(false);
+            Invoke("TimerBarHelper", 5f);
 
             Resources.gold -= 60;
 
@@ -241,13 +253,6 @@ public class CreateColony : MonoBehaviour
     {
         copiedSoldier.SetActive(true);
     }
-
-
-
-
-
-    
-
 
 
 }
