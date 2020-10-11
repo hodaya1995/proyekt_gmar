@@ -220,7 +220,7 @@ public class Walk : MonoBehaviour
             DynamicGridObstacle obstacle = frontSoldier.GetComponent<DynamicGridObstacle>();
             string frontSoldierLayer = frontSoldier.name.Split(' ')[0];
             obstacle.enabled = true;
-            this.GetComponentInParent<Flock>().SetAsObstacle(true, frontSoldierLayer);
+            Flock.SetAsObstacle(true, frontSoldierLayer);
         }
 
     }
@@ -238,7 +238,7 @@ public class Walk : MonoBehaviour
 
             string frontSoldierLayer = soldier.name.Split(' ')[0];
 
-            this.GetComponentInParent<Flock>().SetAsObstacle(false, frontSoldierLayer);
+            Flock.SetAsObstacle(false, frontSoldierLayer);
         }
 
 
@@ -370,7 +370,7 @@ public class Walk : MonoBehaviour
 
         DynamicGridObstacle obstacle = building.GetComponent<DynamicGridObstacle>();
         obstacle.enabled = false;
-        this.GetComponentInParent<Flock>().SetAsObstacle(false, "buildings");
+        Flock.SetAsObstacle(false, "buildings");
 
     }
 
@@ -599,7 +599,7 @@ public class Walk : MonoBehaviour
         DynamicGridObstacle obstacle = this.GetComponent<DynamicGridObstacle>();
         obstacle.enabled = false;
         string layer = this.name.Split(' ')[0];
-        this.GetComponentInParent<Flock>().SetAsObstacle(false, layer);
+        Flock.SetAsObstacle(false, layer);
     }
 
     void LookForResorces(string res)

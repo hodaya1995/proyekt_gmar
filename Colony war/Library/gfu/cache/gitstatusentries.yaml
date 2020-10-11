@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cacheType: 6
-  lastUpdatedAtString: 2020-10-09T15:13:20.137+03:00
-  initializedAtString: 2020-10-09T14:23:22.630+03:00
+  lastUpdatedAtString: 2020-10-11T04:48:33.923+03:00
+  initializedAtString: 2020-10-10T23:28:46.569+03:00
   entries:
   - path: Colony war\Assets\Scenes\SampleScene.unity
     fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\Scenes\SampleScene.unity
@@ -34,12 +34,39 @@ MonoBehaviour:
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
+  - path: Colony war\Assets\scripts\CreateColony.cs
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\scripts\CreateColony.cs
+    projectPath: Assets\scripts\CreateColony.cs
+    originalPath: 
+    indexStatus: 0
+    workTreeStatus: 3
   - path: Colony war\Assets\scripts\DestructOfBuilding.cs
     fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\scripts\DestructOfBuilding.cs
     projectPath: Assets\scripts\DestructOfBuilding.cs
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
+  - path: Colony war\Assets\scripts\flocking movement\Flock.cs
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\scripts\flocking
+      movement\Flock.cs
+    projectPath: Assets\scripts\flocking movement\Flock.cs
+    originalPath: 
+    indexStatus: 0
+    workTreeStatus: 3
+  - path: Colony war\Assets\scripts\helper scripts\Options_Enemy.cs
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\scripts\helper
+      scripts\Options_Enemy.cs
+    projectPath: Assets\scripts\helper scripts\Options_Enemy.cs
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\scripts\helper scripts\Options_Enemy.cs.meta
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\scripts\helper
+      scripts\Options_Enemy.cs.meta
+    projectPath: Assets\scripts\helper scripts\Options_Enemy.cs.meta
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
   - path: Colony war\Assets\scripts\helper scripts\Walk.cs
     fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\scripts\helper
       scripts\Walk.cs
@@ -47,36 +74,90 @@ MonoBehaviour:
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
-  - path: Colony war\Assets\sprites\Canvas.prefab
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\Canvas.prefab
-    projectPath: Assets\sprites\Canvas.prefab
+  - path: Colony war\Assets\sprites\prefab\colony archer building.prefab
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\colony
+      archer building.prefab
+    projectPath: Assets\sprites\prefab\colony archer building.prefab
     originalPath: 
     indexStatus: 1
     workTreeStatus: 1
-  - path: Colony war\Assets\sprites\Canvas.prefab.meta
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\Canvas.prefab.meta
-    projectPath: Assets\sprites\Canvas.prefab.meta
+  - path: Colony war\Assets\sprites\prefab\colony archer building.prefab.meta
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\colony
+      archer building.prefab.meta
+    projectPath: Assets\sprites\prefab\colony archer building.prefab.meta
     originalPath: 
     indexStatus: 1
     workTreeStatus: 1
-  - path: Colony war\AstarPathfindingProject.csproj
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\AstarPathfindingProject.csproj
-    projectPath: AstarPathfindingProject.csproj
+  - path: Colony war\Assets\sprites\prefab\colony protect tower.prefab
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\colony
+      protect tower.prefab
+    projectPath: Assets\sprites\prefab\colony protect tower.prefab
     originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\AstarPathfindingProjectEditor.csproj
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\AstarPathfindingProjectEditor.csproj
-    projectPath: AstarPathfindingProjectEditor.csproj
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\colony protect tower.prefab.meta
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\colony
+      protect tower.prefab.meta
+    projectPath: Assets\sprites\prefab\colony protect tower.prefab.meta
     originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Colony war.sln
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Colony war.sln
-    projectPath: Colony war.sln
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\colony stable.prefab
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\colony
+      stable.prefab
+    projectPath: Assets\sprites\prefab\colony stable.prefab
     originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\colony stable.prefab.meta
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\colony
+      stable.prefab.meta
+    projectPath: Assets\sprites\prefab\colony stable.prefab.meta
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\enemy archer building .prefab
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\enemy
+      archer building .prefab
+    projectPath: Assets\sprites\prefab\enemy archer building .prefab
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\enemy archer building .prefab.meta
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\enemy
+      archer building .prefab.meta
+    projectPath: Assets\sprites\prefab\enemy archer building .prefab.meta
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\enemy protect tower.prefab
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\enemy
+      protect tower.prefab
+    projectPath: Assets\sprites\prefab\enemy protect tower.prefab
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\enemy protect tower.prefab.meta
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\enemy
+      protect tower.prefab.meta
+    projectPath: Assets\sprites\prefab\enemy protect tower.prefab.meta
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\enemy stable.prefab
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\enemy
+      stable.prefab
+    projectPath: Assets\sprites\prefab\enemy stable.prefab
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
+  - path: Colony war\Assets\sprites\prefab\enemy stable.prefab.meta
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Assets\sprites\prefab\enemy
+      stable.prefab.meta
+    projectPath: Assets\sprites\prefab\enemy stable.prefab.meta
+    originalPath: 
+    indexStatus: 1
+    workTreeStatus: 1
   - path: Colony war\Library\ArtifactDB
     fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ArtifactDB
     projectPath: Library\ArtifactDB
@@ -119,9 +200,9 @@ MonoBehaviour:
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
-  - path: Colony war\Library\PackageManager\ProjectCache.bin
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\PackageManager\ProjectCache.bin
-    projectPath: Library\PackageManager\ProjectCache.bin
+  - path: Colony war\Library\InspectorExpandedItems.asset
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\InspectorExpandedItems.asset
+    projectPath: Library\InspectorExpandedItems.asset
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
@@ -143,165 +224,9 @@ MonoBehaviour:
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Assembly-CSharp-Editor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Assembly-CSharp-Editor.dll
-    projectPath: Library\ScriptAssemblies\Assembly-CSharp-Editor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Assembly-CSharp-Editor-firstpass.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Assembly-CSharp-Editor-firstpass.dll
-    projectPath: Library\ScriptAssemblies\Assembly-CSharp-Editor-firstpass.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\AstarPathfindingProject.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\AstarPathfindingProject.dll
-    projectPath: Library\ScriptAssemblies\AstarPathfindingProject.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\AstarPathfindingProject.pdb
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\AstarPathfindingProject.pdb
-    projectPath: Library\ScriptAssemblies\AstarPathfindingProject.pdb
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\AstarPathfindingProjectEditor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\AstarPathfindingProjectEditor.dll
-    projectPath: Library\ScriptAssemblies\AstarPathfindingProjectEditor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\AstarPathfindingProjectEditor.pdb
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\AstarPathfindingProjectEditor.pdb
-    projectPath: Library\ScriptAssemblies\AstarPathfindingProjectEditor.pdb
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\PackageToolsEditor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\PackageToolsEditor.dll
-    projectPath: Library\ScriptAssemblies\PackageToolsEditor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\PackageToolsEditor.pdb
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\PackageToolsEditor.pdb
-    projectPath: Library\ScriptAssemblies\PackageToolsEditor.pdb
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.CollabProxy.Editor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.CollabProxy.Editor.dll
-    projectPath: Library\ScriptAssemblies\Unity.CollabProxy.Editor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.Rider.Editor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.Rider.Editor.dll
-    projectPath: Library\ScriptAssemblies\Unity.Rider.Editor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.TextMeshPro.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.TextMeshPro.dll
-    projectPath: Library\ScriptAssemblies\Unity.TextMeshPro.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll
-    projectPath: Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.Timeline.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.Timeline.dll
-    projectPath: Library\ScriptAssemblies\Unity.Timeline.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.Timeline.Editor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.Timeline.Editor.dll
-    projectPath: Library\ScriptAssemblies\Unity.Timeline.Editor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll
-    projectPath: Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\Unity.VSCode.Editor.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\Unity.VSCode.Editor.dll
-    projectPath: Library\ScriptAssemblies\Unity.VSCode.Editor.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\UnityEditor.TestRunner.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\UnityEditor.TestRunner.dll
-    projectPath: Library\ScriptAssemblies\UnityEditor.TestRunner.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\UnityEditor.UI.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\UnityEditor.UI.dll
-    projectPath: Library\ScriptAssemblies\UnityEditor.UI.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\UnityEditor.UI.pdb
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\UnityEditor.UI.pdb
-    projectPath: Library\ScriptAssemblies\UnityEditor.UI.pdb
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\UnityEngine.TestRunner.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\UnityEngine.TestRunner.dll
-    projectPath: Library\ScriptAssemblies\UnityEngine.TestRunner.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\UnityEngine.UI.dll
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\UnityEngine.UI.dll
-    projectPath: Library\ScriptAssemblies\UnityEngine.UI.dll
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ScriptAssemblies\UnityEngine.UI.pdb
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ScriptAssemblies\UnityEngine.UI.pdb
-    projectPath: Library\ScriptAssemblies\UnityEngine.UI.pdb
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\ShaderCache\EditorEncounteredVariants
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\ShaderCache\EditorEncounteredVariants
-    projectPath: Library\ShaderCache\EditorEncounteredVariants
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
   - path: Colony war\Library\shadercompiler-UnityShaderCompiler.exe0.log
     fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\shadercompiler-UnityShaderCompiler.exe0.log
     projectPath: Library\shadercompiler-UnityShaderCompiler.exe0.log
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\shadercompiler-UnityShaderCompiler.exe1.log
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\shadercompiler-UnityShaderCompiler.exe1.log
-    projectPath: Library\shadercompiler-UnityShaderCompiler.exe1.log
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\shadercompiler-UnityShaderCompiler.exe2.log
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\shadercompiler-UnityShaderCompiler.exe2.log
-    projectPath: Library\shadercompiler-UnityShaderCompiler.exe2.log
-    originalPath: 
-    indexStatus: 0
-    workTreeStatus: 3
-  - path: Colony war\Library\shadercompiler-UnityShaderCompiler.exe3.log
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\shadercompiler-UnityShaderCompiler.exe3.log
-    projectPath: Library\shadercompiler-UnityShaderCompiler.exe3.log
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
@@ -314,6 +239,12 @@ MonoBehaviour:
   - path: Colony war\Library\StateCache\MainStageHierarchy\7c\7c74d0d61f6135be1b97dd89b7d0611b.json
     fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\StateCache\MainStageHierarchy\7c\7c74d0d61f6135be1b97dd89b7d0611b.json
     projectPath: Library\StateCache\MainStageHierarchy\7c\7c74d0d61f6135be1b97dd89b7d0611b.json
+    originalPath: 
+    indexStatus: 0
+    workTreeStatus: 3
+  - path: Colony war\Library\StateCache\PrefabStageHierarchy\2a\2aab0c24ea8ab9c169435b673686e4ca.json
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\Library\StateCache\PrefabStageHierarchy\2a\2aab0c24ea8ab9c169435b673686e4ca.json
+    projectPath: Library\StateCache\PrefabStageHierarchy\2a\2aab0c24ea8ab9c169435b673686e4ca.json
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
@@ -353,9 +284,9 @@ MonoBehaviour:
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3
-  - path: Colony war\PackageToolsEditor.csproj
-    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\PackageToolsEditor.csproj
-    projectPath: PackageToolsEditor.csproj
+  - path: Colony war\ProjectSettings\TagManager.asset
+    fullPath: C:\Users\kaikh\Documents\proyekt_gmar\Colony war\ProjectSettings\TagManager.asset
+    projectPath: ProjectSettings\TagManager.asset
     originalPath: 
     indexStatus: 0
     workTreeStatus: 3

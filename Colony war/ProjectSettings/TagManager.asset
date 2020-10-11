@@ -25,6 +25,9 @@ TagManager:
   - colony building
   - enemy building
   - first stage of the building
+  - gold miner colony
+  - gold miner enemy
+  - building
   layers:
   - Default
   - TransparentFX

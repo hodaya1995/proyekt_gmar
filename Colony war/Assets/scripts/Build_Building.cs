@@ -19,10 +19,11 @@ public class Build_Building : MonoBehaviour
     
    
     int Number_Objects_In_List_Attackers = 0;
-    int Number_Objects_In_List_Workers = 0;
+    
     List<GameObject> list_Attackers = new List<GameObject>();
-    List<GameObject> list_Worksers = new List<GameObject>();
+    
     string Name_Of_Building;
+    string Name_Of_Building_Shai;
     bool Sturctue_Mine;
 
     bool isObstacle = true;
@@ -31,9 +32,9 @@ public class Build_Building : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (this.transform.parent.gameObject.name == "buildings")
+        if (this.transform.parent.gameObject.name.Contains("buildings"))
         {
-
+            Sturctue_Mine = true;
             GameObject g = this.gameObject;
             slide = g.GetComponentInChildren<Slider>();
             spriterender = g.GetComponent<SpriteRenderer>();
@@ -42,9 +43,12 @@ public class Build_Building : MonoBehaviour
             slide.value = 1;
             this.gameObject.tag = "first stage of the building";
             this.gameObject.SetActive(true);
-   
+            InvokeRepeating("Increase_Life_Building", 0f, 2f);
+
+
 
         }
+
     }
 
     public bool IsObstacle()
@@ -70,28 +74,14 @@ public class Build_Building : MonoBehaviour
             Number_Objects_In_List_Attackers++;
             if (list_Attackers.Count == 1 && Number_Objects_In_List_Attackers == 1)
             {
+                CancelInvoke("Increase_Life_Building");
                 InvokeRepeating("Decrease_Life_Building", 0f, 0.5f);
             }
 
 
         }
 
-        else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers"
-            || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Worker>() != null && collider.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
         
-        
-        {
-            Animator animator = collider.gameObject.GetComponent<Animator>();
-           
-            animator.SetBool("mine", true);
-            list_Worksers.Add(collider.gameObject);
-            Number_Objects_In_List_Workers++;
-            if (list_Worksers.Count == 1 && Number_Objects_In_List_Workers == 1)
-            {
-                InvokeRepeating("Increase_Life_Building", 0f, 0.5f);
-            }
-
-        }
     }
 
 
@@ -101,6 +91,7 @@ public class Build_Building : MonoBehaviour
         if (this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Attack>() != null && collision.gameObject.transform.parent.parent.gameObject.name == "enemy soldiers"
              || !this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Attack>() != null && collision.gameObject.transform.parent.parent.gameObject.name == "colony soldiers")
         {
+
             Animator a = collision.gameObject.GetComponent<Animator>();
             a.SetBool("toAttack", false);
 
@@ -115,34 +106,14 @@ public class Build_Building : MonoBehaviour
 
             if (list_Attackers.Count == 0)
             {
+
                 CancelInvoke("Decrease_Life_Building");
                 Number_Objects_In_List_Attackers = 0;
+                InvokeRepeating("Increase_Life_Building", 0f, 2f);
             }
 
         }
 
-        else if (this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Worker>() != null && collision.gameObject.transform.parent.parent.parent.gameObject.name == "colony soldiers"
-           || !this.Sturctue_Mine && this.tag == "first stage of the building" && collision.gameObject.GetComponent<Worker>() != null && collision.gameObject.transform.parent.parent.parent.gameObject.name == "enemy soldiers")
-        {
-            Animator a = collision.gameObject.GetComponent<Animator>();
-           
-            a.SetBool("mine", false);
-
-            for (int i = 0; i < list_Worksers.Count; i++)
-            {
-
-                if (list_Worksers[i].transform.position == collision.gameObject.transform.position)
-                {
-                    list_Worksers.RemoveAt(i);
-                }
-            }
-
-            if (list_Attackers.Count == 0)
-            {
-                CancelInvoke("Increase_Life_Building");
-                Number_Objects_In_List_Workers = 0;
-            }
-        }
 
     }
 
@@ -178,14 +149,7 @@ public class Build_Building : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < list_Worksers.Count; i++)
-            {
-                if (list_Attackers[i].gameObject.GetComponent<Worker>() != null)
-                {
-                    list_Attackers[i].GetComponent<Animator>().SetBool("mine", false);
-                    list_Attackers.RemoveAt(i);
-                }
-            }
+           
 
 
 
@@ -193,9 +157,9 @@ public class Build_Building : MonoBehaviour
             CancelInvoke("Decrease_Life_Building");
             CancelInvoke("Increase_Life_Building");
             Number_Objects_In_List_Attackers = 0;
-            Number_Objects_In_List_Workers = 0;
+            
             list_Attackers.Clear();
-            list_Worksers.Clear();
+            
             
 
 
@@ -213,14 +177,8 @@ public class Build_Building : MonoBehaviour
     {
         if (slide.value > 0 && slide.value < 100)
         {
-            float hitPower = 0;
-            for (int i = 0; i < list_Worksers.Count; i++)
-            {
-                if (list_Worksers[i].gameObject.GetComponent<Worker>() != null)
-                {
-                    hitPower = hitPower + list_Worksers[i].GetComponent<Worker>().miningSpeed;
-                }
-            }
+            float hitPower = 5;
+            
 
             slide.value = slide.value + hitPower;
             fill.color = gradient.Evaluate(slide.normalizedValue);
@@ -231,30 +189,22 @@ public class Build_Building : MonoBehaviour
         {
             slide.value = 100;
             fill.color = gradient.Evaluate(slide.normalizedValue);
-            for (int i = 0; i < list_Worksers.Count; i++)
-            {
-                if (list_Worksers[i].gameObject.GetComponent<Worker>() != null)
-                {
-                    list_Worksers[i].GetComponent<Animator>().SetBool("mine", false);
-                   
-                    list_Worksers.RemoveAt(i);
-                }
-            }
-            Number_Objects_In_List_Workers = 0;
+            
+            
             CancelInvoke("Increase_Life_Building");
             this.gameObject.SetActive(false);
             if (Sturctue_Mine)
             {
-                GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building).gameObject);
-                GameObject r = this.transform.parent.gameObject;
+                GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building_Shai).gameObject);
+                GameObject r = GameObject.Find(Name_Of_Building);
                 o.transform.SetParent(r.transform);
                 o.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
                 o.SetActive(true);
             }
             else if (!Sturctue_Mine)
 			{
-                GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building).gameObject);
-                GameObject r = this.transform.parent.gameObject;
+                GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building_Shai).gameObject);
+                GameObject r = GameObject.Find(Name_Of_Building);
                 o.transform.SetParent(r.transform);
                 o.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
                 o.SetActive(true);
@@ -296,7 +246,15 @@ public class Build_Building : MonoBehaviour
 	}
 
 
+    
 
+
+     public void Set_Name_Building_shai(string s)
+    {
+        this.Name_Of_Building_Shai = s;
+    }
+
+   
 
 
 

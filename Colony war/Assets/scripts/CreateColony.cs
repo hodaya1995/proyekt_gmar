@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CreateColony : MonoBehaviour
 {
-    public static int totalSoldier = 0, totalArcher = 0, totalHorse = 0, totalWorker = 0;
+    public static int totalSoldier = 0, totalArcher = 0, totalHorse = 0, totalWorker = 0, totalAxe = 0;
     GameObject copiedSoldier;
 
 
@@ -53,6 +53,7 @@ public class CreateColony : MonoBehaviour
 
             int dis = 0;
             if (name == "horse soldier") dis = totalHorse;
+            else if (name == "axe") dis = totalAxe;
             else dis = totalArcher;
 
             Vector3 newSoldierPos = new Vector3(soldierBuilding.transform.position.x,
@@ -86,7 +87,7 @@ public class CreateColony : MonoBehaviour
             copiedSoldier.GetComponent<Soldier>().speed = speed;
             Rigidbody2D rb = copiedSoldier.GetComponent<Rigidbody2D>();
             rb.drag = 1.5f;
-            Invoke("TimerBarHelper", 5f);
+
 
         }
 
@@ -137,7 +138,7 @@ public class CreateColony : MonoBehaviour
 
     public void CreateAnArcher()
     {
-        /*
+
         GameObject child = Camera.main.transform.Find("Canvas").gameObject;
         child = child.transform.Find("fill of the bar").gameObject;
 
@@ -147,37 +148,106 @@ public class CreateColony : MonoBehaviour
         int currGold = int.Parse(context.text);
         if (currGold >= 50)
         {
-        */
+
             totalArcher++;
             totalSoldier++;
-        
+
             CreateSoldier("archer soldier", "archer building", 10f, 10, new Vector3(0, 0, 0));
-        /*
-            currGold -= 50;
-            context.text = "" + currGold;
+
+            Resources.gold -= 50;
+
+            context.text = "" + Resources.gold;
         }
-        */
+
     }
 
 
     public void CreateAnWorker()
     {
-        totalWorker++;
-        totalSoldier++;
-        CreateWorker("gold miner", 10, 10, new Vector3(5, 1, 0));
+        GameObject child = Camera.main.transform.Find("Canvas").gameObject;
+        child = child.transform.Find("fill of the bar").gameObject;
+
+        GameObject text = child.transform.Find("Text").gameObject;
+        Text context = text.GetComponent<Text>();
+
+        int currGold = int.Parse(context.text);
+        if (currGold >= 40)
+        {
+
+            totalWorker++;
+            totalSoldier++;
+
+            Flock flock = this.transform.parent.parent.parent.parent.GetComponent<Flock>();
+
+            copiedSoldier = flock.CreateNewWorker(100, 100.0f / 60.0f);
+            copiedSoldier.SetActive(false);
+            Invoke("TimerBarHelper", 5f);
+
+            Resources.gold -= 40;
+
+            context.text = "" + Resources.gold;
+        }
     }
 
     public void CreateAnKnight()
     {
-        totalHorse++;
-        totalSoldier++;
-        CreateSoldier("horse soldier", "stable building", 10, 10, new Vector3(5, 1, 0));
+        GameObject child = Camera.main.transform.Find("Canvas").gameObject;
+        child = child.transform.Find("fill of the bar").gameObject;
+
+        GameObject text = child.transform.Find("Text").gameObject;
+        Text context = text.GetComponent<Text>();
+
+        int currGold = int.Parse(context.text);
+        if (currGold >= 50)
+        {
+
+            totalAxe++;
+            totalSoldier++;
+            CreateSoldier("axe", "barracks", 10, 10, new Vector3(5, 1, 0));
+
+            Resources.gold -= 70;
+
+            context.text = "" + Resources.gold;
+        }
+
     }
+
+    public void CreateAnHourse()
+    {
+        GameObject child = Camera.main.transform.Find("Canvas").gameObject;
+        child = child.transform.Find("fill of the bar").gameObject;
+
+        GameObject text = child.transform.Find("Text").gameObject;
+        Text context = text.GetComponent<Text>();
+
+        int currGold = int.Parse(context.text);
+        if (currGold >= 50)
+        {
+
+            totalHorse++;
+            totalSoldier++;
+
+            CreateSoldier("horse soldier", "stable building", 10, 10, new Vector3(5, 1, 0));
+
+            Resources.gold -= 60;
+
+            context.text = "" + Resources.gold;
+        }
+
+    }
+
 
     void TimerBarHelper()
     {
         copiedSoldier.SetActive(true);
     }
+
+
+
+
+
+    
+
 
 
 }
