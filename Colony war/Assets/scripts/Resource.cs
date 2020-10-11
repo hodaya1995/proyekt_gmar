@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Pathfinding;
 
 public class Resource : MonoBehaviour
 {
@@ -17,12 +16,13 @@ public class Resource : MonoBehaviour
     public bool occupied;
 
     Text countxet;
-    int resbar = (int) Resources.gold;
+    int resbar = (int)Resources.gold;
     GameObject miner;
+    GameObject enemyplayes;
 
     void Start()
     {
-        
+        enemyplayes = GameObject.Find("enemy player");
         origAmount = amount;
         statesCount = this.transform.childCount - 1;
         currState = 0;
@@ -31,33 +31,12 @@ public class Resource : MonoBehaviour
         textCanvas.SetActive(false);
 
 
-        //GameObject child = Camera.main.transform.Find("Canvas").gameObject;
-        GameObject child = GameObject.Find("fill of the bar").gameObject;
+        GameObject child = Camera.main.transform.Find("Canvas").gameObject;
+        child = child.transform.Find("fill of the bar").gameObject;
 
         GameObject text = child.transform.Find("Text").gameObject;
         countxet = text.GetComponent<Text>();
         countxet.text = "" + resbar;
-    }
-
-
-
-
-    public static void ResetResourceAsObstacle(GameObject resorce)
-    {
-
-        DynamicGridObstacle obstacle = resorce.GetComponent<DynamicGridObstacle>();
-        obstacle.enabled = false;
-        Flock.SetAsObstacle(false, "resources");
-
-    }
-
-    public static void SetResourceAsObstacle(GameObject resorce)
-    {
-
-        DynamicGridObstacle obstacle = resorce.GetComponent<DynamicGridObstacle>();
-        obstacle.enabled = true;
-        Flock.SetAsObstacle(true, "resources");
-
     }
 
     /// <summary>
@@ -114,7 +93,6 @@ public class Resource : MonoBehaviour
     {
         if (collision.collider.tag.Contains("gold miner"))
         {
-            SetResourceAsObstacle(this.gameObject);
             miningSpeed = collision.gameObject.GetComponent<Worker>().miningSpeed;
             workerAnimator = collision.gameObject.GetComponent<Animator>();
             occupied = true;
@@ -123,18 +101,13 @@ public class Resource : MonoBehaviour
 
 
         }
-
-        if(collision.collider.tag == "enemy soldier" || collision.collider.tag=="colony soldier")
-        {
-            SetResourceAsObstacle(this.gameObject);
-        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider.tag.Contains("gold miner"))
         //if (collision.collider.tag == "gold miner colony")
         {
-           ResetResourceAsObstacle(this.gameObject);
+
             occupied = false;
             HideCanvas();
         }
@@ -153,9 +126,14 @@ public class Resource : MonoBehaviour
 
     void SetTextInBarResources(int t)
     {
-        resbar =t;
+        resbar = t;
         //resbar = resbar + t;
         countxet.text = "" + resbar;
+    }
+
+    void SetGoldEnemy(int t)
+    {
+        enemyplayes.GetComponent<Options_Enemy>().SetGoldEnemyPlayer(t);
     }
 
 
@@ -196,10 +174,17 @@ public class Resource : MonoBehaviour
         if (miner.tag == "gold miner colony")
         {
             Resources.gold += miningSpeed;
-           
+            SetTextInBarResources((int)Resources.gold);
+            SetText("" + (int)amount);
+
+
         }
-        SetTextInBarResources((int)Resources.gold);
-        SetText("" + (int)amount);
+        else if (miner.tag == "gold mine enemy")
+        {
+            Resources.enemygold += miningSpeed;
+            SetGoldEnemy((int)Resources.enemygold);
+            SetText("" + (int)amount);
+        }
 
     }
 
@@ -209,4 +194,3 @@ public class Resource : MonoBehaviour
 
 
 }
-
