@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Build_Building : MonoBehaviour
 {
-    
+
     Slider slide;
     SpriteRenderer spriterender;
 
@@ -16,12 +16,12 @@ public class Build_Building : MonoBehaviour
     public Gradient gradient;
     public Image fill;
     float Bar_Life_Building = 100;
-    
-   
+
+
     int Number_Objects_In_List_Attackers = 0;
-    
+
     List<GameObject> list_Attackers = new List<GameObject>();
-    
+
     string Name_Of_Building;
     string Name_Of_Building_Shai;
     bool Sturctue_Mine;
@@ -63,10 +63,10 @@ public class Build_Building : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collider)
     {
 
-        if (this.Sturctue_Mine &&  this.tag == "first stage of the building" && collider.gameObject.GetComponent<Attack>() != null && collider.gameObject.transform.parent.parent.gameObject.name == "enemy soldiers"
+        if (this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Attack>() != null && collider.gameObject.transform.parent.parent.gameObject.name == "enemy soldiers"
             || !this.Sturctue_Mine && this.tag == "first stage of the building" && collider.gameObject.GetComponent<Attack>() != null && collider.gameObject.transform.parent.parent.gameObject.name == "colony soldiers")
         {
-             
+
 
             Animator animator = collider.gameObject.GetComponent<Animator>();
             animator.SetBool("toAttack", true);
@@ -81,7 +81,7 @@ public class Build_Building : MonoBehaviour
 
         }
 
-        
+
     }
 
 
@@ -121,7 +121,7 @@ public class Build_Building : MonoBehaviour
     {
 
 
-        
+
         if (slide.value > 0)
         {
             float hitPower = 0;
@@ -138,7 +138,7 @@ public class Build_Building : MonoBehaviour
 
             Set_Phase_Building();
         }
-        else if ( slide.value <= 0)
+        else if (slide.value <= 0)
         {
             for (int i = 0; i < list_Attackers.Count; i++)
             {
@@ -149,7 +149,7 @@ public class Build_Building : MonoBehaviour
                 }
             }
 
-           
+
 
 
 
@@ -157,16 +157,18 @@ public class Build_Building : MonoBehaviour
             CancelInvoke("Decrease_Life_Building");
             CancelInvoke("Increase_Life_Building");
             Number_Objects_In_List_Attackers = 0;
-            
+
             list_Attackers.Clear();
-            
-            
+            //enemyplayer.GetComponent<Options_Enemy>().SetInbuilding(false);
+
+
+
 
 
 
         }
 
-        
+
     }
 
 
@@ -178,7 +180,7 @@ public class Build_Building : MonoBehaviour
         if (slide.value > 0 && slide.value < 100)
         {
             float hitPower = 5;
-            
+
 
             slide.value = slide.value + hitPower;
             fill.color = gradient.Evaluate(slide.normalizedValue);
@@ -189,8 +191,8 @@ public class Build_Building : MonoBehaviour
         {
             slide.value = 100;
             fill.color = gradient.Evaluate(slide.normalizedValue);
-            
-            
+
+
             CancelInvoke("Increase_Life_Building");
             this.gameObject.SetActive(false);
             if (Sturctue_Mine)
@@ -202,14 +204,15 @@ public class Build_Building : MonoBehaviour
                 o.SetActive(true);
             }
             else if (!Sturctue_Mine)
-			{
+            {
                 GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building_Shai).gameObject);
                 GameObject r = GameObject.Find(Name_Of_Building);
                 o.transform.SetParent(r.transform);
                 o.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+                //enemyplayer.GetComponent<Options_Enemy>().SetBuilding(o);
                 o.SetActive(true);
             }
-            
+
         }
     }
 
@@ -236,25 +239,25 @@ public class Build_Building : MonoBehaviour
     }
 
     public void Set_Name_Of_Building(string s)
-	{
+    {
         this.Name_Of_Building = s;
-	}
+    }
 
     public void Set_Side_Of_Player(bool b)
-	{
+    {
         this.Sturctue_Mine = b;
-	}
+    }
 
 
-    
 
 
-     public void Set_Name_Building_shai(string s)
+
+    public void Set_Name_Building_shai(string s)
     {
         this.Name_Of_Building_Shai = s;
     }
 
-   
+
 
 
 

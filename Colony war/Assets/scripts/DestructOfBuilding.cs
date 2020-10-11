@@ -46,7 +46,7 @@ public class DestructOfBuilding : MonoBehaviour
             fill.color = gradient.Evaluate(1f);
             slide.maxValue = Bar_Life_Building;
             slide.value = Bar_Life_Building;
-            //this.gameObject.tag = "building";
+            this.gameObject.tag = "building";
             Destruct_Building = Instantiate(this.transform.parent.gameObject.transform.Find("destruct building").gameObject);
             Destruct_Building.transform.SetParent(this.gameObject.transform);
             Destruct_Building.SetActive(false);
