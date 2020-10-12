@@ -1,2 +1,0 @@
-C:\Users\Hodaya\Documents\GitHub\proyekt_gamr\Colony war\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
-C:\Users\Hodaya\Documents\GitHub\proyekt_gamr\Colony war\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache

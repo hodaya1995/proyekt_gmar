@@ -1,2 +1,0 @@
-C:\Users\Hodaya\Documents\GitHub\proyekt_gamr\Colony war\obj\Debug\AstarPathfindingProjectEditor.csprojAssemblyReference.cache
-C:\Users\Hodaya\Documents\GitHub\proyekt_gamr\Colony war\obj\Debug\AstarPathfindingProjectEditor.csproj.CoreCompileInputs.cache

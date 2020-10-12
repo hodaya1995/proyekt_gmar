@@ -1,2 +1,0 @@
-C:\Users\Hodaya\Documents\GitHub\proyekt_gamr\Colony war\obj\Debug\PackageToolsEditor.csprojAssemblyReference.cache
-C:\Users\Hodaya\Documents\GitHub\proyekt_gamr\Colony war\obj\Debug\PackageToolsEditor.csproj.CoreCompileInputs.cache
