@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class Camera_Zoom : MonoBehaviour
 {
+    Camera cam;
     Vector3 touchStart;
     public float zoomOutMin = 1;
     public float zoomOutMax = 7;
     bool flag;
     GameObject Tool_Resources;
     Vector3 Point_Tool_Resources;
+    float targetZoom;
+    float zoomFactor = 3f;
+    float zoomSpeed = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
+        cam = Camera.main;
+        targetZoom = cam.orthographicSize;
         Point_Tool_Resources = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.scaledPixelHeight, Camera.main.transform.position.z));
         Point_Tool_Resources.z = Camera.main.transform.position.z + 5;
         Tool_Resources = Camera.main.gameObject.transform.Find("Canvas").gameObject.transform.Find("fill of the bar").gameObject;
@@ -24,7 +30,9 @@ public class Camera_Zoom : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float scrollData = Input.GetAxis("Mouse ScrollWheel");
+        targetZoom -= scrollData * zoomFactor;
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomSpeed);
         Point_Tool_Resources = Camera.main.ScreenToWorldPoint(new Vector3(0, Camera.main.scaledPixelHeight, Camera.main.transform.position.z));
         Point_Tool_Resources.z = Camera.main.transform.position.z + 5;
         Tool_Resources.transform.position = Point_Tool_Resources;

@@ -511,8 +511,16 @@ public class Build_Building : MonoBehaviour
             this.gameObject.SetActive(false);
             if (Sturctue_Mine)
             {
-                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(Name_Of_Building_Shai);
+                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,Name_Of_Building_Shai);
                 Instantiate(o.gameObject);
+                if (o.tag.Contains("colony"))
+                {
+                    MainThreadOfGame.IncNumColony();
+                }
+                else
+                {
+                    MainThreadOfGame.IncNumEnemy();
+                }
                 //GameObject o = Instantiate(this.transform.parent.Find(Name_Of_Building_Shai).gameObject);
                 // GameObject r = GameObject.Find(Name_Of_Building);
                 // o.transform.SetParent(r.transform);

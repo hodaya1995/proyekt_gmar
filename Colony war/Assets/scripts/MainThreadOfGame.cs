@@ -40,9 +40,7 @@ public class MainThreadOfGame : MonoBehaviour
         GameObject.Find("enemy protect tower").SetActive(false);
         GameObject.Find("enemy stable").SetActive(false);
 
-        
-        //LocateBuildingOnMap(colonyWorkerBuilding);
-        //LocateBuildingOnMap(enemyWorkerBuilding);
+     
 
 
        
@@ -64,6 +62,17 @@ public class MainThreadOfGame : MonoBehaviour
         {
             GameOver();
         }
+    }
+    public static void IncNumColony()
+    {
+        numOfColonyObjects++;
+        
+    }
+
+    public static void IncNumEnemy()
+    {
+        numEnemyObjects++;
+        
     }
 
     public static void GameOver()
@@ -87,17 +96,39 @@ public class MainThreadOfGame : MonoBehaviour
 
 
     }
-    public static GameObject SearchBuildingInHirarchy(string name)
+
+   
+
+    public static GameObject SearchBuildingInHirarchy(GameObject parent,string name)
     {
-        List<GameObject> buildings = MainThreadOfGame.buildingsInEntireScene;
-        foreach (GameObject building in buildings)
+
+        Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
+        foreach (Transform t in trs)
         {
-            if (building.name == name)
+            if (t.name == name)
             {
-                return building;
+                t.gameObject.SetActive(true);
+                return t.gameObject;
             }
         }
         return null;
+
+        //List<GameObject> buildings = MainThreadOfGame.buildingsInEntireScene;
+        //Debug.Log(buildings.Count);
+        //foreach (GameObject building in buildings)
+        //{
+        //    building.SetActive(true);
+        //    if (building.name == name)
+        //    {
+                
+        //        return building;
+        //    }
+        //    else
+        //    {
+        //        building.SetActive(false);
+        //    }
+        //}
+        //return null;
     }
     Collider2D[] GetNearColliders(Vector3 pos)
     {

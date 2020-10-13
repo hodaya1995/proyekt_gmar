@@ -151,7 +151,7 @@ public class Options_Enemy : MonoBehaviour
             if (gold >= 40 && createworker)
             {
                 //GameObject o = GameObject.Find("enemy worker building(Clone)");
-                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy worker building");
+                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy worker building");
                 GameObject copyworker = o.GetComponent<Flock>().CreateNewWorker(100, 100.0f / 60.0f);
                 copyworker.SetActive(false);
                 temp = copyworker;
@@ -165,7 +165,7 @@ public class Options_Enemy : MonoBehaviour
             {
                 gold = gold - 50;
                 //GameObject o = this.transform.Find("enemy archer building").gameObject;
-                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy archer building");
+                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy archer building");
                 GameObject copyarcher = o.GetComponent<Flock>().CreateNewSoldier(20f, 20f, 1f);
                 copyarcher.SetActive(false);
                 temp = copyarcher;
@@ -178,7 +178,7 @@ public class Options_Enemy : MonoBehaviour
             if (gold >= 40 && createworker)
             {
                 //GameObject o = GameObject.Find("enemy worker building(Clone)");
-                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy worker building");
+                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy worker building");
                 GameObject copyworker = o.GetComponent<Flock>().CreateNewWorker(100, 100.0f / 60.0f);
                 copyworker.SetActive(false);
                 temp = copyworker;
@@ -208,7 +208,7 @@ public class Options_Enemy : MonoBehaviour
             {
                 gold = gold - 60;
                 //GameObject o = GameObject.Find("enemy stable1").gameObject;
-                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy stable").gameObject;
+                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy stable").gameObject;
                 GameObject copyhorse = o.GetComponent<Flock>().CreateNewSoldier(20f, 20f, 1f);
                 copyhorse.SetActive(false);
                 temp = copyhorse;
@@ -239,7 +239,7 @@ public class Options_Enemy : MonoBehaviour
             if (gold >= 40 && createworker)
             {
                 //GameObject o = GameObject.Find("enemy worker building(Clone)");
-                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy worker building");
+                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy worker building");
                 GameObject copyworker = o.GetComponent<Flock>().CreateNewWorker(100, 100.0f / 60.0f);
                 copyworker.SetActive(false);
                 temp = copyworker;
@@ -254,7 +254,7 @@ public class Options_Enemy : MonoBehaviour
             {
                 gold = gold - 60;
                 //GameObject o = GameObject.Find("enemy protect tower1").gameObject;
-                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy protect tower");
+                GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy protect tower");
                 GameObject copyaxe = o.GetComponent<Flock>().CreateNewSoldier(20f, 20f, 1f);
                 copyaxe.SetActive(false);
                 temp = copyaxe;
@@ -271,7 +271,7 @@ public class Options_Enemy : MonoBehaviour
                 {
                     gold = gold - 50;
                     //GameObject o = GameObject.Find("enemy archer building1").gameObject;
-                    GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy archer building").gameObject;
+                    GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy archer building").gameObject;
                     GameObject copyarcher = o.GetComponent<Flock>().CreateNewSoldier(20f, 20f, 1f);
                     copyarcher.SetActive(false);
                     temp = copyarcher;
@@ -286,7 +286,7 @@ public class Options_Enemy : MonoBehaviour
                 {
                     gold = gold - 60;
                     //GameObject o = GameObject.Find("enemy stable1").gameObject;
-                    GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy stable").gameObject;
+                    GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy stable").gameObject;
                     GameObject copyhorse = o.GetComponent<Flock>().CreateNewSoldier(20f, 20f, 1f);
                     copyhorse.SetActive(false);
                     temp = copyhorse;
@@ -300,7 +300,7 @@ public class Options_Enemy : MonoBehaviour
                 if (gold >= 60 && createall)
                 {
                     gold = gold - 60;
-                    GameObject o = MainThreadOfGame.SearchBuildingInHirarchy("enemy protect tower").gameObject;
+                    GameObject o = MainThreadOfGame.SearchBuildingInHirarchy(GameObject.Find("characters").transform.Find("colony soldiers").Find("buildings").gameObject,"enemy protect tower").gameObject;
                     GameObject copyaxe = o.GetComponent<Flock>().CreateNewSoldier(20f, 20f, 1f);
                     copyaxe.SetActive(false);
                     temp = copyaxe;

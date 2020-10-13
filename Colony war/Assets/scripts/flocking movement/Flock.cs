@@ -11,14 +11,14 @@ public class Flock : MonoBehaviour
     List<FlockAgent> agents = new List<FlockAgent>();
     [Range(0, 500)]
     public int soldiersCount = 3;
-    [Range(1f, 100f)]
-    public float driveFactor = 10f;
-    [Range(1f, 100f)]
-    public float maxSpeed = 5f;
-    [Range(1f, 10f)]
-    public float neighborRadius = 1.5f;
-    [Range(0f, 1f)]
-    public float avoidanceRadiusMultiplier = 0.5f;
+    //[Range(1f, 100f)]
+    //public float driveFactor = 10f;
+    //[Range(1f, 100f)]
+    //public float maxSpeed = 5f;
+    //[Range(1f, 10f)]
+    //public float neighborRadius = 1.5f;
+    //[Range(0f, 1f)]
+    //public float avoidanceRadiusMultiplier = 0.5f;
 
     Vector2 randomSquare;
     int currI;

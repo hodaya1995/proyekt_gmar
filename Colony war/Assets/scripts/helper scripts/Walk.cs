@@ -2160,9 +2160,9 @@ public class Walk : MonoBehaviour
                 distance = curDistance;
             }
         }
-        if (distance == Mathf.Infinity)
+        if (distance == Mathf.Infinity)//if there is not more colony soldiers
         {
-            //after the soldier go for the building
+            //go for the building
             tag = "colony building";
             targets = GameObject.FindGameObjectsWithTag(tag);
             closest = null;
@@ -2184,9 +2184,9 @@ public class Walk : MonoBehaviour
                     distance = curDistance;
                 }
             }
-            if (distance == Mathf.Infinity)
+            if (distance == Mathf.Infinity)//if there is not more colony buildings
             {
-                //last attack the worker
+                //attack the worker
                 tag = "gold miner";
                 targets = GameObject.FindGameObjectsWithTag(tag);
                 closest = null;
